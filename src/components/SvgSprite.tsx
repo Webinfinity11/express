@@ -35,6 +35,20 @@ export function SvgSprite() {
         <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 3h9l10 10-9 9L3 12Z"/><circle cx="8" cy="8" r="1"/></symbol>
         <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></symbol>
         <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 10v11h18V10M2 10l2-7h16l2 7M2 10c0 4 5 4 5 0 0 4 5 4 5 0 0 4 5 4 5 0 0 4 5 4 5 0M9 21v-6h6v6"/></symbol>
+        <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10.5 18.5h3"/></symbol>
+        <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20l-1.5-4h-17Z"/></symbol>
+        <symbol id="i-tv" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+        <symbol id="i-gamepad" viewBox="0 0 24 24"><path d="M6 7h12a4 4 0 0 1 4 4v3a3.5 3.5 0 0 1-6.2 2.2L15 15H9l-.8 1.2A3.5 3.5 0 0 1 2 14v-3a4 4 0 0 1 4-4Z"/><path d="M7 10v4M5 12h4M15.5 11h.01M17.5 13h.01"/></symbol>
+        <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="2.5" y="13" width="5" height="8" rx="2"/><rect x="16.5" y="13" width="5" height="8" rx="2"/></symbol>
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2.5L9 4h6l1.5 2H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="4"/></symbol>
+        <symbol id="i-washer" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M4 7h16M7.5 4.5h.01M10 4.5h.01"/><circle cx="12" cy="14" r="4.5"/></symbol>
+        <symbol id="i-kettle" viewBox="0 0 24 24"><path d="M6 9h10l1.5 11h-13Z"/><path d="M8 9V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v3M16.5 11H19a1 1 0 0 1 1 1v3a3 3 0 0 1-2.6 3M4 20h16"/></symbol>
+        <symbol id="i-vacuum" viewBox="0 0 24 24"><path d="M14 3h3v10M17 13a3 3 0 0 1-3 3H8"/><circle cx="7" cy="18" r="3"/><path d="M3 21h8M14 16l3 5h4"/></symbol>
+        <symbol id="i-hairdryer" viewBox="0 0 24 24"><path d="M15 4a6 6 0 0 1 0 12H9L3 13V7l6-3Z"/><circle cx="15" cy="10" r="2"/><path d="M10 16l1 6h3l-1-6"/></symbol>
+        <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.9.7 1.5 1.6 1.5 2.6V17h4v-.5c0-1 .6-1.9 1.5-2.6A6 6 0 0 0 12 3Z"/></symbol>
+        <symbol id="i-baby" viewBox="0 0 24 24"><path d="M3 10h14a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4ZM3 10a7 7 0 0 1 7-7v7M17 10l2-4h2"/><circle cx="7" cy="19" r="2"/><circle cx="15" cy="19" r="2"/><path d="M9 14l-1 3M13 14l1 3"/></symbol>
+        <symbol id="i-car" viewBox="0 0 24 24"><path d="M3 16v-4l2-5h14l2 5v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1ZM3 12h18"/><circle cx="7" cy="14.5" r=".5"/><circle cx="17" cy="14.5" r=".5"/><path d="M5 17v2M19 17v2"/></symbol>
+        <symbol id="i-scooter" viewBox="0 0 24 24"><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M7.5 18H16l-2-14h3M14 4h-2"/></symbol>
       </defs>
     </svg>
   );

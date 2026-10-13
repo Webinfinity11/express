@@ -10,7 +10,7 @@ import { Icon } from "./Icon";
 export function Navigation() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(MENU[0].id);
+  const [active, setActive] = useState("large");
   const hoverTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const canHover = () => window.matchMedia("(hover: hover)").matches;
   // კურსორით: ღილაკზე მიტანისას იხსნება, გატანისას მცირე დაყოვნებით იხურება
@@ -103,7 +103,7 @@ export function Navigation() {
                     } else close();
                   }}
                 >
-                  <img src={m.image} alt="" width={34} height={36} />
+                  <Icon name={m.icon} className="mega-icon" />
                   <span>{m.name}</span>
                   <Icon name="chevron" />
                 </Link>

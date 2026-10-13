@@ -293,3 +293,11 @@ a.contact-card:hover{border-color:#ffc9a6;box-shadow:0 8px 24px #15151508}
 .wordmark.delonghi{font-family:Georgia,serif;font-style:italic;font-weight:600}
 .wordmark.xiaomi{font-weight:600}
 @media(max-width:700px){.brand-list{gap:36px}}
+
+/* Mega menu: 14 sections with line icons, compact rows */
+.mega-menu{max-height:calc(100dvh - 190px)}
+.mega-sections{overflow-y:auto;max-height:calc(100dvh - 190px);padding:4px 0;scrollbar-width:thin}
+.mega-section{gap:12px;padding:9px 16px;font-size:14px;line-height:1.35}
+.mega-section .icon.mega-icon{width:24px;height:24px;color:#4b4742;stroke-width:1.5}
+.mega-section:hover .icon.mega-icon,.mega-section.active .icon.mega-icon{color:var(--orange)}
+.mega-panel{max-height:calc(100dvh - 190px)}
