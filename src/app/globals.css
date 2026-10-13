@@ -294,5 +294,5 @@ a.contact-card:hover{border-color:#ffc9a6;box-shadow:0 8px 24px #15151508}
 .wordmark.xiaomi{font-weight:600}
 @media(max-width:700px){.brand-list{gap:36px}}
 /* Hide the homepage service cards on mobile. */
-@media(max-width:700px){.perks{display:none}}
+@media(max-width:700px), (max-width:950px) and (hover:none) and (pointer:coarse){#main .perks{display:none!important}}
 
