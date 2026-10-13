@@ -103,7 +103,7 @@ export function Navigation() {
                     } else close();
                   }}
                 >
-                  <Icon name={m.icon} className="mega-icon" />
+                  <img src={m.image} alt="" width={34} height={36} />
                   <span>{m.name}</span>
                   <Icon name="chevron" />
                 </Link>

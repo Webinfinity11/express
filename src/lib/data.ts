@@ -408,6 +408,48 @@ export const PRODUCTS: Product[] = [
     "featured": false,
     "isNew": true,
     "keywords": "vacuum cleaner пылесос მტვერსასრუტი"
+  },
+  {
+    "id": "dehydrator",
+    "slug": "franko-food-dehydrator",
+    "sku": "EM-KT-010",
+    "name": "Franko ჩირის აპარატი",
+    "label": "ჩირის აპარატი",
+    "category": "kitchen",
+    "brand": "Franko",
+    "price": 179,
+    "oldPrice": 229,
+    "image": "/images/dehydrator.webp",
+    "gallery": [
+      "/images/dehydrator.webp",
+      "/images/dehydrator-scene.webp"
+    ],
+    "scene": "/images/dehydrator-scene.webp",
+    "color": "შავი / გამჭვირვალე",
+    "tone": "#2b2b2b",
+    "subtitle": "ჯანსაღი ჩირი. სახლის პირობებში.",
+    "desc": "მოამზადეთ ხილისა და ბოსტნეულის ჩირი სახლში, დანამატების გარეშე. მრავალსართულიანი გამჭვირვალე თაროები და რეგულირებადი ტემპერატურა ერთდროულად რამდენიმე პროდუქტის გაშრობის საშუალებას იძლევა.",
+    "specs": [
+      [
+        "ტიპი",
+        "ჩირის აპარატი"
+      ],
+      [
+        "თაროები",
+        "მრავალსართულიანი"
+      ],
+      [
+        "ტემპერატურა",
+        "რეგულირებადი"
+      ],
+      [
+        "ფერი",
+        "შავი / გამჭვირვალე"
+      ]
+    ],
+    "featured": true,
+    "isNew": true,
+    "keywords": "dehydrator dried fruit сушилка для фруктов ჩირი ხილის საშრობი"
   }
 ];
 
