@@ -72,7 +72,7 @@ dialog{color:var(--ink);border:0;padding:0;background:white;box-shadow:0 25px 85
   .perks{grid-template-columns:1fr}
 }
 @media(max-width:700px){
-  .hx{height:auto;min-height:540px;border-radius:10px;margin-top:12px}
+  .hx{height:auto;min-height:440px;border-radius:10px;margin-top:12px}
   .hx-media{width:100%}
   .hx-shade{background:linear-gradient(90deg,#151311f0 0%,#151311b3 55%,#15131140 100%),linear-gradient(0deg,#0f0e0df5 0%,#0f0e0d00 40%)}
   .hx-content{justify-content:flex-start;padding:30px 20px 0}
