@@ -1,7 +1,7 @@
 "use client";
 
 import { useOptimistic, useTransition } from "react";
-import { setProductFlag, setPromoActive } from "@/lib/actions/admin";
+import { setCategoryFlag, setPagePublished, setProductFlag, setPromoActive } from "@/lib/actions/admin";
 
 function Switch({ value, onToggle }: { value: boolean; onToggle: (next: boolean) => Promise<unknown> }) {
   const [optimistic, setOptimistic] = useOptimistic(value);
@@ -30,4 +30,12 @@ export function FlagToggle({ id, flag, value }: { id: number; flag: "published" 
 
 export function PromoToggle({ id, value }: { id: number; value: boolean }) {
   return <Switch value={value} onToggle={(v) => setPromoActive(id, v)} />;
+}
+
+export function CategoryFlagToggle({ id, flag, value }: { id: number; flag: "showOnHome" | "showInMenu"; value: boolean }) {
+  return <Switch value={value} onToggle={(v) => setCategoryFlag(id, flag, v)} />;
+}
+
+export function PageToggle({ id, value }: { id: number; value: boolean }) {
+  return <Switch value={value} onToggle={(v) => setPagePublished(id, v)} />;
 }

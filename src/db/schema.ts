@@ -26,6 +26,8 @@ export const categories = pgTable(
     parentId: integer("parent_id"),
     image: text("image"),
     showOnHome: boolean("show_on_home").notNull().default(false),
+    // ჰედერის „კატეგორიების“ მენიუში ჩანს
+    showInMenu: boolean("show_in_menu").notNull().default(true),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [index("categories_parent_idx").on(t.parentId)],
@@ -138,6 +140,24 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** ადმინიდან შექმნილი გვერდები: /{slug}. body — აბზაცები ცარიელი ხაზით, „## “ სათაური, „- “ სია. */
+export const pages = pgTable("pages", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  eyebrow: text("eyebrow").notNull().default(""),
+  subtitle: text("subtitle").notNull().default(""),
+  image: text("image"),
+  body: text("body").notNull().default(""),
+  buttonText: text("button_text").notNull().default(""),
+  buttonHref: text("button_href").notNull().default(""),
+  metaDescription: text("meta_description").notNull().default(""),
+  published: boolean("published").notNull().default(true),
+  createdAt: created(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type PageRow = typeof pages.$inferSelect;
 export type CategoryRow = typeof categories.$inferSelect;
 export type ProductRow = typeof products.$inferSelect;
 export type VariantRow = typeof productVariants.$inferSelect;

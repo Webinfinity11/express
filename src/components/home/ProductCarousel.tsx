@@ -6,9 +6,10 @@ import { ProductCard } from "@/components/ProductCard";
 import type { Product } from "@/lib/data";
 import { Icon } from "../Icon";
 
-type Props = { id: string; title: string; href: string; products: Product[] };
+// kind: მობილურზე რამდენი ბარათი ჩანს (popular — 6, sale — 4)
+type Props = { id: string; kind?: "popular" | "sale"; title: string; href: string; products: Product[] };
 
-export function ProductCarousel({ id, title, href, products }: Props) {
+export function ProductCarousel({ id, kind = "popular", title, href, products }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ start: true, end: false });
 
@@ -34,7 +35,7 @@ export function ProductCarousel({ id, title, href, products }: Props) {
   };
 
   return (
-    <section className={`products-section carousel-section carousel-${id}`} aria-labelledby={`${id}-title`}>
+    <section className={`products-section carousel-section carousel-${kind}`} aria-labelledby={`${id}-title`}>
       <div className="section-heading">
         <h2 id={`${id}-title`}>{title}</h2>
         <div className="carousel-head-actions">

@@ -20,6 +20,7 @@ export function CategoryForm({ category, all, defaultParent }: { category: Categ
   const [parentId, setParentId] = useState<number | null>(category?.parentId ?? defaultParent);
   const [image, setImage] = useState(category?.image ?? "");
   const [showOnHome, setShowOnHome] = useState(category?.showOnHome ?? false);
+  const [showInMenu, setShowInMenu] = useState(category?.showInMenu ?? true);
   const [sortOrder, setSortOrder] = useState(String(category?.sortOrder ?? 0));
 
   // კატეგორია საკუთარ თავში ან ქვეკატეგორიაში ვერ გადავა
@@ -45,7 +46,7 @@ export function CategoryForm({ category, all, defaultParent }: { category: Categ
   const save = () =>
     start(async () => {
       setMessage(null);
-      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, sortOrder });
+      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, showInMenu, sortOrder });
       if (!res.ok) return setMessage({ ok: false, text: res.error });
       setMessage({ ok: true, text: "შენახულია ✓" });
       if (!category) router.replace(`/admin/categories/${res.id}`);
@@ -114,6 +115,10 @@ export function CategoryForm({ category, all, defaultParent }: { category: Categ
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={showOnHome} onChange={(e) => setShowOnHome(e.target.checked)} className="h-4 w-4 accent-[#ff5a00]" />
             მთავარ გვერდზე და მაღაზიის ზოლში
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={showInMenu} onChange={(e) => setShowInMenu(e.target.checked)} className="h-4 w-4 accent-[#ff5a00]" />
+            ჰედერის „კატეგორიების“ მენიუში
           </label>
           {category && (
             <>

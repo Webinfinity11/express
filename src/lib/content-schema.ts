@@ -81,8 +81,16 @@ export const contentDefaults = {
       { title: "ხარისხის გარანტია", text: "ოფიციალური გარანტია ყველა ტექნიკაზე" },
       { title: "იყიდე ახლა — გადაიხადე ნაწილ-ნაწილ", text: "განვადება პარტნიორ ბანკებთან" },
     ],
-    popularTitle: "პოპულარული პროდუქტები",
-    saleTitle: "ფასდაკლებული პროდუქცია",
+    // source: featured | sale | new | all; category — კატეგორიის slug (ცარიელი = ყველა)
+    productBlocks: [
+      { title: "პოპულარული პროდუქტები", source: "featured", category: "", limit: "12" },
+      { title: "ფასდაკლებული პროდუქცია", source: "sale", category: "", limit: "12" },
+    ],
+    showCategories: true,
+    showPerks: true,
+    showPromos: true,
+    showBrands: true,
+    showNewsletter: true,
     promos: [
       {
         image: "/images/promo-kitchen.webp",
@@ -165,9 +173,9 @@ export type ContentKey = keyof Content;
 
 // ───────── ადმინის რედაქტორის ველები ─────────
 
-export type Sub = { name: string; label: string; long?: boolean; image?: boolean };
+export type Sub = { name: string; label: string; long?: boolean; image?: boolean; options?: "categories" | { value: string; label: string }[] };
 export type FieldSpec =
-  | { name: string; label: string; type: "text" | "textarea" | "number" | "image"; hint?: string }
+  | { name: string; label: string; type: "text" | "textarea" | "number" | "image" | "toggle"; hint?: string }
   | { name: string; label: string; type: "list"; hint?: string; long?: boolean }
   | { name: string; label: string; type: "objects"; hint?: string; fields: Sub[]; fixed?: boolean };
 
@@ -200,7 +208,7 @@ export const contentSections: { key: ContentKey; title: string; description: str
   {
     key: "header",
     title: "ჰედერი",
-    description: "ძიების ველი და ნავიგაციის ბმულები (კატეგორიების მენიუ კატეგორიებიდან ივსება).",
+    description: "ძიების ველი და ნავიგაციის ბმულები. „კატეგორიების“ მენიუში რა გამოჩნდეს — კატეგორიებში „მენიუში“ გადამრთველით.",
     fields: [
       { name: "searchPlaceholder", label: "ძიების ველის ტექსტი", type: "text" },
       { name: "navLinks", label: "ნავიგაციის ბმულები", type: "objects", fields: link },
@@ -218,7 +226,7 @@ export const contentSections: { key: ContentKey; title: string; description: str
   {
     key: "home",
     title: "მთავარი გვერდი",
-    description: "ბანერები (სლაიდერი), უპირატესობები, სარეკლამო ბლოკები და სათაურები.",
+    description: "ბანერები (სლაიდერი), პროდუქციის ბლოკები, სარეკლამო ბლოკები და სექციების ჩართვა/გამორთვა.",
     fields: [
       { name: "heroEyebrow", label: "ბანერი: ზედა წარწერა", type: "text" },
       { name: "heroButton", label: "ბანერი: ღილაკის ტექსტი", type: "text" },
@@ -238,8 +246,32 @@ export const contentSections: { key: ContentKey; title: string; description: str
       },
       { name: "heroBenefits", label: "ბანერის ქვედა უპირატესობები (3)", type: "objects", fixed: true, fields: titleText },
       { name: "perks", label: "უპირატესობების ბარათები (3)", type: "objects", fixed: true, fields: titleText },
-      { name: "popularTitle", label: "„პოპულარული“ ბლოკის სათაური", type: "text" },
-      { name: "saleTitle", label: "„ფასდაკლებული“ ბლოკის სათაური", type: "text" },
+      {
+        name: "productBlocks",
+        label: "პროდუქციის ბლოკები (კარუსელები)",
+        type: "objects",
+        hint: "რომელი პროდუქცია გამოჩნდეს მთავარზე: აირჩიეთ ტიპი და კატეგორია. „პოპულარული“ = პროდუქტში ⭐ მონიშნული (თუ არცერთია — ყველა).",
+        fields: [
+          { name: "title", label: "სათაური" },
+          {
+            name: "source",
+            label: "რა პროდუქცია",
+            options: [
+              { value: "featured", label: "პოპულარული (⭐)" },
+              { value: "sale", label: "ფასდაკლებული" },
+              { value: "new", label: "ახალი" },
+              { value: "all", label: "ყველა" },
+            ],
+          },
+          { name: "category", label: "კატეგორია", options: "categories" },
+          { name: "limit", label: "რაოდენობა (მაქს.)" },
+        ],
+      },
+      { name: "showCategories", label: "კატეგორიების ბადე (კატეგორიაში „მთავარზე“ მონიშნულები)", type: "toggle" },
+      { name: "showPerks", label: "უპირატესობების ბარათები", type: "toggle" },
+      { name: "showPromos", label: "სარეკლამო ბანერები", type: "toggle" },
+      { name: "showBrands", label: "ბრენდების ზოლი", type: "toggle" },
+      { name: "showNewsletter", label: "სიახლეების გამოწერა", type: "toggle" },
       {
         name: "promos",
         label: "სარეკლამო ბანერები (2)",

@@ -2,15 +2,24 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import type { FieldSpec } from "@/lib/content-schema";
+import type { FieldSpec, Sub } from "@/lib/content-schema";
+import type { LinkOption } from "@/lib/site-links";
 import { resetContent, saveContent } from "@/lib/actions/admin";
 import { Button, Card, Field, inputCls } from "./ui";
 import { SingleImage } from "./ImageUploader";
+import { LinkField } from "./LinkField";
 
 type Value = Record<string, unknown>;
 type Row = Record<string, string>;
+type Choices = { links: LinkOption[]; categories: { value: string; label: string }[] };
 
-export function ContentForm({ sectionKey, fields, initial }: { sectionKey: string; fields: FieldSpec[]; initial: Value }) {
+export function ContentForm({
+  sectionKey,
+  fields,
+  initial,
+  links,
+  categories,
+}: { sectionKey: string; fields: FieldSpec[]; initial: Value } & Choices) {
   const router = useRouter();
   const [value, setValue] = useState<Value>(initial);
   const [pending, start] = useTransition();
@@ -46,7 +55,7 @@ export function ContentForm({ sectionKey, fields, initial }: { sectionKey: strin
       <Card>
         <div className="grid gap-5">
           {fields.map((f) => (
-            <FieldEditor key={f.name} spec={f} value={value[f.name]} onChange={(v) => set(f.name, v)} />
+            <FieldEditor key={f.name} spec={f} value={value[f.name]} onChange={(v) => set(f.name, v)} choices={{ links, categories }} />
           ))}
         </div>
       </Card>
@@ -65,7 +74,14 @@ export function ContentForm({ sectionKey, fields, initial }: { sectionKey: strin
   );
 }
 
-function FieldEditor({ spec, value, onChange }: { spec: FieldSpec; value: unknown; onChange: (v: unknown) => void }) {
+function FieldEditor({ spec, value, onChange, choices }: { spec: FieldSpec; value: unknown; onChange: (v: unknown) => void; choices: Choices }) {
+  if (spec.type === "toggle")
+    return (
+      <label className="flex items-center gap-3 rounded-lg border border-slate-200 px-3 py-2.5">
+        <input type="checkbox" checked={value === true} onChange={(e) => onChange(e.target.checked)} className="h-5 w-5 accent-[#ff5a00]" />
+        <span className="font-semibold text-sm">{spec.label}</span>
+      </label>
+    );
   if (spec.type === "text")
     return (
       <Field label={spec.label} hint={spec.hint}>
@@ -116,6 +132,58 @@ function FieldEditor({ spec, value, onChange }: { spec: FieldSpec; value: unknow
   if (spec.type !== "objects") return null;
   const rows = (Array.isArray(value) ? value : []) as Row[];
   const update = (i: number, k: string, v: string) => onChange(rows.map((r, j) => (j === i ? { ...r, [k]: v } : r)));
+  const sub = (f: Sub, i: number) => {
+    const label = <span className="block text-xs font-semibold text-slate-500 mb-1">{f.label}</span>;
+    const v = rows[i][f.name] ?? "";
+    if (f.image)
+      return (
+        <div key={f.name} className="sm:col-span-2">
+          {label}
+          <SingleImage value={v} onChange={(url) => update(i, f.name, url)} />
+        </div>
+      );
+    if (f.options) {
+      const opts = f.options === "categories" ? [{ value: "", label: "ყველა კატეგორია" }, ...choices.categories] : f.options;
+      return (
+        <label key={f.name} className="block">
+          {label}
+          <select value={v} onChange={(e) => update(i, f.name, e.target.value)} className={inputCls}>
+            {opts.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      );
+    }
+    if (f.name === "href")
+      return (
+        <div key={f.name}>
+          {label}
+          <LinkField
+            value={v}
+            options={choices.links}
+            onChange={(href) => update(i, "href", href)}
+            // ტექსტის ველი ცარიელია → არჩეული გვერდის სახელი
+            onPick={(href, l) => onChange(rows.map((r, j) => (j === i ? { ...r, href, ...("label" in r && !r.label ? { label: l } : {}) } : r)))}
+          />
+        </div>
+      );
+    if (f.long)
+      return (
+        <label key={f.name} className="block sm:col-span-2">
+          {label}
+          <textarea value={v} rows={3} onChange={(e) => update(i, f.name, e.target.value)} className={inputCls} />
+        </label>
+      );
+    return (
+      <label key={f.name} className="block">
+        {label}
+        <input value={v} onChange={(e) => update(i, f.name, e.target.value)} className={inputCls} />
+      </label>
+    );
+  };
   return (
     <Repeater
       label={spec.label}
@@ -127,18 +195,7 @@ function FieldEditor({ spec, value, onChange }: { spec: FieldSpec; value: unknow
       onMove={(i, d) => onChange(move(rows, i, d))}
       render={(i) => (
         <div className={`grid gap-2 ${spec.fields.some((f) => f.long) ? "" : "sm:grid-cols-2"}`}>
-          {spec.fields.map((f) =>
-            f.image ? (
-              <div key={f.name} className="sm:col-span-2">
-                <span className="block text-xs font-semibold text-slate-500 mb-1">{f.label}</span>
-                <SingleImage value={rows[i][f.name]} onChange={(url) => update(i, f.name, url)} />
-              </div>
-            ) : f.long ? (
-              <label key={f.name} className="block sm:col-span-2"><span className="block text-xs font-semibold text-slate-500 mb-1">{f.label}</span><textarea value={rows[i][f.name] ?? ""} rows={3} onChange={(e) => update(i, f.name, e.target.value)} className={inputCls} /></label>
-            ) : (
-              <label key={f.name} className="block"><span className="block text-xs font-semibold text-slate-500 mb-1">{f.label}</span><input value={rows[i][f.name] ?? ""} onChange={(e) => update(i, f.name, e.target.value)} className={inputCls} /></label>
-            ),
-          )}
+          {spec.fields.map((f) => sub(f, i))}
         </div>
       )}
     />

@@ -37,7 +37,7 @@ export type Product = {
   variants: Variant[];
 };
 
-export type Category = { id: string; name: string; image: string; parent: string | null; showOnHome: boolean };
+export type Category = { id: string; name: string; image: string; parent: string | null; showOnHome: boolean; showInMenu: boolean };
 export type Brand = { name: string; logo: string | null };
 export type Catalog = { products: Product[]; categories: Category[]; brands: Brand[] };
 
@@ -132,16 +132,21 @@ export function indexCatalog(c: Catalog) {
     return lineKey(p.id, v.id);
   };
 
-  const menu: MenuSection[] = (children.get("") ?? []).map((s) => ({
+  // ჰედერის მენიუ: მხოლოდ „მენიუში“ მონიშნული კატეგორიები
+  const inMenu = (slug: string) => (children.get(slug) ?? []).filter((x) => x.showInMenu);
+  const menu: MenuSection[] = inMenu("").map((s) => ({
     id: s.id,
     name: s.name,
     image: s.image,
     href: categoryHref(s.id),
-    groups: (children.get(s.id) ?? []).map((g) => ({
-      title: g.name,
-      href: categoryHref(g.id),
-      items: children.get(g.id)?.map((i) => ({ name: i.name, href: categoryHref(i.id) })),
-    })),
+    groups: inMenu(s.id).map((g) => {
+      const items = inMenu(g.id);
+      return {
+        title: g.name,
+        href: categoryHref(g.id),
+        items: items.length ? items.map((i) => ({ name: i.name, href: categoryHref(i.id) })) : undefined,
+      };
+    }),
   }));
 
   return { ...c, byId, bySlug, catBySlug, categoryName, subtree, line, defaultKey, menu };

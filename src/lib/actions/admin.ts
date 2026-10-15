@@ -6,11 +6,12 @@ import { and, eq, ne, sql } from "drizzle-orm";
 import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { brands, categories, db, orders, productVariants, products, promoCodes, settings } from "@/db";
+import { brands, categories, db, orders, pages, productVariants, products, promoCodes, settings } from "@/db";
 import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { sanitizeSection } from "@/lib/content";
 import { contentDefaults, type ContentKey } from "@/lib/content-schema";
+import { RESERVED_SLUGS } from "@/lib/site-links";
 
 export type ActionResult = { ok: true; id?: number } | { ok: false; error: string };
 
@@ -200,6 +201,7 @@ const categorySchema = z.object({
   parentId: z.number().int().nullable(),
   image: z.union([z.literal(""), z.null(), imageUrl]),
   showOnHome: z.boolean(),
+  showInMenu: z.boolean().optional(),
   sortOrder: z.coerce.number().int().min(-1000).max(1000),
 });
 export type CategoryInput = z.input<typeof categorySchema>;
@@ -223,6 +225,7 @@ export async function saveCategory(id: number | null, input: CategoryInput): Pro
     parentId: d.parentId,
     image: d.image || null,
     showOnHome: d.showOnHome,
+    ...(d.showInMenu !== undefined && { showInMenu: d.showInMenu }),
     sortOrder: d.sortOrder,
   };
   let categoryId = id;
@@ -230,6 +233,14 @@ export async function saveCategory(id: number | null, input: CategoryInput): Pro
   else [{ id: categoryId }] = await db.insert(categories).values(values).returning({ id: categories.id });
   updateTag("catalog");
   return { ok: true, id: categoryId! };
+}
+
+export async function setCategoryFlag(id: number, flag: "showOnHome" | "showInMenu", value: boolean): Promise<ActionResult> {
+  await requireAdmin();
+  if (flag !== "showOnHome" && flag !== "showInMenu") return fail("უცნობი ველი");
+  await db.update(categories).set({ [flag]: value }).where(eq(categories.id, id));
+  updateTag("catalog");
+  return { ok: true };
 }
 
 export async function deleteCategory(id: number): Promise<ActionResult> {
@@ -374,5 +385,58 @@ export async function resetContent(key: string): Promise<ActionResult> {
   if (!(key in contentDefaults)) return fail("უცნობი სექცია");
   await db.delete(settings).where(eq(settings.key, key));
   updateTag("content");
+  return { ok: true };
+}
+
+// ───────── გვერდები ─────────
+
+const pageSchema = z.object({
+  title: z.string().trim().min(2, "მიუთითეთ სათაური").max(160),
+  slug: z.string().trim().max(100).optional(),
+  eyebrow: z.string().trim().max(120),
+  subtitle: z.string().trim().max(400),
+  image: z.union([z.literal(""), z.null(), imageUrl]),
+  body: z.string().max(50_000),
+  buttonText: z.string().trim().max(80),
+  buttonHref: z.union([z.literal(""), z.string().trim().regex(/^(\/(?!\/)|https?:\/\/|tel:|mailto:|#)/i, "ღილაკის ბმული არასწორია")]),
+  metaDescription: z.string().trim().max(300),
+  published: z.boolean(),
+});
+export type PageInput = z.input<typeof pageSchema>;
+
+export async function savePage(id: number | null, input: PageInput): Promise<ActionResult> {
+  await requireAdmin();
+  const parsed = pageSchema.safeParse(input);
+  if (!parsed.success) return fail(parsed.error.issues[0].message);
+  const d = parsed.data;
+  let slug = slugify(d.slug || d.title) || "page";
+  if (RESERVED_SLUGS.includes(slug)) slug += "-page";
+  for (let n = 2; ; n++) {
+    const [hit] = await db
+      .select({ id: pages.id })
+      .from(pages)
+      .where(id ? and(eq(pages.slug, slug), ne(pages.id, id)) : eq(pages.slug, slug));
+    if (!hit) break;
+    slug = `${slug.replace(/-\d+$/, "")}-${n}`;
+  }
+  const values = { ...d, slug, image: d.image || null, updatedAt: new Date() };
+  let pageId = id;
+  if (id) await db.update(pages).set(values).where(eq(pages.id, id));
+  else [{ id: pageId }] = await db.insert(pages).values(values).returning({ id: pages.id });
+  updateTag("pages");
+  return { ok: true, id: pageId! };
+}
+
+export async function deletePage(id: number): Promise<ActionResult> {
+  await requireAdmin();
+  await db.delete(pages).where(eq(pages.id, id));
+  updateTag("pages");
+  return { ok: true };
+}
+
+export async function setPagePublished(id: number, published: boolean): Promise<ActionResult> {
+  await requireAdmin();
+  await db.update(pages).set({ published, updatedAt: new Date() }).where(eq(pages.id, id));
+  updateTag("pages");
   return { ok: true };
 }

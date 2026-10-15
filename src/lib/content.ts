@@ -37,7 +37,9 @@ export function sanitizeSection(key: ContentKey, input: unknown): Record<string,
 
   for (const [name, def] of Object.entries(shape)) {
     const v = src[name];
-    if (typeof def === "number") {
+    if (typeof def === "boolean") {
+      out[name] = typeof v === "boolean" ? v : def;
+    } else if (typeof def === "number") {
       const n = Number(v);
       out[name] = Number.isFinite(n) ? n : def;
     } else if (typeof def === "string") {

@@ -1,4 +1,5 @@
 import { preload } from "react-dom";
+import { AdminEdit } from "@/components/AdminEdit";
 import { CartDrawer } from "@/components/CartDrawer";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -29,6 +30,7 @@ export default async function StoreLayout({ children }: { children: React.ReactN
         <CartDrawer />
         <ModalHost />
         <Toast />
+        <AdminEdit />
       </StoreProvider>
     </CatalogProvider>
   );

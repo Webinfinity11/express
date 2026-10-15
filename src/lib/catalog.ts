@@ -72,6 +72,7 @@ export async function getCatalog(): Promise<Catalog> {
       image: c.image || PLACEHOLDER_IMAGE,
       parent: c.parentId ? (slugOf.get(c.parentId) ?? null) : null,
       showOnHome: c.showOnHome,
+      showInMenu: c.showInMenu,
     })),
     brands: brandRows.filter((b) => b.showInStrip).map((b) => ({ name: b.name, logo: b.logo })),
   };

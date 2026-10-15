@@ -11,12 +11,13 @@ const links = [
   ["/admin/categories", "კატეგორიები"],
   ["/admin/brands", "ბრენდები"],
   ["/admin/promos", "პრომოკოდები"],
-  ["/admin/content", "საიტის ტექსტები"],
+  ["/admin/pages", "გვერდები და მენიუ"],
 ] as const;
 
 export function AdminNav({ newOrders = 0 }: { newOrders?: number }) {
   const path = usePathname();
-  const active = (href: string) => (href === "/admin" ? path === href : path.startsWith(href));
+  const active = (href: string) =>
+    href === "/admin" ? path === href : path.startsWith(href) || (href === "/admin/pages" && path.startsWith("/admin/content"));
   return (
     <aside className="md:w-60 md:min-h-screen bg-white border-b md:border-b-0 md:border-r border-slate-200 md:sticky md:top-0 md:h-screen flex md:flex-col">
       <Link href="/admin" className="hidden md:block p-4 border-b border-slate-100">
