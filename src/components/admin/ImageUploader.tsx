@@ -3,6 +3,31 @@
 import { useRef, useState } from "react";
 import { uploadImage } from "@/lib/actions/admin";
 
+const MAX_SIDE = 2000;
+
+/** ტელეფონის ფოტოები (HEIC, 5–15MB) ბრაუზერშივე მცირდება JPEG-მდე, რომ server action-ის ლიმიტში მოთავსდეს. */
+async function shrink(file: File): Promise<File> {
+  if (file.type === "image/svg+xml" || file.type === "image/gif") return file;
+  if (file.size < 900 * 1024 && ["image/jpeg", "image/png", "image/webp"].includes(file.type)) return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.85));
+    if (!blob) return file;
+    return new File([blob], file.name.replace(/\.[^.]*$/, "") + ".jpg", { type: "image/jpeg" });
+  } catch {
+    return file;
+  }
+}
+
 /** სურათები იტვირთება Blob-ში მაშინვე; მშობელი ინახავს მხოლოდ URL-ებს. პირველი = მთავარი. */
 export function ImageUploader({ value, onChange, max = 12 }: { value: string[]; onChange: (urls: string[]) => void; max?: number }) {
   const input = useRef<HTMLInputElement>(null);
@@ -16,11 +41,15 @@ export function ImageUploader({ value, onChange, max = 12 }: { value: string[]; 
     setBusy(list.length);
     const urls: string[] = [];
     for (const file of list) {
-      const form = new FormData();
-      form.set("file", file);
-      const res = await uploadImage(form);
-      if (res.ok) urls.push(res.url);
-      else setError(res.error);
+      try {
+        const form = new FormData();
+        form.set("file", await shrink(file));
+        const res = await uploadImage(form);
+        if (res.ok) urls.push(res.url);
+        else setError(res.error);
+      } catch {
+        setError("ატვირთვა ვერ მოხერხდა, სცადეთ ხელახლა");
+      }
       setBusy((n) => n - 1);
     }
     onChange(max === 1 ? urls.slice(-1) : [...value, ...urls].slice(0, max));
@@ -74,7 +103,7 @@ export function ImageUploader({ value, onChange, max = 12 }: { value: string[]; 
           </button>
         )}
       </div>
-      <input ref={input} type="file" accept="image/*" multiple={max > 1} hidden onChange={(e) => upload(e.target.files)} />
+      <input ref={input} type="file" accept="image/*,.heic,.heif" multiple={max > 1} hidden onChange={(e) => upload(e.target.files)} />
       {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
     </div>
   );
