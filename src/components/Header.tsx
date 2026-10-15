@@ -45,10 +45,6 @@ export function Header() {
           </button>
         </form>
         <div className="header-actions">
-          <button className="header-action profile-action" onClick={() => openModal("info:account")}>
-            <Icon name="user" />
-            <span>შესვლა</span>
-          </button>
           <button
             className="header-action"
             aria-label={`ფავორიტები: ${favorites.length} პროდუქტი`}
