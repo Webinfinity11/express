@@ -29,3 +29,6 @@ export default async function EditCategory({ params, searchParams }: PageProps<"
     </>
   );
 }
+
+// ადმინი ყოველ ჯერზე შესვლას ამოწმებს — მყისიერი ნავიგაციის შემოწმება არ სჭირდება
+export const instant = false;

@@ -43,3 +43,6 @@ export default async function EditProduct({ params }: PageProps<"/admin/products
     </>
   );
 }
+
+// ადმინი ყოველ ჯერზე შესვლას ამოწმებს — მყისიერი ნავიგაციის შემოწმება არ სჭირდება
+export const instant = false;

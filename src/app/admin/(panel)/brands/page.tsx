@@ -39,3 +39,6 @@ export default async function BrandsAdmin() {
     </>
   );
 }
+
+// ადმინი ყოველ ჯერზე შესვლას ამოწმებს — მყისიერი ნავიგაციის შემოწმება არ სჭირდება
+export const instant = false;

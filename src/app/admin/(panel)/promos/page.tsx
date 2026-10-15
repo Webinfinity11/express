@@ -73,3 +73,6 @@ export default async function PromosAdmin() {
     </>
   );
 }
+
+// ადმინი ყოველ ჯერზე შესვლას ამოწმებს — მყისიერი ნავიგაციის შემოწმება არ სჭირდება
+export const instant = false;

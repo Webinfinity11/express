@@ -75,3 +75,6 @@ export default async function CategoriesAdmin() {
     </>
   );
 }
+
+// ადმინი ყოველ ჯერზე შესვლას ამოწმებს — მყისიერი ნავიგაციის შემოწმება არ სჭირდება
+export const instant = false;

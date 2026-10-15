@@ -24,3 +24,6 @@ export default async function EditPromo({ params }: PageProps<"/admin/promos/[id
     </>
   );
 }
+
+// ადმინი ყოველ ჯერზე შესვლას ამოწმებს — მყისიერი ნავიგაციის შემოწმება არ სჭირდება
+export const instant = false;

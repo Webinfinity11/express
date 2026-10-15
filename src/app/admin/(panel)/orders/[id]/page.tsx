@@ -89,3 +89,6 @@ export default async function OrderDetail({ params }: PageProps<"/admin/orders/[
     </>
   );
 }
+
+// ადმინი ყოველ ჯერზე შესვლას ამოწმებს — მყისიერი ნავიგაციის შემოწმება არ სჭირდება
+export const instant = false;
