@@ -34,7 +34,7 @@ export function ProductCarousel({ id, title, href, products }: Props) {
   };
 
   return (
-    <section className="products-section carousel-section" aria-labelledby={`${id}-title`}>
+    <section className={`products-section carousel-section carousel-${id}`} aria-labelledby={`${id}-title`}>
       <div className="section-heading">
         <h2 id={`${id}-title`}>{title}</h2>
         <div className="carousel-head-actions">
@@ -56,6 +56,10 @@ export function ProductCarousel({ id, title, href, products }: Props) {
           <ProductCard key={p.id} p={p} />
         ))}
       </div>
+      {/* მობილურზე ბადის ქვეშ */}
+      <Link className="button secondary carousel-more" href={href}>
+        ყველას ნახვა <Icon name="arrow" />
+      </Link>
     </section>
   );
 }

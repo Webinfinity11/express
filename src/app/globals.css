@@ -296,3 +296,186 @@ a.contact-card:hover{border-color:#ffc9a6;box-shadow:0 8px 24px #15151508}
 /* Hide service cards, hero benefits and the kitchen banner on mobile. */
 @media(max-width:700px), (max-width:950px) and (hover:none) and (pointer:coarse){#main .perks,#main .hx-benefits,#main .promo-kitchen{display:none!important}}
 
+
+/* Mobile hero: no benefits row, smaller copy */
+@media(max-width:700px){
+  .hx{min-height:400px}
+  .hx-benefits{display:none}
+  .hx-content{justify-content:center;padding:26px 20px 28px}
+  .hx-eyebrow{font-size:11px;letter-spacing:1.5px;margin-bottom:10px}
+  .hx h1{font-size:26px;line-height:1.18;margin-bottom:12px}
+  .hx p{font-size:13px;line-height:1.55;max-width:230px;margin-bottom:18px}
+  .hx-cta{min-height:42px;padding:9px 16px;font-size:13px}
+  .hx-dots{margin-top:18px}
+}
+
+/* Mobile burger menu */
+.nav-burger,.mobile-nav{display:none}
+@media(max-width:700px){
+  .nav-inner{padding-right:16px}
+  .nav-links{display:none}
+  .nav-burger{display:flex;align-items:center;gap:8px;margin-left:auto;height:38px;padding:0 14px;border:1px solid #ff5a0059;border-radius:7px;background:#fff;font-size:14px}
+  .nav-burger .icon{width:20px;height:20px;color:var(--orange)}
+  .mobile-nav:not([hidden]){display:flex;flex-direction:column;position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:30;padding:4px 16px 12px;background:#fff;border-bottom:2px solid #ff5a0059;box-shadow:0 14px 30px #00000022}
+  .mobile-nav a{display:flex;align-items:center;gap:8px;padding:13px 2px;font-size:15px;border-bottom:1px solid var(--line)}
+  .mobile-nav a>.icon{width:15px;height:15px;margin-left:auto;color:#b5aca3}
+  .mobile-nav a[aria-current=page]{color:var(--orange)}
+  .mobile-nav .mobile-nav-phone{border-bottom:0;color:var(--orange)}
+  .mobile-nav .mobile-nav-phone .icon{width:18px;height:18px;margin-left:0;color:var(--orange)}
+}
+
+/* BPG Nino Mtavruli — სათაურები, ჰერო, კატეგორიები, მენიუს ჯგუფები; FiraGO რჩება ჩვეულებრივ ტექსტზე */
+@font-face{font-family:"BPG Nino Mtavruli";src:url("/fonts/bpg-nino-mtavruli.otf") format("opentype");font-weight:100 900;font-style:normal;font-display:swap}
+:root{--font-title:"BPG Nino Mtavruli","FiraGO","Segoe UI",sans-serif}
+h1,h2,h3,.hx-eyebrow,.category-card span{font-family:var(--font-title)}
+/* FiraGO-ს !important წესს რომ არ დაეფაროს */
+body h1,body h2,body h3,body .hx-eyebrow,body .category-card span{font-family:var(--font-title)!important}
+/* პროდუქტის სახელები და პატარა ბარათების სათაურები — FiraGO */
+body .product-title,body .item-name,body .cart-item-title,body .checkout-item-name,body .order-item-name,body .item-card h3,body .product-card h3,body .cart-item h3{font-family:var(--font)!important}
+
+/* ===== Mobile header — compact: logo + icons, search, slim nav bar ===== */
+@media(max-width:700px){
+  .header-main{min-height:0;grid-template-columns:1fr auto;align-items:center;gap:12px 10px;padding:12px 0 14px}
+  .brand{width:118px}.brand img{height:49px}
+  .header-actions{gap:8px}
+  .header-action{width:42px;height:42px;min-width:0;padding:0;border-radius:50%;background:#ffffff12;color:#fff}
+  .header-action>span:not(.icon-wrap){display:none}
+  .header-action .icon,.icon-wrap>.icon{width:22px;height:22px}
+  .count{right:-9px;top:-8px;min-width:17px;height:17px;font-size:11px}
+  .search{height:44px;border:0;border-radius:10px}
+  .search input{padding-inline:15px;font-size:15px}
+  .search button{width:44px;margin:4px;border-radius:7px}
+  .navigation{background:#fff;border-top:0;border-bottom:1px solid var(--line);box-shadow:0 4px 14px #0000000a}
+  .nav-inner{height:56px;gap:8px;padding:0 16px;width:100%}
+  .catalog-toggle{flex:1;height:40px;justify-content:center;gap:9px;padding:0 14px;border-radius:9px;font-size:14px}
+  .catalog-toggle .icon{width:19px;height:19px}
+  .nav-contact{display:flex;align-items:center;justify-content:center;width:40px;height:40px;margin:0;padding:0;border-radius:9px;border:1px solid var(--line);color:var(--orange);flex-shrink:0}
+  .nav-contact span{display:none}
+  .nav-contact .icon{width:19px;height:19px}
+  .nav-burger{margin:0;width:40px;height:40px;padding:0;justify-content:center;border:1px solid var(--line);border-radius:9px;flex-shrink:0}
+  .nav-burger span{display:none}
+  .mobile-nav:not([hidden]){top:100%;padding:6px 16px 10px;border-bottom:0;border-radius:0 0 12px 12px}
+}
+
+/* ===== Mobile banner — photo on top, copy below, one slide at a time ===== */
+@media(max-width:700px){
+  .hx{min-height:0;height:auto;margin-top:14px;border-radius:14px;background:#151311}
+  .hx-media{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:16/11;z-index:0}
+  .hx-shade{inset:auto 0 auto 0;top:0;aspect-ratio:16/11;height:auto;z-index:1;background:linear-gradient(0deg,#151311 0%,#15131100 38%)}
+  .hx-content{position:relative;z-index:2;max-width:none;justify-content:flex-start;margin-top:-34px;padding:0 20px 22px}
+  .hx-eyebrow{font-size:11px;letter-spacing:1.5px;margin-bottom:8px}
+  .hx h1{font-size:25px;line-height:1.25;margin-bottom:10px}
+  .hx p{font-size:14px;line-height:1.55;max-width:none;margin-bottom:18px;color:#d9d5cf}
+  .hx-cta{min-height:44px;padding:10px 18px;font-size:14px}
+  .hx-dots{position:absolute;right:20px;bottom:36px;margin:0}
+}
+body h1 *,body h2 *,body h3 *{font-family:var(--font-title)!important}
+@media(max-width:700px){
+  .hx-media,.hx-shade{aspect-ratio:auto;height:min(64vw,330px);overflow:hidden}
+  .hx-shade{background:linear-gradient(0deg,#151311 0%,#151311cc 18%,#15131100 50%)}
+}
+body .item-card h3 *,body .product-card h3 *,body .cart-item h3 *{font-family:var(--font)!important}
+
+/* ===== Mobile mega menu — section tabs on top, groups as rows, items as chips ===== */
+@media(max-width:700px){
+  .mega-menu{left:0;right:0;width:100%;max-height:calc(100dvh - 210px);border-radius:0 0 14px 14px;background:#fff}
+  .mega-sections{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:#faf9f7}
+  .mega-section{flex-direction:column;justify-content:flex-start;gap:6px;height:100%;padding:10px 6px 9px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:11.5px;line-height:1.3;text-align:center}
+  .mega-section img{width:32px;height:32px}
+  .mega-section span{flex:0}
+  .mega-section .icon{display:none}
+  .mega-section.active{border-color:var(--orange);background:#fff5ee}
+  .mega-panel{padding:14px 16px 18px}
+  .mega-panel-head{padding-bottom:10px;margin-bottom:4px}
+  .mega-panel-head h3{font-size:16px;line-height:1.35}
+  .mega-panel-head .text-link{flex-shrink:0;font-size:13px}
+  .mega-group{flex-direction:row;flex-wrap:wrap;gap:6px;margin:0;padding:10px 0;border-bottom:1px solid #f1efec}
+  .mega-group:last-child{border-bottom:0}
+  .mega-group-title{width:100%;display:flex;align-items:center;justify-content:space-between;padding:2px 0;font-size:14.5px}
+  .mega-group-title:after{content:"›";color:#b5aca3;font-size:20px;line-height:1}
+  .mega-item{padding:5px 10px;border-radius:7px;background:#f6f5f3;font-size:12.5px}
+}
+
+/* ===== Shop category strip — fixed-width cards, text always fits ===== */
+.shop-cat span{overflow-wrap:anywhere;hyphens:auto}
+@media(max-width:700px){
+  .shop-categories{gap:8px;scrollbar-width:none;margin-inline:-16px;padding:0 16px 4px}
+  .shop-categories::-webkit-scrollbar{display:none}
+  .shop-cat{flex:0 0 96px;min-width:0;padding:10px 6px;gap:6px}
+  .shop-cat img{width:48px;height:52px}
+  .shop-cat span{font-size:12px;line-height:1.3}
+}
+
+/* ===== Mobile home polish ===== */
+@media(max-width:700px){
+  .categories-section{padding-top:14px}
+  .categories-grid{gap:8px}
+  .category-card{min-height:0;padding:10px 4px 10px;gap:6px;border-radius:12px}
+  .category-card img{height:66px;max-width:64px}
+  .category-card span{font-size:11px;line-height:1.3;min-height:29px;max-width:100%;padding:0 2px;letter-spacing:0;overflow-wrap:anywhere}
+  .section-heading{align-items:flex-end;margin-bottom:12px}
+  .section-heading h2{font-size:18px;line-height:1.3;max-width:none;letter-spacing:0}
+  .section-heading .text-link{font-size:12.5px;white-space:nowrap}
+  .carousel-arrows{display:none}
+  .products-section{padding-top:28px}
+  .promo{border-radius:14px}
+  .promo h2{font-size:22px;line-height:1.3}
+}
+@media(max-width:700px){
+  .shop-cat{flex-basis:110px}
+  .shop-cat span{font-size:11.5px;overflow-wrap:normal;hyphens:none}
+  .category-card span{font-size:11.5px}
+}
+
+/* Shop category strip arrows */
+.shop-cats-wrap{position:relative}
+.shop-cats-arrow{position:absolute;top:50%;z-index:2;transform:translateY(-50%);background:#fff;box-shadow:0 4px 14px #15151522}
+.shop-cats-arrow.prev{left:-10px}
+.shop-cats-arrow.next{right:-10px}
+.shop-cats-arrow.prev .icon{transform:rotate(180deg)}
+@media(max-width:700px){.shop-cats-arrow{width:32px;height:32px}.shop-cats-arrow.prev{left:-6px}.shop-cats-arrow.next{right:-6px}}
+
+/* Mobile home: product carousels become 2-column grids (more products visible) */
+.carousel-more{display:none}
+@media(max-width:700px){
+  .carousel-track{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-columns:auto;gap:10px;overflow:visible;scroll-snap-type:none;padding:0;margin:0}
+  .carousel-popular .carousel-track>:nth-child(n+7),.carousel-sale .carousel-track>:nth-child(n+5){display:none}
+  .section-heading .text-link{display:none}
+  .carousel-more{display:flex;justify-content:center;gap:10px;width:100%;min-height:46px;margin-top:14px;font-size:14px;border-radius:10px}
+  .carousel-more .icon{width:18px;height:18px;color:var(--orange)}
+}
+
+/* Brands: always in the "lit" hover state */
+.wordmark{color:var(--ink)}
+@media(max-width:700px){.carousel-section+.promo-grid{margin-top:28px}}
+
+/* Category card titles: FiraGO bold — Nino Mtavruli is too thin at this size */
+body .category-card span{font-family:var(--font)!important;font-weight:700;color:var(--ink)}
+@media(max-width:700px){body .category-card span{font-size:12.5px;line-height:1.3}}
+
+/* Brand logos (real SVGs) */
+.brand-logo{display:flex;align-items:center;flex-shrink:0;height:64px;padding:8px 0;scroll-snap-align:start}
+.brand-logo img{height:34px;width:auto;max-width:150px;object-fit:contain}
+.brand-logo.lg img,.brand-logo.xiaomi img,.brand-logo.delonghi img{height:40px}
+.brand-logo.braun img,.brand-logo.beko img{height:38px}
+@media(max-width:700px){.brand-logo{height:52px}.brand-logo img{height:26px;max-width:120px}.brand-logo.lg img,.brand-logo.xiaomi img,.brand-logo.delonghi img,.brand-logo.braun img,.brand-logo.beko img{height:31px}}
+@media(max-width:700px){body .category-card span{font-size:11.5px;letter-spacing:-.2px;overflow-wrap:normal;padding:0}}
+
+/* Mega menu groups: desktop shows items, "all" link only on mobile */
+.mega-items{display:contents}
+.mega-item-all,.mega-group-chevron{display:none}
+/* Mobile: accordion groups, subcategories as an indented list */
+@media(max-width:700px){
+  .mega-group{display:block;padding:0;border-bottom:1px solid #f1efec}
+  .mega-group-title{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px;padding:12px 2px;font-size:15px}
+  .mega-group-title:after{content:none}
+  .mega-group-chevron{display:block;width:16px;height:16px;color:#b5aca3;transform:rotate(90deg);transition:transform .2s}
+  .mega-group.open>.mega-group-title{color:var(--orange)}
+  .mega-group.open .mega-group-chevron{transform:rotate(-90deg);color:var(--orange)}
+  .mega-items{display:none}
+  .mega-group.open .mega-items{display:flex;flex-direction:column;margin:0 0 12px 4px;padding:2px 0 2px 14px;border-left:2px solid #ffd2b3}
+  .mega-item{display:block;padding:9px 0;background:none;border-radius:0;font-size:14px;color:#4f4a45}
+  .mega-item+.mega-item{border-top:1px dashed #efebe7}
+  .mega-item-all{display:flex;align-items:center;gap:8px;color:var(--orange)}
+  .mega-item-all .icon{width:15px;height:15px}
+}

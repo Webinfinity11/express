@@ -4,15 +4,20 @@ import Link from "next/link";
 import { useRef } from "react";
 import { Icon } from "../Icon";
 
-// დამატებითი ბრენდები ტექსტური ლოგოებით — რეალური ლოგოები შეიძლება ჩანაცვლდეს სურათებით
-const MORE_BRANDS = [
+// ბრენდების ლოგოები — public/images/brands (Wikimedia Commons); Franko-ს ლოგო არ მოიძებნა, რჩება ტექსტად
+const LOGOS = [
+  ["Toshiba", "toshiba"],
+  ["Samsung", "samsung"],
+  ["Bosch", "bosch"],
+  ["Philips", "philips"],
+  ["Kenwood", "kenwood"],
   ["LG", "lg"],
-  ["BEKO", "beko"],
+  ["Beko", "beko"],
   ["Electrolux", "electrolux"],
   ["Tefal", "tefal"],
-  ["BRAUN", "braun"],
-  ["gorenje", "gorenje"],
-  ["indesit", "indesit"],
+  ["Braun", "braun"],
+  ["Gorenje", "gorenje"],
+  ["Indesit", "indesit"],
   ["Midea", "midea"],
   ["De’Longhi", "delonghi"],
   ["Xiaomi", "xiaomi"],
@@ -30,19 +35,15 @@ export function Brands() {
         <Icon name="chevron" />
       </button>
       <div className="brand-list" ref={listRef}>
-        <Link href={brandHref("Toshiba")} className="wordmark toshiba">TOSHIBA</Link>
+        <Link href={brandHref("Toshiba")} className="brand-logo">
+          <img src="/images/brands/toshiba.svg" alt="Toshiba" loading="lazy" />
+        </Link>
         <Link href={brandHref("Franko")} className="wordmark franko">
           franko<span>®</span>
         </Link>
-        <Link href={brandHref("Samsung")} className="wordmark samsung">SAMSUNG</Link>
-        <Link href={brandHref("Bosch")} className="wordmark bosch">
-          <span className="bosch-sign">H</span> BOSCH
-        </Link>
-        <Link href={brandHref("Philips")} className="wordmark philips">PHILIPS</Link>
-        <Link href={brandHref("Kenwood")} className="wordmark kenwood">KENWOOD</Link>
-        {MORE_BRANDS.map(([label, cls]) => (
-          <Link key={cls} href={brandHref(label)} className={`wordmark ${cls}`}>
-            {label}
+        {LOGOS.slice(1).map(([label, file]) => (
+          <Link key={file} href={brandHref(label)} className={`brand-logo ${file}`}>
+            <img src={`/images/brands/${file}.svg`} alt={label} loading="lazy" />
           </Link>
         ))}
       </div>

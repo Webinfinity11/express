@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Icon } from "../Icon";
 
 const SLIDES = [
@@ -77,9 +77,22 @@ export function Hero() {
   const [index, setIndex] = useState(0);
   const go = (i: number) => setIndex((i + SLIDES.length) % SLIDES.length);
   const slide = SLIDES[index];
+  // მობილურზე თითის გასმით გადართვა
+  const touchX = useRef<number | null>(null);
 
   return (
-    <section className="hx wrap" aria-label="მთავარი შეთავაზებები" aria-roledescription="კარუსელი">
+    <section
+      className="hx wrap"
+      aria-label="მთავარი შეთავაზებები"
+      aria-roledescription="კარუსელი"
+      onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+      onTouchEnd={(e) => {
+        if (touchX.current === null) return;
+        const dx = e.changedTouches[0].clientX - touchX.current;
+        touchX.current = null;
+        if (Math.abs(dx) > 45) go(index + (dx < 0 ? 1 : -1));
+      }}
+    >
       <div className="hx-media">
         <img key={slide.image} src={slide.image} alt={slide.alt} fetchPriority="high" style={{ objectPosition: slide.position }} />
       </div>

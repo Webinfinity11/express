@@ -55,6 +55,9 @@ export default function Home() {
           ))}
         </section>
 
+        <ProductCarousel id="popular" title="პოპულარული პროდუქტები" href="/products" products={popular} />
+        <ProductCarousel id="sale" title="ფასდაკლებული პროდუქცია" href="/products?sale=1" products={onSale} />
+
         <section className="promo-grid" aria-label="სპეციალური შეთავაზებები">
           <article className="promo promo-kitchen">
             <img src="/images/promo-kitchen.webp" alt="Franko-ს ციტრუსის საწური და ახალი ხილი" loading="lazy" />
@@ -97,9 +100,6 @@ export default function Home() {
             </div>
           </article>
         </section>
-
-        <ProductCarousel id="popular" title="პოპულარული პროდუქტები" href="/products" products={popular} />
-        <ProductCarousel id="sale" title="ფასდაკლებული პროდუქცია" href="/products?sale=1" products={onSale} />
 
         <Brands />
       </div>

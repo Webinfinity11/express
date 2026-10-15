@@ -7,10 +7,21 @@ import { CONTACT } from "@/lib/contact";
 import { MENU } from "@/lib/menu";
 import { Icon } from "./Icon";
 
+const NAV_LINKS = [
+  { href: "/products", label: "მაღაზია" },
+  { href: "/products?sale=1", label: "აქციები", dot: true },
+  { href: "/products?new=1", label: "ახალი პროდუქტები" },
+  { href: "/#brands", label: "ბრენდები" },
+  { href: "/about", label: "ჩვენ შესახებ" },
+  { href: "/contact", label: "კონტაქტი" },
+];
+
 export function Navigation() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState("large");
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const hoverTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const canHover = () => window.matchMedia("(hover: hover)").matches;
   // კურსორით: ღილაკზე მიტანისას იხსნება, გატანისას მცირე დაყოვნებით იხურება
@@ -48,6 +59,22 @@ export function Navigation() {
     };
   }, [open]);
 
+  // მობილური მენიუ: იხურება გარეთ დაჭერით ან Escape-ით
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onClick = (e: MouseEvent) => {
+      const t = e.target as HTMLElement;
+      if (!t.closest(".mobile-nav, .nav-burger")) setMobileOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileOpen(false);
+    document.addEventListener("click", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [mobileOpen]);
+
   const close = () => setOpen(false);
 
   return (
@@ -58,7 +85,10 @@ export function Navigation() {
           className="catalog-toggle"
           aria-expanded={open}
           aria-controls="megaMenu"
-          onClick={() => setOpen((o) => !o)}
+          onClick={() => {
+            setMobileOpen(false);
+            setOpen((o) => !o);
+          }}
           onMouseEnter={hoverOpen}
           onMouseLeave={hoverClose}
         >
@@ -67,25 +97,45 @@ export function Navigation() {
           <Icon name="chevron" className="small down" />
         </button>
         <div className="nav-links">
-          <Link href="/products" aria-current={pathname === "/products" ? "page" : undefined}>
-            მაღაზია
-          </Link>
-          <Link href="/products?sale=1">
-            აქციები <span className="nav-dot"></span>
-          </Link>
-          <Link href="/products?new=1">ახალი პროდუქტები</Link>
-          <Link href="/#brands">ბრენდები</Link>
-          <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined}>
-            ჩვენ შესახებ
-          </Link>
-          <Link href="/contact" aria-current={pathname === "/contact" ? "page" : undefined}>
-            კონტაქტი
-          </Link>
+          {NAV_LINKS.map((l) => (
+            <Link key={l.href} href={l.href} aria-current={pathname === l.href ? "page" : undefined}>
+              {l.label} {l.dot && <span className="nav-dot"></span>}
+            </Link>
+          ))}
         </div>
         <a className="nav-contact" href={CONTACT.phoneHref}>
           <Icon name="phone" />
           <span>{CONTACT.phone}</span>
         </a>
+        <button
+          className="nav-burger"
+          aria-expanded={mobileOpen}
+          aria-controls="mobileNav"
+          aria-label="მენიუ"
+          onClick={() => {
+            setOpen(false);
+            setMobileOpen((o) => !o);
+          }}
+        >
+          <Icon name={mobileOpen ? "close" : "menu"} />
+          <span>მენიუ</span>
+        </button>
+        <div className="mobile-nav" id="mobileNav" hidden={!mobileOpen}>
+          {NAV_LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              aria-current={pathname === l.href ? "page" : undefined}
+              onClick={() => setMobileOpen(false)}
+            >
+              {l.label} {l.dot && <span className="nav-dot"></span>}
+              <Icon name="chevron" />
+            </Link>
+          ))}
+          <a className="mobile-nav-phone" href={CONTACT.phoneHref}>
+            <Icon name="phone" /> {CONTACT.phone}
+          </a>
+        </div>
         <div className="mega-menu" id="megaMenu" ref={menuRef} hidden={!open} onMouseEnter={hoverOpen} onMouseLeave={hoverClose}>
           <ul className="mega-sections">
             {MENU.map((m) => (
@@ -100,6 +150,7 @@ export function Navigation() {
                     if (!canHover() && m.id !== section.id) {
                       e.preventDefault();
                       setActive(m.id);
+                      setOpenGroup(null);
                     } else close();
                   }}
                 >
@@ -118,18 +169,41 @@ export function Navigation() {
               </Link>
             </div>
             <div className="mega-groups">
-              {section.groups.map((g) => (
-                <div className="mega-group" key={g.title}>
-                  <Link className="mega-group-title" href={g.href} onClick={close}>
-                    {g.title}
-                  </Link>
-                  {g.items?.map((it) => (
-                    <Link key={it.name} className="mega-item" href={it.href} onClick={close}>
-                      {it.name}
+              {section.groups.map((g) => {
+                const hasItems = !!g.items?.length;
+                const isOpen = openGroup === g.title;
+                return (
+                  <div className={`mega-group${hasItems ? " has-items" : ""}${isOpen ? " open" : ""}`} key={g.title}>
+                    <Link
+                      className="mega-group-title"
+                      href={g.href}
+                      aria-expanded={hasItems ? isOpen : undefined}
+                      onClick={(e) => {
+                        // სენსორულ ეკრანზე ქვეკატეგორიების მქონე ჯგუფი იშლება, გვერდზე არ გადადის
+                        if (hasItems && !canHover()) {
+                          e.preventDefault();
+                          setOpenGroup(isOpen ? null : g.title);
+                        } else close();
+                      }}
+                    >
+                      {g.title}
+                      {hasItems && <Icon name="chevron" className="small mega-group-chevron" />}
                     </Link>
-                  ))}
-                </div>
-              ))}
+                    {hasItems && (
+                      <div className="mega-items">
+                        {g.items!.map((it) => (
+                          <Link key={it.name} className="mega-item" href={it.href} onClick={close}>
+                            {it.name}
+                          </Link>
+                        ))}
+                        <Link className="mega-item mega-item-all" href={g.href} onClick={close}>
+                          ყველა — {g.title} <Icon name="arrow" />
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

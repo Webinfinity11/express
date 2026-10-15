@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
@@ -66,6 +66,23 @@ export function Shop() {
   const { favorites, openModal } = useStore();
   const [view, setView] = useState<"grid" | "list">("grid");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  // კატეგორიების ზოლის ისრები
+  const catsRef = useRef<HTMLDivElement>(null);
+  const [catEdges, setCatEdges] = useState({ start: true, end: false });
+  const syncCats = () => {
+    const el = catsRef.current;
+    if (!el) return;
+    setCatEdges({ start: el.scrollLeft < 4, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4 });
+  };
+  useEffect(() => {
+    syncCats();
+    window.addEventListener("resize", syncCats);
+    return () => window.removeEventListener("resize", syncCats);
+  }, []);
+  const scrollCats = (dir: number) => {
+    const el = catsRef.current;
+    if (el) el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
+  };
 
   // ფილტრების ერთადერთი წყარო URL-ია — ბმულები, header-ის ძიება და „უკან“ ღილაკი თავისით მუშაობს
   const f = useMemo(() => parse(new URLSearchParams(sp.toString())), [sp]);
@@ -256,21 +273,29 @@ export function Shop() {
         </div>
       </section>
 
-      <div className="shop-categories" aria-label="კატეგორიის არჩევა">
-        {CATEGORIES.map((c) => {
-          const active = f.category === c.id;
-          return (
-            <button
-              key={c.id}
-              className={`shop-cat${active ? " active" : ""}`}
-              aria-pressed={active}
-              onClick={() => update({ category: active ? "all" : c.id })}
-            >
-              <img src={c.image} alt="" width={60} height={65} />
-              <span>{c.name}</span>
-            </button>
-          );
-        })}
+      <div className="shop-cats-wrap">
+        <button className="carousel-arrow prev shop-cats-arrow" aria-label="წინა კატეგორიები" hidden={catEdges.start} onClick={() => scrollCats(-1)}>
+          <Icon name="chevron" />
+        </button>
+        <button className="carousel-arrow shop-cats-arrow next" aria-label="შემდეგი კატეგორიები" hidden={catEdges.end} onClick={() => scrollCats(1)}>
+          <Icon name="chevron" />
+        </button>
+        <div className="shop-categories" aria-label="კატეგორიის არჩევა" ref={catsRef} onScroll={syncCats}>
+          {CATEGORIES.map((c) => {
+            const active = f.category === c.id;
+            return (
+              <button
+                key={c.id}
+                className={`shop-cat${active ? " active" : ""}`}
+                aria-pressed={active}
+                onClick={() => update({ category: active ? "all" : c.id })}
+              >
+                <img src={c.image} alt="" width={60} height={65} />
+                <span>{c.name}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="catalog-layout">
