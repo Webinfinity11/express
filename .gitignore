@@ -42,3 +42,8 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# agent skills (installed by vercel integrations)
+.agents/
+.claude/
+skills-lock.json

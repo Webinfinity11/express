@@ -6,10 +6,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
+import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
-import { BRANDS, CATEGORIES, PRODUCTS, categoryHref, categoryName, money } from "@/lib/data";
+import { categoryHref, money } from "@/lib/data";
 
-const PRICE_MAX = 2000;
 const SORTS = ["featured", "price-asc", "price-desc", "new", "name"] as const;
 type Sort = (typeof SORTS)[number];
 type Flag = "sale" | "new" | "favorites";
@@ -26,20 +26,22 @@ type Filters = {
   sort: Sort;
 };
 
-const clampPrice = (v: string | null, fallback: number) => {
+type Limits = { categories: Set<string>; brands: string[]; priceMax: number };
+
+const clampPrice = (v: string | null, fallback: number, PRICE_MAX: number) => {
   const n = Number(v);
   return v !== null && Number.isFinite(n) ? Math.max(0, Math.min(PRICE_MAX, n)) : fallback;
 };
 
-function parse(sp: URLSearchParams): Filters {
+function parse(sp: URLSearchParams, { categories, brands, priceMax: PRICE_MAX }: Limits): Filters {
   const category = sp.get("category") ?? "all";
   const sort = sp.get("sort") as Sort;
   return {
-    category: CATEGORIES.some((c) => c.id === category) ? category : "all",
-    brands: (sp.get("brand") ?? "").split("|").filter((b) => BRANDS.includes(b)),
+    category: categories.has(category) ? category : "all",
+    brands: (sp.get("brand") ?? "").split("|").filter((b) => brands.includes(b)),
     q: (sp.get("q") ?? "").slice(0, 100),
-    min: clampPrice(sp.get("min"), 0),
-    max: clampPrice(sp.get("max"), PRICE_MAX),
+    min: clampPrice(sp.get("min"), 0, PRICE_MAX),
+    max: clampPrice(sp.get("max"), PRICE_MAX, PRICE_MAX),
     sale: sp.get("sale") === "1",
     new: sp.get("new") === "1",
     favorites: sp.get("favorites") === "1",
@@ -47,7 +49,7 @@ function parse(sp: URLSearchParams): Filters {
   };
 }
 
-function serialize(f: Filters) {
+function serialize(f: Filters, PRICE_MAX: number) {
   const p = new URLSearchParams();
   if (f.category !== "all") p.set("category", f.category);
   if (f.brands.length) p.set("brand", f.brands.join("|"));
@@ -64,6 +66,17 @@ export function Shop() {
   const pathname = usePathname();
   const sp = useSearchParams();
   const { favorites, openModal } = useStore();
+  const { products: PRODUCTS, categories, categoryName, subtree } = useCatalog();
+  // ფასის შკალის ზედა ზღვარი — ყველაზე ძვირი პროდუქტი, დამრგვალებული 100-მდე
+  const PRICE_MAX = Math.max(100, Math.ceil(Math.max(0, ...PRODUCTS.map((p) => p.price)) / 100) * 100);
+  const BRANDS = useMemo(() => [...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))].sort(), [PRODUCTS]);
+  // კატეგორიის რაოდენობა ქვეკატეგორიების ჩათვლით; ცარიელი კატეგორიები ფილტრში არ ჩანს
+  const counts = useMemo(
+    () => new Map(categories.map((c) => [c.id, PRODUCTS.filter((p) => subtree(c.id).has(p.category)).length])),
+    [categories, PRODUCTS, subtree],
+  );
+  const CATEGORIES = categories.filter((c) => (counts.get(c.id) ?? 0) > 0);
+  const STRIP = categories.filter((c) => c.showOnHome);
   const [view, setView] = useState<"grid" | "list">("grid");
   const [filtersOpen, setFiltersOpen] = useState(false);
   // კატეგორიების ზოლის ისრები
@@ -85,19 +98,23 @@ export function Shop() {
   };
 
   // ფილტრების ერთადერთი წყარო URL-ია — ბმულები, header-ის ძიება და „უკან“ ღილაკი თავისით მუშაობს
-  const f = useMemo(() => parse(new URLSearchParams(sp.toString())), [sp]);
+  const f = useMemo(
+    () => parse(new URLSearchParams(sp.toString()), { categories: new Set(categories.map((c) => c.id)), brands: BRANDS, priceMax: PRICE_MAX }),
+    [sp, categories, BRANDS, PRICE_MAX],
+  );
   const update = (changes: Partial<Filters>) => {
-    const qs = serialize({ ...f, ...changes });
+    const qs = serialize({ ...f, ...changes }, PRICE_MAX);
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
   const reset = () => router.replace(pathname, { scroll: false });
 
   const list = useMemo(() => {
     const words = f.q.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    const inCategory = f.category === "all" ? null : subtree(f.category);
     const out = PRODUCTS.filter((p) => {
       const text = [p.name, p.brand, p.keywords, p.sku, categoryName(p.category)].join(" ").toLocaleLowerCase();
       return (
-        (f.category === "all" || p.category === f.category) &&
+        (!inCategory || inCategory.has(p.category)) &&
         (!f.brands.length || f.brands.includes(p.brand)) &&
         p.price >= f.min &&
         p.price <= f.max &&
@@ -112,7 +129,7 @@ export function Shop() {
     if (f.sort === "new") out.sort((a, b) => Number(b.isNew) - Number(a.isNew));
     if (f.sort === "name") out.sort((a, b) => a.name.localeCompare(b.name, "ka"));
     return out;
-  }, [f, favorites]);
+  }, [f, favorites, PRODUCTS, categoryName, subtree]);
 
   const title = f.q ? "ძიების შედეგები" : f.favorites ? "ფავორიტები" : f.sale ? "აქციები" : f.new ? "ახალი პროდუქტები" : categoryName(f.category);
 
@@ -144,7 +161,7 @@ export function Shop() {
             <label className="filter-check" key={c.id}>
               <input type="radio" name="category" checked={f.category === c.id} onChange={() => update({ category: c.id })} />
               <span>{c.name}</span>
-              <span className="filter-n">{PRODUCTS.filter((p) => p.category === c.id).length}</span>
+              <span className="filter-n">{counts.get(c.id)}</span>
             </label>
           ))}
         </div>
@@ -164,7 +181,7 @@ export function Shop() {
                 key={"min" + f.min}
                 aria-label="მინიმალური ფასი"
                 onBlur={(e) => {
-                  const min = clampPrice(e.target.value, 0);
+                  const min = clampPrice(e.target.value, 0, PRICE_MAX);
                   update({ min, max: Math.max(min, f.max) });
                 }}
               />
@@ -179,7 +196,7 @@ export function Shop() {
                 key={"max" + f.max}
                 aria-label="მაქსიმალური ფასი"
                 onBlur={(e) => {
-                  const max = clampPrice(e.target.value, PRICE_MAX);
+                  const max = clampPrice(e.target.value, PRICE_MAX, PRICE_MAX);
                   update({ max, min: Math.min(max, f.min) });
                 }}
               />
@@ -265,7 +282,7 @@ export function Shop() {
           </h1>
           <p>თქვენი სახლი. თქვენი არჩევანი. Express Mix.</p>
           <span className="collection-caption">
-            {PRODUCTS.length} პროდუქტი <i></i> {CATEGORIES.length} კატეგორია
+            {PRODUCTS.length} პროდუქტი <i></i> {STRIP.length} კატეგორია
           </span>
         </div>
         <div className="shop-hero-photo">
@@ -281,7 +298,7 @@ export function Shop() {
           <Icon name="chevron" />
         </button>
         <div className="shop-categories" aria-label="კატეგორიის არჩევა" ref={catsRef} onScroll={syncCats}>
-          {CATEGORIES.map((c) => {
+          {STRIP.map((c) => {
             const active = f.category === c.id;
             return (
               <button

@@ -3,28 +3,36 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { InnerFooterBlocks } from "@/components/InnerFooterBlocks";
 import { ProductView } from "@/components/product/ProductView";
-import { BY_SLUG, PRODUCTS, categoryHref, categoryName } from "@/lib/data";
+import { getCatalog } from "@/lib/catalog";
+import { categoryHref } from "@/lib/data";
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const { products } = await getCatalog();
+  return products.map((p) => ({ slug: p.slug }));
+}
+
+async function find(slug: string) {
+  const catalog = await getCatalog();
+  return { catalog, p: catalog.products.find((x) => x.slug === decodeURIComponent(slug)) };
 }
 
 export async function generateMetadata({ params }: PageProps<"/product/[slug]">): Promise<Metadata> {
-  const p = BY_SLUG.get((await params).slug);
+  const { p } = await find((await params).slug);
   if (!p) return {};
-  return { title: `${p.name} — Express Mix`, description: p.desc };
+  return { title: `${p.name} — Express Mix`, description: p.desc.slice(0, 160) };
 }
 
 export default async function ProductPage({ params }: PageProps<"/product/[slug]">) {
-  const p = BY_SLUG.get((await params).slug);
+  const { catalog, p } = await find((await params).slug);
   if (!p) notFound();
+  const category = catalog.categories.find((c) => c.id === p.category);
 
   return (
     <>
       <Breadcrumbs
         items={[
           { label: "მაღაზია", href: "/products" },
-          { label: categoryName(p.category), href: categoryHref(p.category) },
+          ...(category ? [{ label: category.name, href: categoryHref(category.id) }] : []),
           { label: p.name },
         ]}
       />

@@ -1,17 +1,17 @@
-import { CONTACT } from "@/lib/contact";
+import type { Content } from "@/lib/content-schema";
 import { Icon } from "./Icon";
 
-export function ContactCards() {
+export function ContactCards({ site, contact }: { site: Content["site"]; contact: Content["contact"] }) {
   return (
     <div className="contact-cards">
-      <a className="contact-card" href={CONTACT.phoneHref}>
+      <a className="contact-card" href={site.phoneHref}>
         <span className="contact-icon">
           <Icon name="phone" />
         </span>
         <span>
           <small>ტელეფონი</small>
-          <strong>{CONTACT.phone}</strong>
-          <p>დაგვირეკეთ და გიპასუხებთ ნებისმიერ კითხვაზე.</p>
+          <strong>{site.phone}</strong>
+          <p>{contact.phoneText}</p>
         </span>
       </a>
       <div className="contact-card">
@@ -20,18 +20,18 @@ export function ContactCards() {
         </span>
         <span>
           <small>მისამართი</small>
-          <strong>{CONTACT.address}</strong>
-          <p>მობრძანდით და ნახეთ ტექნიკა ადგილზე.</p>
+          <strong>{site.address}</strong>
+          <p>{site.hours || contact.addressText}</p>
         </span>
       </div>
-      <a className="contact-card" href={CONTACT.phoneHref}>
+      <a className="contact-card" href={site.email ? `mailto:${site.email}` : site.phoneHref}>
         <span className="contact-icon">
           <Icon name="headphones" />
         </span>
         <span>
           <small>კონსულტაცია</small>
-          <strong>არჩევანში დაგეხმარებით</strong>
-          <p>შეგირჩევთ ტექნიკას თქვენი სახლისა და ბიუჯეტის მიხედვით.</p>
+          <strong>{contact.consultTitle}</strong>
+          <p>{site.email || contact.consultText}</p>
         </span>
       </a>
     </div>

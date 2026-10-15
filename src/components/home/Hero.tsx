@@ -2,78 +2,14 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
+import type { Content } from "@/lib/content-schema";
 import { Icon } from "../Icon";
 
-const SLIDES = [
-  {
-    image: "/images/hero-washer.webp",
-    position: "50% 78%",
-    alt: "სარეცხი მანქანა თანამედროვე ინტერიერში",
-    label: "სარეცხი მანქანები",
-    title: (
-      <>
-        კომფორტი
-        <br />
-        ყველა <span>დეტალში</span>
-      </>
-    ),
-    description: "თანამედროვე საყოფაცხოვრებო ტექნიკა მყუდრო და ტექნოლოგიური სახლისთვის",
-    href: "/products?category=washers",
-  },
-  {
-    image: "/images/promo-kitchen.webp",
-    position: "50% 60%",
-    alt: "ციტრუსის საწური სამზარეულოში",
-    label: "სამზარეულოს ტექნიკა",
-    title: (
-      <>
-        ახალი დღე.
-        <br />
-        <span>ახალი ენერგია.</span>
-      </>
-    ),
-    description: "თქვენი საყვარელი გემოები და მეტი კომფორტი სამზარეულოში",
-    href: "/products?category=kitchen",
-  },
-  {
-    image: "/images/promo-iron.webp",
-    position: "50% 62%",
-    alt: "შავი და ოქროსფერი უთო",
-    label: "უთოები",
-    title: (
-      <>
-        იდეალური ზრუნვა
-        <br />
-        <span>ყველა დეტალზე</span>
-      </>
-    ),
-    description: "აღმოაჩინეთ თქვენი ახალი ყოველდღიური დამხმარე",
-    href: "/products?category=irons",
-  },
-  {
-    image: "/images/washer-2.webp",
-    position: "50% 66%",
-    alt: "სარეცხი მანქანა ნათელ სამრეცხაოში",
-    label: "ტექნიკა სახლისთვის",
-    title: (
-      <>
-        სუფთა სახლი.
-        <br />
-        <span>მეტი სიმშვიდე.</span>
-      </>
-    ),
-    description: "ტექნიკა, რომელიც ყოველდღიურ ზრუნვას უფრო მარტივს ხდის",
-    href: "/products",
-  },
-];
+const BENEFIT_ICONS = ["truck", "shield", "card"];
 
-const BENEFITS = [
-  { icon: "truck", title: "სწრაფი მიწოდება", text: "მთელ საქართველოში" },
-  { icon: "shield", title: "ოფიციალური გარანტია", text: "ყველა პროდუქტზე" },
-  { icon: "card", title: "მოსახერხებელი გადახდა", text: "ბარათით და განვადებით" },
-];
-
-export function Hero() {
+export function Hero({ home }: { home: Content["home"] }) {
+  const SLIDES = home.slides.length ? home.slides : [{ image: "", title: "", title2: "", accent: "", text: "", href: "/products" }];
+  const BENEFITS = home.heroBenefits.slice(0, 3).map((b, i) => ({ ...b, icon: BENEFIT_ICONS[i] }));
   const [index, setIndex] = useState(0);
   const go = (i: number) => setIndex((i + SLIDES.length) % SLIDES.length);
   const slide = SLIDES[index];
@@ -94,22 +30,26 @@ export function Hero() {
       }}
     >
       <div className="hx-media">
-        <img key={slide.image} src={slide.image} alt={slide.alt} fetchPriority="high" style={{ objectPosition: slide.position }} />
+        {slide.image && <img key={slide.image} src={slide.image} alt="" fetchPriority="high" />}
       </div>
       <div className="hx-shade" />
       <div className="hx-content">
-        <span className="hx-eyebrow">ტექნიკა თქვენი სახლისთვის</span>
-        <h1>{slide.title}</h1>
-        <p>{slide.description}</p>
-        <Link className="button primary hx-cta" href={slide.href}>
-          კატალოგის ნახვა <Icon name="arrow" />
+        <span className="hx-eyebrow">{home.heroEyebrow}</span>
+        <h1>
+          {slide.title}
+          {(slide.title2 || slide.accent) && <br />}
+          {slide.title2} {slide.accent && <span>{slide.accent}</span>}
+        </h1>
+        <p>{slide.text}</p>
+        <Link className="button primary hx-cta" href={slide.href || "/products"}>
+          {home.heroButton} <Icon name="arrow" />
         </Link>
         <div className="hx-dots" role="group" aria-label="ბანერის არჩევა">
           {SLIDES.map((s, i) => (
             <button
               key={i}
               className={i === index ? "active" : undefined}
-              aria-label={`ბანერი ${i + 1}: ${s.label}`}
+              aria-label={`ბანერი ${i + 1}: ${s.title} ${s.accent}`}
               aria-pressed={i === index}
               onClick={() => go(i)}
             />

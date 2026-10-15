@@ -3,33 +3,20 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useStore, type InfoKey } from "@/context/StoreContext";
-import { CITIES, PRODUCTS, gel, productHref, type City } from "@/lib/data";
-import { CONTACT } from "@/lib/contact";
+import { useCatalog } from "@/context/CatalogContext";
+import { CITIES, gel, productHref, type City } from "@/lib/data";
 import { Dialog } from "./Dialog";
 import { Icon } from "./Icon";
 
-// TODO: ტექსტები, ტარიფები და საკონტაქტო მონაცემები დაზუსტდეს კლიენტთან
-const INFO: Record<InfoKey, [string, string]> = {
-  account: ["თქვენი ანგარიში", "პირადი კაბინეტი მალე დაემატება. კალათა და ფავორიტები ინახება თქვენს ბრაუზერში."],
-  about: [
-    "ტექნიკა თქვენი სახლისთვის",
-    "Express Mix — სახლისა და სამზარეულოს ტექნიკა ერთ სივრცეში. ხარისხიანი ბრენდები, საუკეთესო ფასები და კომფორტული შოპინგი.",
-  ],
-  delivery: [
-    "მიწოდების პირობები",
-    "კურიერით მიწოდება: თბილისი — 15 ₾, ბათუმი — 25 ₾, სხვა რეგიონები — 35 ₾. 2 000 ₾-დან მიწოდება უფასოა. თვითგატანა — უფასო.",
-  ],
-  warranty: [
-    "პროდუქტის გარანტია",
-    "გარანტიის ვადა და პირობები განისაზღვრება კონკრეტული მოდელის მიხედვით. დეტალებისთვის დაგვიკავშირდით.",
-  ],
-  payment: ["გადახდის მეთოდები", "გადახდა შესაძლებელია ბარათით, განვადებით ან პროდუქტის მიღებისას."],
-  contact: [
-    "დაგვიკავშირდით",
-    `ტელეფონი: ${CONTACT.phone}. მისამართი: ${CONTACT.address}. დაგვიკავშირდით და ერთად შევარჩევთ თქვენთვის საუკეთესო ტექნიკას.`,
-  ],
-  social: ["Express Mix სოციალურ ქსელებში", "გამოგვყევით სოციალურ ქსელებში და შეიტყვეთ სიახლეები პირველმა."],
-  brands: ["ბრენდები", "Express Mix-ში წარმოდგენილია სახლისა და სამზარეულოს ტექნიკის წამყვანი ბრენდები."],
+const INFO_TITLES: Record<InfoKey, string> = {
+  account: "თქვენი ანგარიში",
+  about: "ტექნიკა თქვენი სახლისთვის",
+  delivery: "მიწოდების პირობები",
+  warranty: "პროდუქტის გარანტია",
+  payment: "გადახდის მეთოდები",
+  contact: "დაგვიკავშირდით",
+  social: "Express Mix სოციალურ ქსელებში",
+  brands: "ბრენდები",
 };
 
 export function ModalHost() {
@@ -53,7 +40,13 @@ export function ModalHost() {
 }
 
 function Info({ k, close }: { k: InfoKey; close: () => void }) {
-  const [title, body] = INFO[k];
+  const { content } = useCatalog();
+  const { site, info } = content;
+  const title = INFO_TITLES[k];
+  const body =
+    k === "contact"
+      ? `ტელეფონი: ${site.phone}. მისამართი: ${site.address}. დაგვიკავშირდით და ერთად შევარჩევთ თქვენთვის საუკეთესო ტექნიკას.`
+      : info[k];
   return (
     <>
       <h2 id="infoTitle">{title}</h2>
@@ -67,7 +60,8 @@ function Info({ k, close }: { k: InfoKey; close: () => void }) {
 
 function Favorites({ close }: { close: () => void }) {
   const { favorites, addToCart, toggleFavorite } = useStore();
-  const items = PRODUCTS.filter((p) => favorites.includes(p.id));
+  const { products } = useCatalog();
+  const items = products.filter((p) => favorites.includes(p.id));
   return (
     <>
       <h2 id="infoTitle">თქვენი ფავორიტები</h2>

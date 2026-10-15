@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
-import { categoryName, discountPercent, gel, productHref, type Product } from "@/lib/data";
+import { discountPercent, gel, productHref, type Product } from "@/lib/data";
 import { Icon } from "./Icon";
 
 export function ItemCard({ p }: { p: Product }) {
   const { addToCart, isFavorite, toggleFavorite } = useStore();
+  const { categoryName } = useCatalog();
   const [added, setAdded] = useState(false);
   const on = isFavorite(p.id);
   const off = discountPercent(p);
@@ -35,7 +37,7 @@ export function ItemCard({ p }: { p: Product }) {
         </Link>
         <span className="inline-green">მარაგშია</span>
         <p className="item-extra">
-          {categoryName(p.category)} · {p.color}
+          {[categoryName(p.category), p.variants.length > 1 ? `${p.variants.length} ფერი` : p.color].filter(Boolean).join(" · ")}
         </p>
         <div className="item-foot">
           <div className="item-prices">

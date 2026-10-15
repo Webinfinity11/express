@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { Icon } from "./Icon";
 
 export function Header() {
   const router = useRouter();
   const { cartCount, favorites, openModal } = useStore();
+  const { content } = useCatalog();
   const [query, setQuery] = useState("");
 
   return (
@@ -32,7 +34,7 @@ export function Header() {
           <input
             type="search"
             id="searchInput"
-            placeholder="რას ეძებთ?"
+            placeholder={content.header.searchPlaceholder}
             autoComplete="off"
             maxLength={100}
             value={query}

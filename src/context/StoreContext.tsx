@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { BY_ID, CITIES, COUPONS, FREE_SHIPPING_FROM, SHIPPING_RATES, type City } from "@/lib/data";
+import { useCatalog } from "@/context/CatalogContext";
+import { CITIES, promoDiscount, shippingCost, type City, type Promo } from "@/lib/data";
 
 export type InfoKey = "account" | "about" | "delivery" | "warranty" | "payment" | "contact" | "social" | "brands";
 export type Modal = null | "cart" | "favorites" | "city" | "clear-cart" | `info:${InfoKey}`;
@@ -26,6 +27,7 @@ type Store = {
   city: City;
   delivery: Delivery;
   coupon: string;
+  promo: Promo | null;
   cartCount: number;
   totals: Totals;
   addToCart: (id: string, qty?: number, notify?: boolean) => boolean;
@@ -36,7 +38,7 @@ type Store = {
   toggleFavorite: (id: string) => void;
   setCity: (city: City) => void;
   setDelivery: (d: Delivery) => void;
-  applyCoupon: (code: string) => boolean;
+  applyCoupon: (code: string) => Promise<string | null>;
   removeCoupon: () => void;
   modal: Modal;
   openModal: (m: Modal) => void;
@@ -52,11 +54,13 @@ export const MAX_QTY = 99;
 const clampQty = (n: number) => Math.max(1, Math.min(MAX_QTY, Number.isFinite(n) ? Math.trunc(n) : 1));
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
+  const { line, byId, defaultKey, content } = useCatalog();
   const [cart, setCart] = useState<Record<string, number>>({});
   const [favorites, setFavorites] = useState<string[]>([]);
   const [city, setCity] = useState<City>("tbilisi");
   const [delivery, setDelivery] = useState<Delivery>("courier");
-  const [coupon, setCoupon] = useState("");
+  const [promo, setPromo] = useState<Promo | null>(null);
+  const coupon = promo?.code ?? "";
   const [loaded, setLoaded] = useState(false);
   const [modal, setModal] = useState<Modal>(null);
   const [toast, setToast] = useState<Toast>({ text: "", visible: false });
@@ -71,25 +75,26 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (saved?.cart && typeof saved.cart === "object") {
         const clean: Record<string, number> = {};
         for (const [id, qty] of Object.entries(saved.cart)) {
-          if (BY_ID.has(id) && Number.isInteger(qty) && (qty as number) > 0) clean[id] = clampQty(qty as number);
+          if (line(id) && Number.isInteger(qty) && (qty as number) > 0) clean[id] = clampQty(qty as number);
         }
         setCart(clean);
       }
-      if (Array.isArray(saved?.favorites)) setFavorites(saved.favorites.filter((id: string) => BY_ID.has(id)));
+      if (Array.isArray(saved?.favorites)) setFavorites(saved.favorites.filter((id: string) => byId.has(id)));
       if (saved?.city in CITIES) setCity(saved.city);
       if (saved?.delivery === "pickup") setDelivery("pickup");
-      if (typeof saved?.coupon === "string" && saved.coupon in COUPONS) setCoupon(saved.coupon);
+      if (saved?.promo && typeof saved.promo.code === "string") setPromo(saved.promo as Promo);
     } catch {}
     setLoaded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     if (!loaded) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart, favorites, city, delivery, coupon }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart, favorites, city, delivery, promo }));
     } catch {}
-  }, [cart, favorites, city, delivery, coupon, loaded]);
+  }, [cart, favorites, city, delivery, promo, loaded]);
 
   const showToast = useCallback((text: string, action?: ToastAction) => {
     clearTimeout(toastTimer.current);
@@ -99,8 +104,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const hideToast = useCallback(() => setToast((t) => ({ ...t, visible: false })), []);
 
   const addToCart = useCallback(
-    (id: string, qty = 1, notify = true) => {
-      if (!BY_ID.has(id)) return false;
+    (key: string, qty = 1, notify = true) => {
+      // პროდუქტის id ვარიაციის გარეშე (ბარათიდან) → ნაგულისხმევი ვარიაცია
+      const p = byId.get(key);
+      const id = !line(key) && p ? defaultKey(p) : key;
+      const l = line(id);
+      if (!l) return false;
+      if (!l.inStock) {
+        showToast("პროდუქტი ამჟამად არ არის მარაგში.");
+        return false;
+      }
       const before = cart[id] || 0;
       if (before >= MAX_QTY) {
         showToast("მაქსიმალური რაოდენობაა 99.");
@@ -115,7 +128,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       }
       return true;
     },
-    [cart, showToast],
+    [cart, showToast, line, byId, defaultKey],
   );
 
   const setQuantity = useCallback((id: string, qty: number) => {
@@ -153,13 +166,21 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [favorites, showToast],
   );
 
+  /** აბრუნებს შეცდომის ტექსტს ან null-ს წარმატებისას */
   const applyCoupon = useCallback(
-    (code: string) => {
+    async (code: string) => {
       const c = code.trim().toUpperCase();
-      if (!(c in COUPONS)) return false;
-      setCoupon(c);
-      showToast(`პრომოკოდი ${c} გამოყენებულია.`);
-      return true;
+      if (!c) return "შეიყვანეთ პრომოკოდი.";
+      try {
+        const res = await fetch("/api/promo?code=" + encodeURIComponent(c));
+        const data = await res.json();
+        if (!res.ok) return (data.error as string) || "პრომოკოდი არ მოიძებნა.";
+        setPromo(data as Promo);
+        showToast(`პრომოკოდი ${c} გამოყენებულია.`);
+        return null;
+      } catch {
+        return "კავშირის შეცდომა. სცადეთ ხელახლა.";
+      }
     },
     [showToast],
   );
@@ -167,14 +188,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const cartCount = Object.values(cart).reduce((s, n) => s + n, 0);
 
   const totals = useMemo<Totals>(() => {
-    const entries = Object.entries(cart).filter(([id]) => BY_ID.has(id));
-    const list = entries.reduce((n, [id, q]) => n + Math.round(BY_ID.get(id)!.oldPrice * 100) * q, 0);
-    const sub = entries.reduce((n, [id, q]) => n + Math.round(BY_ID.get(id)!.price * 100) * q, 0);
-    const couponOff = coupon ? Math.round(sub * (COUPONS[coupon] ?? 0)) : 0;
+    const lines = Object.entries(cart).flatMap(([id, q]) => {
+      const l = line(id);
+      return l ? [{ l, q }] : [];
+    });
+    const list = lines.reduce((n, { l, q }) => n + Math.round(l.oldPrice * 100) * q, 0);
+    const sub = lines.reduce((n, { l, q }) => n + Math.round(l.price * 100) * q, 0);
+    const couponOff = promoDiscount(promo, sub);
     const after = sub - couponOff;
-    const shipping = entries.length && delivery === "courier" && after < FREE_SHIPPING_FROM ? SHIPPING_RATES[city] : 0;
+    const shipping = shippingCost(content.shipping, city, after, lines.length > 0, delivery === "courier");
     return { list, sub, sale: list - sub, coupon: couponOff, after, shipping, total: after + shipping, saved: list - sub + couponOff };
-  }, [cart, coupon, delivery, city]);
+  }, [cart, promo, delivery, city, line, content.shipping]);
 
   return (
     <Ctx.Provider
@@ -184,6 +208,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         city,
         delivery,
         coupon,
+        promo,
         cartCount,
         totals,
         addToCart,
@@ -191,14 +216,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         removeFromCart,
         clearCart: () => {
           setCart({});
-          setCoupon("");
+          setPromo(null);
         },
         isFavorite: (id) => favorites.includes(id),
         toggleFavorite,
         setCity,
         setDelivery,
         applyCoupon,
-        removeCoupon: () => setCoupon(""),
+        removeCoupon: () => setPromo(null),
         modal,
         openModal: setModal,
         toast,

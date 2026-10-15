@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Icon } from "@/components/Icon";
 import { useStore } from "@/context/StoreContext";
-import { CONTACT } from "@/lib/contact";
-import { BY_ID, CITIES, FREE_SHIPPING_FROM, gel, productHref, type City } from "@/lib/data";
+import { useCatalog } from "@/context/CatalogContext";
+import { CITIES, gel, type City } from "@/lib/data";
 import { PAYMENTS, validateOrder, type OrderErrors, type Payment } from "@/lib/order";
 
 type Done = { id: string; total: number; phone: string; delivery: "courier" | "pickup" };
@@ -34,7 +34,13 @@ function Steps({ step }: { step: 2 | 3 }) {
 export function CheckoutView() {
   const store = useStore();
   const { cart, cartCount, totals: t, delivery, city, coupon } = store;
-  const entries = Object.entries(cart).filter(([id]) => BY_ID.has(id));
+  const { line, content } = useCatalog();
+  const CONTACT = content.site;
+  const FREE_SHIPPING_FROM = Math.round(content.shipping.freeFrom * 100);
+  const entries = Object.entries(cart).flatMap(([id, q]) => {
+    const l = line(id);
+    return l ? [[id, q, l] as const] : [];
+  });
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", comment: "" });
   const [payment, setPayment] = useState<Payment>("on-delivery");
@@ -51,7 +57,7 @@ export function CheckoutView() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const order = { ...form, delivery, city, payment, coupon, items: cart };
-    const found = validateOrder(order);
+    const found = validateOrder(order, (key) => !!line(key));
     setErrors(found);
     setServerError("");
     if (Object.keys(found).length) {
@@ -265,15 +271,17 @@ export function CheckoutView() {
               <Icon name="box" />
             </div>
             <div className="checkout-items">
-              {entries.map(([id, q]) => {
-                const p = BY_ID.get(id)!;
+              {entries.map(([id, q, p]) => {
                 return (
                   <div className="checkout-item" key={id}>
-                    <Link href={productHref(p)} className="checkout-item-image">
+                    <Link href={p.href} className="checkout-item-image">
                       <img src={p.image} alt={p.name} />
                       <b>{q}</b>
                     </Link>
-                    <span className="checkout-item-name">{p.name}</span>
+                    <span className="checkout-item-name">
+                      {p.name}
+                      {p.variantName && <small className="cart-item-variant">{p.variantName}</small>}
+                    </span>
                     <strong>{gel(p.price * q * 100)}</strong>
                   </div>
                 );

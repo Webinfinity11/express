@@ -2,14 +2,19 @@
 
 import Link from "next/link";
 import { MAX_QTY, useStore } from "@/context/StoreContext";
-import { BY_ID, gel, productHref } from "@/lib/data";
+import { useCatalog } from "@/context/CatalogContext";
+import { gel } from "@/lib/data";
 import { Dialog } from "./Dialog";
 import { Icon } from "./Icon";
 
 export function CartDrawer() {
   const { cart, cartCount, totals, setQuantity, removeFromCart, modal, openModal } = useStore();
   const close = () => openModal(null);
-  const entries = Object.entries(cart).filter(([id]) => BY_ID.has(id));
+  const { line } = useCatalog();
+  const entries = Object.entries(cart).flatMap(([id, qty]) => {
+    const l = line(id);
+    return l ? [[id, qty, l] as const] : [];
+  });
 
   return (
     <Dialog open={modal === "cart"} onClose={close} className="drawer" labelledBy="cartTitle">
@@ -26,16 +31,18 @@ export function CartDrawer() {
       </div>
       <div className="cart-items">
         {entries.length ? (
-          entries.map(([id, qty]) => {
-            const p = BY_ID.get(id)!;
+          entries.map(([id, qty, p]) => {
             return (
               <article className="cart-item" key={id}>
-                <Link className="cart-item-image" href={productHref(p)} onClick={close} aria-label={`${p.name} — დეტალურად`}>
+                <Link className="cart-item-image" href={p.href} onClick={close} aria-label={`${p.name} — დეტალურად`}>
                   <img src={p.image} alt={p.name} />
                 </Link>
                 <div>
                   <div className="cart-item-head">
-                    <h3 className="cart-item-title">{p.name}</h3>
+                    <h3 className="cart-item-title">
+                      {p.name}
+                      {p.variantName && <small className="cart-item-variant">{p.variantName}</small>}
+                    </h3>
                     <button className="cart-item-remove" aria-label={`${p.name} — წაშლა`} onClick={() => removeFromCart(id)}>
                       <Icon name="trash" />
                     </button>

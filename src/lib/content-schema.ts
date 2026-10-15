@@ -1,0 +1,327 @@
+// საიტის რედაქტირებადი ტექსტები: საწყისი მნიშვნელობები (რასაც საიტი აჩვენებს, სანამ ადმინი შეცვლის)
+// და ადმინის რედაქტორის ველები. კლიენტისთვის უსაფრთხოა — სერვერის import-ები აქ არ არის.
+
+export type Link = { label: string; href: string };
+
+export const contentDefaults = {
+  site: {
+    phone: "510 00 08 56",
+    phoneHref: "tel:+995510000856",
+    email: "",
+    address: "მირიან მეფის ქ. #46",
+    mapQuery: "Mirian Mepe St 46, Tbilisi, Georgia",
+    hours: "",
+    facebook: "",
+    instagram: "",
+    youtube: "",
+  },
+  header: {
+    searchPlaceholder: "რას ეძებთ?",
+    navLinks: [
+      { label: "მაღაზია", href: "/products" },
+      { label: "აქციები", href: "/products?sale=1" },
+      { label: "ახალი პროდუქტები", href: "/products?new=1" },
+      { label: "ბრენდები", href: "/#brands" },
+      { label: "ჩვენ შესახებ", href: "/about" },
+      { label: "კონტაქტი", href: "/contact" },
+    ] as Link[],
+  },
+  footer: {
+    links: [
+      { label: "ჩვენ შესახებ", href: "/about" },
+      { label: "მაღაზია", href: "/products" },
+      { label: "კონტაქტი", href: "/contact" },
+    ] as Link[],
+    copyright: "© 2026 Express Mix. ყველა უფლება დაცულია.",
+  },
+  home: {
+    heroEyebrow: "ტექნიკა თქვენი სახლისთვის",
+    heroButton: "კატალოგის ნახვა",
+    slides: [
+      {
+        image: "/images/hero-washer.webp",
+        title: "კომფორტი",
+        title2: "ყველა",
+        accent: "დეტალში",
+        text: "თანამედროვე საყოფაცხოვრებო ტექნიკა მყუდრო და ტექნოლოგიური სახლისთვის",
+        href: "/products?category=washers",
+      },
+      {
+        image: "/images/promo-kitchen.webp",
+        title: "ახალი დღე.",
+        title2: "",
+        accent: "ახალი ენერგია.",
+        text: "თქვენი საყვარელი გემოები და მეტი კომფორტი სამზარეულოში",
+        href: "/products?category=kitchen",
+      },
+      {
+        image: "/images/promo-iron.webp",
+        title: "იდეალური ზრუნვა",
+        title2: "",
+        accent: "ყველა დეტალზე",
+        text: "აღმოაჩინეთ თქვენი ახალი ყოველდღიური დამხმარე",
+        href: "/products?category=irons",
+      },
+      {
+        image: "/images/washer-2.webp",
+        title: "სუფთა სახლი.",
+        title2: "",
+        accent: "მეტი სიმშვიდე.",
+        text: "ტექნიკა, რომელიც ყოველდღიურ ზრუნვას უფრო მარტივს ხდის",
+        href: "/products",
+      },
+    ],
+    heroBenefits: [
+      { title: "სწრაფი მიწოდება", text: "მთელ საქართველოში" },
+      { title: "ოფიციალური გარანტია", text: "ყველა პროდუქტზე" },
+      { title: "მოსახერხებელი გადახდა", text: "ბარათით და განვადებით" },
+    ],
+    perks: [
+      { title: "უფასო მიწოდება", text: "მთელ საქართველოში" },
+      { title: "ხარისხის გარანტია", text: "ოფიციალური გარანტია ყველა ტექნიკაზე" },
+      { title: "იყიდე ახლა — გადაიხადე ნაწილ-ნაწილ", text: "განვადება პარტნიორ ბანკებთან" },
+    ],
+    popularTitle: "პოპულარული პროდუქტები",
+    saleTitle: "ფასდაკლებული პროდუქცია",
+    promos: [
+      {
+        image: "/images/promo-kitchen.webp",
+        eyebrow: "EXPRESS MIX",
+        title: "სამზარეულოში",
+        accent: "უფრო მეტი კომფორტი",
+        text: "თანამედროვე ტექნიკა თქვენი ყოველდღიურობისთვის.",
+        button: "ნახე შეთავაზებები",
+        href: "/products?category=kitchen",
+      },
+      {
+        image: "/images/promo-iron.webp",
+        eyebrow: "სპეციალური ფასები",
+        title: "საყოფაცხოვრებო",
+        accent: "ტექნიკაზე",
+        text: "პატარა დეტალები. დიდი განსხვავება.",
+        button: "ნახე აქციები",
+        href: "/products?category=irons",
+      },
+    ],
+    storyTitle: "თქვენი სახლი.",
+    storyTitle2: "ჩვენი ტექნიკა.",
+    storyImage: "/images/washer-2.webp",
+    newsletterTitle: "გამოიწერე სიახლეები",
+    newsletterText: "შეიტყვე ახალი პროდუქტებისა და განსაკუთრებული შეთავაზებების შესახებ.",
+  },
+  about: {
+    heroEyebrow: "ABOUT EXPRESS MIX",
+    heroTitle: "ტექნიკა თქვენი",
+    heroAccent: "სახლისთვის.",
+    heroText: "თქვენი სახლი. ჩვენი ტექნიკა.",
+    heroImage: "/images/washer-2.webp",
+    introEyebrow: "WHO WE ARE",
+    introTitle: "Express Mix —",
+    introAccent: "სახლისა და სამზარეულოს ტექნიკა",
+    paragraphs: [
+      "Express Mix არის საყოფაცხოვრებო ტექნიკის მაღაზია, სადაც ერთ სივრცეში თავს იყრის ყველაფერი, რაც თქვენს სახლს უფრო კომფორტულს ხდის — მაცივრები, სარეცხი მანქანები, ღუმელები, მტვერსასრუტები და სამზარეულოს წვრილი ტექნიკა.",
+      "ჩვენი მიზანია, ტექნიკის შეძენა იყოს მარტივი და სასიამოვნო: შეარჩიეთ პროდუქტი კატეგორიების მიხედვით, შეადარეთ ფასები და მიიღეთ კონსულტაცია ჩვენი გუნდისგან.",
+    ],
+    introImage: "/images/promo-kitchen.webp",
+    values: [
+      { title: "ხარისხიანი ბრენდები", text: "მხოლოდ სანდო მწარმოებლების ტექნიკა" },
+      { title: "საუკეთესო ფასები", text: "მუდმივი აქციები და სპეციალური შეთავაზებები" },
+      { title: "კომფორტული შოპინგი", text: "მარტივი შეკვეთა და სწრაფი მიწოდება" },
+    ],
+    contactTitle: "საკონტაქტო ინფორმაცია",
+  },
+  contact: {
+    eyebrow: "GET IN TOUCH",
+    title: "დაგვიკავშირდით",
+    text: "გაქვთ შეკითხვა ან გჭირდებათ დახმარება ტექნიკის არჩევაში? სიამოვნებით დაგეხმარებით.",
+    phoneText: "დაგვირეკეთ და გიპასუხებთ ნებისმიერ კითხვაზე.",
+    addressText: "მობრძანდით და ნახეთ ტექნიკა ადგილზე.",
+    consultTitle: "არჩევანში დაგეხმარებით",
+    consultText: "შეგირჩევთ ტექნიკას თქვენი სახლისა და ბიუჯეტის მიხედვით.",
+    ctaTitle: "გჭირდებათ კონსულტაცია?",
+    ctaText: "დაგვირეკეთ და ერთად შევარჩევთ თქვენთვის საუკეთესო ტექნიკას.",
+  },
+  shipping: {
+    tbilisi: 15,
+    batumi: 25,
+    regions: 35,
+    freeFrom: 2000,
+    pickupText: "თვითგატანა უფასოა. მისამართი და სამუშაო საათები შეკვეთის დადასტურებისას გეცნობებათ.",
+    warrantyText: "გარანტია და დაბრუნების პირობები განისაზღვრება კონკრეტული პროდუქტის მიხედვით.",
+  },
+  info: {
+    delivery: "კურიერით მიწოდება: თბილისი — 15 ₾, ბათუმი — 25 ₾, სხვა რეგიონები — 35 ₾. 2 000 ₾-დან მიწოდება უფასოა. თვითგატანა — უფასო.",
+    warranty: "გარანტიის ვადა და პირობები განისაზღვრება კონკრეტული მოდელის მიხედვით. დეტალებისთვის დაგვიკავშირდით.",
+    payment: "გადახდა შესაძლებელია ბარათით, განვადებით ან პროდუქტის მიღებისას.",
+    about: "Express Mix — სახლისა და სამზარეულოს ტექნიკა ერთ სივრცეში. ხარისხიანი ბრენდები, საუკეთესო ფასები და კომფორტული შოპინგი.",
+    account: "პირადი კაბინეტი მალე დაემატება. კალათა და ფავორიტები ინახება თქვენს ბრაუზერში.",
+    social: "გამოგვყევით სოციალურ ქსელებში და შეიტყვეთ სიახლეები პირველმა.",
+    brands: "Express Mix-ში წარმოდგენილია სახლისა და სამზარეულოს ტექნიკის წამყვანი ბრენდები.",
+  },
+};
+
+export type Content = typeof contentDefaults;
+export type ContentKey = keyof Content;
+
+// ───────── ადმინის რედაქტორის ველები ─────────
+
+export type Sub = { name: string; label: string; long?: boolean; image?: boolean };
+export type FieldSpec =
+  | { name: string; label: string; type: "text" | "textarea" | "number" | "image"; hint?: string }
+  | { name: string; label: string; type: "list"; hint?: string; long?: boolean }
+  | { name: string; label: string; type: "objects"; hint?: string; fields: Sub[]; fixed?: boolean };
+
+const link: Sub[] = [
+  { name: "label", label: "ტექსტი" },
+  { name: "href", label: "ბმული (მაგ. /about)" },
+];
+const titleText: Sub[] = [
+  { name: "title", label: "სათაური" },
+  { name: "text", label: "ტექსტი" },
+];
+
+export const contentSections: { key: ContentKey; title: string; description: string; fields: FieldSpec[] }[] = [
+  {
+    key: "site",
+    title: "საკონტაქტო ინფორმაცია",
+    description: "ტელეფონი, მისამართი, სოციალური ქსელები — ჩანს ჰედერში, ფუტერში, კონტაქტის გვერდზე და შეკვეთისას.",
+    fields: [
+      { name: "phone", label: "ტელეფონი (როგორც ჩანს)", type: "text", hint: "მაგ. 510 00 08 56" },
+      { name: "phoneHref", label: "ტელეფონი დასარეკად", type: "text", hint: "მაგ. tel:+995510000856" },
+      { name: "email", label: "ელფოსტა", type: "text" },
+      { name: "address", label: "მისამართი", type: "text" },
+      { name: "mapQuery", label: "რუკის მისამართი (Google Maps)", type: "text", hint: "მაგ. Mirian Mepe St 46, Tbilisi, Georgia" },
+      { name: "hours", label: "სამუშაო საათები", type: "text" },
+      { name: "facebook", label: "Facebook ბმული", type: "text" },
+      { name: "instagram", label: "Instagram ბმული", type: "text" },
+      { name: "youtube", label: "YouTube ბმული", type: "text" },
+    ],
+  },
+  {
+    key: "header",
+    title: "ჰედერი",
+    description: "ძიების ველი და ნავიგაციის ბმულები (კატეგორიების მენიუ კატეგორიებიდან ივსება).",
+    fields: [
+      { name: "searchPlaceholder", label: "ძიების ველის ტექსტი", type: "text" },
+      { name: "navLinks", label: "ნავიგაციის ბმულები", type: "objects", fields: link },
+    ],
+  },
+  {
+    key: "footer",
+    title: "ფუტერი",
+    description: "საიტის ქვედა ნაწილი.",
+    fields: [
+      { name: "links", label: "ბმულები", type: "objects", fields: link },
+      { name: "copyright", label: "ქვედა ტექსტი", type: "text" },
+    ],
+  },
+  {
+    key: "home",
+    title: "მთავარი გვერდი",
+    description: "ბანერები (სლაიდერი), უპირატესობები, სარეკლამო ბლოკები და სათაურები.",
+    fields: [
+      { name: "heroEyebrow", label: "ბანერი: ზედა წარწერა", type: "text" },
+      { name: "heroButton", label: "ბანერი: ღილაკის ტექსტი", type: "text" },
+      {
+        name: "slides",
+        label: "ბანერის სლაიდები",
+        type: "objects",
+        hint: "სათაური: 1-ლი ხაზი; მე-2 ხაზი: ჩვეულებრივი ტექსტი + ნარინჯისფერი ნაწილი.",
+        fields: [
+          { name: "image", label: "სურათი", image: true },
+          { name: "title", label: "სათაური (1-ლი ხაზი)" },
+          { name: "title2", label: "მე-2 ხაზი" },
+          { name: "accent", label: "ნარინჯისფერი ნაწილი" },
+          { name: "text", label: "ტექსტი" },
+          { name: "href", label: "ბმული" },
+        ],
+      },
+      { name: "heroBenefits", label: "ბანერის ქვედა უპირატესობები (3)", type: "objects", fixed: true, fields: titleText },
+      { name: "perks", label: "უპირატესობების ბარათები (3)", type: "objects", fixed: true, fields: titleText },
+      { name: "popularTitle", label: "„პოპულარული“ ბლოკის სათაური", type: "text" },
+      { name: "saleTitle", label: "„ფასდაკლებული“ ბლოკის სათაური", type: "text" },
+      {
+        name: "promos",
+        label: "სარეკლამო ბანერები (2)",
+        type: "objects",
+        fixed: true,
+        fields: [
+          { name: "image", label: "სურათი", image: true },
+          { name: "eyebrow", label: "ზედა წარწერა" },
+          { name: "title", label: "სათაური" },
+          { name: "accent", label: "სათაურის მე-2 ხაზი" },
+          { name: "text", label: "ტექსტი" },
+          { name: "button", label: "ღილაკი" },
+          { name: "href", label: "ბმული" },
+        ],
+      },
+      { name: "storyImage", label: "ქვედა ბლოკის სურათი", type: "image" },
+      { name: "storyTitle", label: "ქვედა ბლოკი: სათაური", type: "text" },
+      { name: "storyTitle2", label: "ქვედა ბლოკი: მე-2 ხაზი", type: "text" },
+      { name: "newsletterTitle", label: "გამოწერის სათაური", type: "text" },
+      { name: "newsletterText", label: "გამოწერის ტექსტი", type: "textarea" },
+    ],
+  },
+  {
+    key: "about",
+    title: "ჩვენ შესახებ",
+    description: "„ჩვენ შესახებ“ გვერდის ტექსტები და სურათები.",
+    fields: [
+      { name: "heroImage", label: "ბანერის სურათი", type: "image" },
+      { name: "heroEyebrow", label: "ბანერი: ზედა წარწერა", type: "text" },
+      { name: "heroTitle", label: "ბანერი: სათაური", type: "text" },
+      { name: "heroAccent", label: "ბანერი: ნარინჯისფერი ნაწილი", type: "text" },
+      { name: "heroText", label: "ბანერი: ტექსტი", type: "text" },
+      { name: "introImage", label: "აღწერის სურათი", type: "image" },
+      { name: "introEyebrow", label: "აღწერა: ზედა წარწერა", type: "text" },
+      { name: "introTitle", label: "აღწერა: სათაური", type: "text" },
+      { name: "introAccent", label: "აღწერა: ნარინჯისფერი ნაწილი", type: "text" },
+      { name: "paragraphs", label: "აღწერის აბზაცები", type: "list", long: true },
+      { name: "values", label: "ღირებულებები (3)", type: "objects", fixed: true, fields: titleText },
+      { name: "contactTitle", label: "საკონტაქტო ბლოკის სათაური", type: "text" },
+    ],
+  },
+  {
+    key: "contact",
+    title: "კონტაქტი",
+    description: "კონტაქტის გვერდის ტექსტები. ტელეფონი და მისამართი — „საკონტაქტო ინფორმაციაში“.",
+    fields: [
+      { name: "eyebrow", label: "ზედა წარწერა", type: "text" },
+      { name: "title", label: "სათაური", type: "text" },
+      { name: "text", label: "ქვესათაური", type: "textarea" },
+      { name: "phoneText", label: "ტელეფონის ბარათის ტექსტი", type: "text" },
+      { name: "addressText", label: "მისამართის ბარათის ტექსტი", type: "text" },
+      { name: "consultTitle", label: "კონსულტაციის ბარათის სათაური", type: "text" },
+      { name: "consultText", label: "კონსულტაციის ბარათის ტექსტი", type: "text" },
+      { name: "ctaTitle", label: "ქვედა ბლოკი: სათაური", type: "text" },
+      { name: "ctaText", label: "ქვედა ბლოკი: ტექსტი", type: "text" },
+    ],
+  },
+  {
+    key: "shipping",
+    title: "მიწოდება",
+    description: "მიწოდების ტარიფები (₾) — გამოიყენება კალათაში და შეკვეთისას.",
+    fields: [
+      { name: "tbilisi", label: "თბილისი (₾)", type: "number" },
+      { name: "batumi", label: "ბათუმი (₾)", type: "number" },
+      { name: "regions", label: "სხვა რეგიონები (₾)", type: "number" },
+      { name: "freeFrom", label: "უფასო მიწოდება (₾-დან)", type: "number" },
+      { name: "pickupText", label: "თვითგატანის ტექსტი", type: "textarea" },
+      { name: "warrantyText", label: "გარანტიის ტექსტი (პროდუქტის გვერდზე)", type: "textarea" },
+    ],
+  },
+  {
+    key: "info",
+    title: "საინფორმაციო ფანჯრები",
+    description: "ტექსტები, რომლებიც იხსნება „მიწოდება“, „გადახდა“, „გარანტია“ და სხვა ღილაკებზე.",
+    fields: [
+      { name: "delivery", label: "მიწოდების პირობები", type: "textarea" },
+      { name: "payment", label: "გადახდის მეთოდები", type: "textarea" },
+      { name: "warranty", label: "პროდუქტის გარანტია", type: "textarea" },
+      { name: "about", label: "ჩვენ შესახებ (მოკლედ)", type: "textarea" },
+      { name: "account", label: "ანგარიში", type: "textarea" },
+      { name: "social", label: "სოციალური ქსელები", type: "textarea" },
+      { name: "brands", label: "ბრენდები", type: "textarea" },
+    ],
+  },
+];

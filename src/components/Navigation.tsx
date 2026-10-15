@@ -3,24 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { CONTACT } from "@/lib/contact";
-import { MENU } from "@/lib/menu";
+import { useCatalog } from "@/context/CatalogContext";
 import { Icon } from "./Icon";
-
-const NAV_LINKS = [
-  { href: "/products", label: "მაღაზია" },
-  { href: "/products?sale=1", label: "აქციები", dot: true },
-  { href: "/products?new=1", label: "ახალი პროდუქტები" },
-  { href: "/#brands", label: "ბრენდები" },
-  { href: "/about", label: "ჩვენ შესახებ" },
-  { href: "/contact", label: "კონტაქტი" },
-];
 
 export function Navigation() {
   const pathname = usePathname();
+  const { menu: MENU, content } = useCatalog();
+  const CONTACT = content.site;
+  // აქციების ბმულს ნარინჯისფერი წერტილი აქვს
+  const NAV_LINKS = content.header.navLinks.map((l) => ({ ...l, dot: l.href.includes("sale=1") }));
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [active, setActive] = useState("large");
+  const [active, setActive] = useState(MENU[0]?.id ?? "");
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const hoverTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const canHover = () => window.matchMedia("(hover: hover)").matches;
@@ -161,51 +155,53 @@ export function Navigation() {
               </li>
             ))}
           </ul>
-          <div className="mega-panel">
-            <div className="mega-panel-head">
-              <h3>{section.name}</h3>
-              <Link className="text-link" href={section.href} onClick={close}>
-                ყველას ნახვა <Icon name="arrow" />
-              </Link>
-            </div>
-            <div className="mega-groups">
-              {section.groups.map((g) => {
-                const hasItems = !!g.items?.length;
-                const isOpen = openGroup === g.title;
-                return (
-                  <div className={`mega-group${hasItems ? " has-items" : ""}${isOpen ? " open" : ""}`} key={g.title}>
-                    <Link
-                      className="mega-group-title"
-                      href={g.href}
-                      aria-expanded={hasItems ? isOpen : undefined}
-                      onClick={(e) => {
-                        // სენსორულ ეკრანზე ქვეკატეგორიების მქონე ჯგუფი იშლება, გვერდზე არ გადადის
-                        if (hasItems && !canHover()) {
-                          e.preventDefault();
-                          setOpenGroup(isOpen ? null : g.title);
-                        } else close();
-                      }}
-                    >
-                      {g.title}
-                      {hasItems && <Icon name="chevron" className="small mega-group-chevron" />}
-                    </Link>
-                    {hasItems && (
-                      <div className="mega-items">
-                        {g.items!.map((it) => (
-                          <Link key={it.name} className="mega-item" href={it.href} onClick={close}>
-                            {it.name}
+          {section && (
+            <div className="mega-panel">
+              <div className="mega-panel-head">
+                <h3>{section.name}</h3>
+                <Link className="text-link" href={section.href} onClick={close}>
+                  ყველას ნახვა <Icon name="arrow" />
+                </Link>
+              </div>
+              <div className="mega-groups">
+                {section.groups.map((g) => {
+                  const hasItems = !!g.items?.length;
+                  const isOpen = openGroup === g.title;
+                  return (
+                    <div className={`mega-group${hasItems ? " has-items" : ""}${isOpen ? " open" : ""}`} key={g.title}>
+                      <Link
+                        className="mega-group-title"
+                        href={g.href}
+                        aria-expanded={hasItems ? isOpen : undefined}
+                        onClick={(e) => {
+                          // სენსორულ ეკრანზე ქვეკატეგორიების მქონე ჯგუფი იშლება, გვერდზე არ გადადის
+                          if (hasItems && !canHover()) {
+                            e.preventDefault();
+                            setOpenGroup(isOpen ? null : g.title);
+                          } else close();
+                        }}
+                      >
+                        {g.title}
+                        {hasItems && <Icon name="chevron" className="small mega-group-chevron" />}
+                      </Link>
+                      {hasItems && (
+                        <div className="mega-items">
+                          {g.items!.map((it) => (
+                            <Link key={it.name} className="mega-item" href={it.href} onClick={close}>
+                              {it.name}
+                            </Link>
+                          ))}
+                          <Link className="mega-item mega-item-all" href={g.href} onClick={close}>
+                            ყველა — {g.title} <Icon name="arrow" />
                           </Link>
-                        ))}
-                        <Link className="mega-item mega-item-all" href={g.href} onClick={close}>
-                          ყველა — {g.title} <Icon name="arrow" />
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </nav>

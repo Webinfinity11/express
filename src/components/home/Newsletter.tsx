@@ -1,33 +1,31 @@
 "use client";
 
+import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { Icon } from "../Icon";
 
 export function Newsletter() {
   const { showToast } = useStore();
+  const { home } = useCatalog().content;
 
   return (
     <section className="newsletter-band" id="about">
       <div className="story-panel">
-        <img src="/images/washer-2.webp" alt="თანამედროვე სამრეცხაო ოთახი" loading="lazy" />
+        {home.storyImage && <img src={home.storyImage} alt="" loading="lazy" />}
         <div className="story-shade"></div>
         <div className="story-copy">
           <h2>
-            თქვენი სახლი.
+            {home.storyTitle}
             <br />
-            ჩვენი ტექნიკა.
+            {home.storyTitle2}
           </h2>
           <span className="eyebrow">EXPRESS MIX</span>
         </div>
       </div>
       <div className="newsletter-panel">
         <div className="newsletter-copy">
-          <h2>გამოიწერე სიახლეები</h2>
-          <p>
-            შეიტყვე ახალი პროდუქტებისა
-            <br />
-            და განსაკუთრებული შეთავაზებების შესახებ.
-          </p>
+          <h2>{home.newsletterTitle}</h2>
+          <p>{home.newsletterText}</p>
           {/* TODO: გამოწერის შენახვა (API / ელფოსტის სერვისი) */}
           <form
             className="newsletter-form"

@@ -1,9 +1,22 @@
 import Link from "next/link";
+import type { Content } from "@/lib/content-schema";
 import { Icon } from "./Icon";
 import { InfoButton } from "./InfoButton";
-import { CONTACT } from "@/lib/contact";
 
-export function Footer() {
+export function Footer({ content }: { content: Content }) {
+  const { site, footer } = content;
+  // სოციალური ბმული თუ არ არის მითითებული, ღილაკი საინფორმაციო ფანჯარას ხსნის
+  const social = (href: string, label: string, icon: React.ReactNode) =>
+    href ? (
+      <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+        {icon}
+      </a>
+    ) : (
+      <InfoButton info="social" aria-label={label}>
+        {icon}
+      </InfoButton>
+    );
+
   return (
     <footer className="site-footer">
       <div className="wrap">
@@ -12,28 +25,24 @@ export function Footer() {
             <img src="/images/logo.webp" alt="Express Mix — Home & Kitchen" width={459} height={191} loading="lazy" />
           </Link>
           <div className="footer-links">
-            <Link href="/about">ჩვენ შესახებ</Link>
+            {footer.links.map((l) => (
+              <Link key={l.href + l.label} href={l.href}>
+                {l.label}
+              </Link>
+            ))}
             <InfoButton info="delivery">მიწოდება</InfoButton>
             <InfoButton info="payment">გადახდა</InfoButton>
-            <Link href="/contact">კონტაქტი</Link>
           </div>
-          {/* TODO: სოციალური ქსელების რეალური ბმულები */}
           <div className="socials">
-            <InfoButton info="social" aria-label="Facebook">
-              <span className="facebook-letter">f</span>
-            </InfoButton>
-            <InfoButton info="social" aria-label="Instagram">
-              <Icon name="instagram" />
-            </InfoButton>
-            <InfoButton info="social" aria-label="YouTube">
-              <Icon name="youtube" />
-            </InfoButton>
+            {social(site.facebook, "Facebook", <span className="facebook-letter">f</span>)}
+            {social(site.instagram, "Instagram", <Icon name="instagram" />)}
+            {social(site.youtube, "YouTube", <Icon name="youtube" />)}
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 Express Mix. ყველა უფლება დაცულია.</span>
+          <span>{footer.copyright}</span>
           <span className="demo-disclaimer">
-            {CONTACT.address} · <a href={CONTACT.phoneHref}>{CONTACT.phone}</a>
+            {site.address} · <a href={site.phoneHref}>{site.phone}</a>
           </span>
         </div>
       </div>

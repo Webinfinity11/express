@@ -6,16 +6,23 @@ import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
 import { QtyInput } from "@/components/QtyInput";
 import { useStore } from "@/context/StoreContext";
-import { BY_ID, PRODUCTS, gel, productHref } from "@/lib/data";
+import { useCatalog } from "@/context/CatalogContext";
+import { gel } from "@/lib/data";
 
 export function CartView() {
   const store = useStore();
   const { cart, cartCount, totals: t, coupon } = store;
-  const entries = Object.entries(cart).filter(([id]) => BY_ID.has(id));
+  const { line, products: PRODUCTS } = useCatalog();
+  const entries = Object.entries(cart).flatMap(([id, q]) => {
+    const l = line(id);
+    return l ? [[id, q, l] as const] : [];
+  });
   const [couponInput, setCouponInput] = useState(coupon);
   const [couponError, setCouponError] = useState("");
+  const [couponBusy, setCouponBusy] = useState(false);
 
-  const recommended = PRODUCTS.filter((p) => !cart[p.id]).slice(0, 4);
+  const inCart = new Set(entries.map(([, , l]) => l.product.id));
+  const recommended = PRODUCTS.filter((p) => !inCart.has(p.id)).slice(0, 4);
 
   return (
     <main id="main" className="wrap internal-main cart-page">
@@ -65,26 +72,25 @@ export function CartView() {
                 <span>ჯამი</span>
                 <span></span>
               </div>
-              {entries.map(([id, q]) => {
-                const p = BY_ID.get(id)!;
-                const on = store.isFavorite(id);
+              {entries.map(([id, q, p]) => {
+                const on = store.isFavorite(p.product.id);
                 return (
                   <article className="cart-product-row" key={id}>
                     <div className="cart-row-product">
-                      <Link className="cart-row-image" href={productHref(p)} aria-label={p.name}>
+                      <Link className="cart-row-image" href={p.href} aria-label={p.name}>
                         <img src={p.image} alt={p.name} />
                       </Link>
                       <div>
-                        <span className="item-brand">{p.brand.toUpperCase()}</span>
+                        <span className="item-brand">{p.product.brand.toUpperCase()}</span>
                         <h2>
-                          <Link href={productHref(p)}>{p.name}</Link>
+                          <Link href={p.href}>{p.name}</Link>
                         </h2>
-                        <span className="cart-variant">{p.color}</span>
+                        <span className="cart-variant">{p.variantName || p.product.color}</span>
                         <div className="cart-unit-price">
                           <span>{gel(p.price * 100)}</span>
                           {p.oldPrice > p.price && <del>{gel(p.oldPrice * 100)}</del>}
                         </div>
-                        <button className="text-action" aria-pressed={on} onClick={() => store.toggleFavorite(id)}>
+                        <button className="text-action" aria-pressed={on} onClick={() => store.toggleFavorite(p.product.id)}>
                           <Icon name="heart" /> {on ? "ფავორიტებშია" : "ფავორიტებში"}
                         </button>
                       </div>
@@ -147,11 +153,12 @@ export function CartView() {
               </div>
               <form
                 className="coupon-form"
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  const code = couponInput.trim().toUpperCase();
-                  if (!code) return setCouponError("შეიყვანეთ პრომოკოდი.");
-                  setCouponError(store.applyCoupon(code) ? "" : "პრომოკოდი ვერ მოიძებნა.");
+                  if (couponBusy) return;
+                  setCouponBusy(true);
+                  setCouponError((await store.applyCoupon(couponInput)) ?? "");
+                  setCouponBusy(false);
                 }}
               >
                 <label className="sr-only" htmlFor="couponInput">

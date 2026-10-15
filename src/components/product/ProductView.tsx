@@ -7,8 +7,9 @@ import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
 import { QtyInput } from "@/components/QtyInput";
+import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
-import { CITIES, PRODUCTS, categoryName, discountPercent, gel, type Product } from "@/lib/data";
+import { CITIES, discountPercent, gel, lineKey, money, type Product } from "@/lib/data";
 
 const TABS = [
   ["description", "აღწერა"],
@@ -23,6 +24,14 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export function ProductView({ p }: { p: Product }) {
   const router = useRouter();
   const { addToCart, isFavorite, toggleFavorite, city, openModal, showToast } = useStore();
+  const { products, categoryName, content } = useCatalog();
+  const ship = content.shipping;
+  // ვარიაცია (ფერი): ფასი, SKU, მარაგი და მთავარი ფოტო მისგან მოდის
+  const [vid, setVid] = useState(p.variants.find((v) => v.inStock)?.id ?? p.variants[0]?.id ?? null);
+  const variant = p.variants.find((v) => v.id === vid) ?? null;
+  const cur = variant ?? p;
+  const inStock = variant ? variant.inStock : p.inStock;
+  const key = lineKey(p.id, variant?.id);
   const [index, setIndex] = useState(0);
   const [qty, setQty] = useState(1);
   const [tab, setTab] = useState<Tab>("description");
@@ -30,9 +39,9 @@ export function ProductView({ p }: { p: Product }) {
   const contentRef = useRef<HTMLElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const gallery = p.gallery;
+  const gallery = variant?.image ? [variant.image, ...p.gallery.filter((g) => g !== variant.image)] : p.gallery;
   const go = (n: number) => setIndex((n + gallery.length) % gallery.length);
-  const off = discountPercent(p);
+  const off = discountPercent(cur);
   const favorite = isFavorite(p.id);
   const [first, ...rest] = p.subtitle.split(". ");
 
@@ -109,11 +118,11 @@ export function ProductView({ p }: { p: Product }) {
         <div className="p-details">
           <div className="p-brand-row">
             <span className="p-brand">{p.brand.toUpperCase()}</span>
-            <span className="p-sku">SKU: {p.sku}</span>
+            {(variant?.sku || p.sku) && <span className="p-sku">SKU: {variant?.sku || p.sku}</span>}
           </div>
           <h1>{p.name}</h1>
           <div className="p-status">
-            <span className="inline-green">მარაგშია</span>
+            <span className={inStock ? "inline-green" : "inline-out"}>{inStock ? "მარაგშია" : "არ არის მარაგში"}</span>
             <i className="status-divider"></i>
             <button
               onClick={() => {
@@ -127,14 +136,14 @@ export function ProductView({ p }: { p: Product }) {
           <div className="p-pricebox">
             <div>
               <div className="p-prices">
-                <strong>{gel(p.price * 100)}</strong>
-                {p.oldPrice > p.price && <del>{gel(p.oldPrice * 100)}</del>}
+                <strong>{gel(cur.price * 100)}</strong>
+                {cur.oldPrice > cur.price && <del>{gel(cur.oldPrice * 100)}</del>}
               </div>
               <span className="demo-caption">სპეციალური ფასი</span>
             </div>
-            {p.oldPrice > p.price && (
+            {cur.oldPrice > cur.price && (
               <span className="saving-label">
-                თქვენ ზოგავთ<strong>{gel((p.oldPrice - p.price) * 100)}</strong>
+                თქვენ ზოგავთ<strong>{gel((cur.oldPrice - cur.price) * 100)}</strong>
               </span>
             )}
           </div>
@@ -146,23 +155,67 @@ export function ProductView({ p }: { p: Product }) {
               </div>
             ))}
           </dl>
-          <div className="p-color">
-            <span>ფერი:</span>
-            <span className="color-swatch" style={{ "--product-color": p.tone } as React.CSSProperties}>
-              <Icon name="check" />
-            </span>
-            <strong>{p.color}</strong>
-          </div>
+          {p.variants.length > 0 ? (
+            <div className="p-variants">
+              <span className="p-variants-label">
+                ვარიაცია: <strong>{variant?.name}</strong>
+              </span>
+              <div className="p-variant-list" role="radiogroup" aria-label="ვარიაციის არჩევა">
+                {p.variants.map((v) => {
+                  const pick = () => {
+                    setVid(v.id);
+                    setIndex(0);
+                  };
+                  return v.colorHex ? (
+                    <button
+                      key={v.id}
+                      role="radio"
+                      aria-checked={v.id === vid}
+                      aria-label={v.name}
+                      title={v.name}
+                      className={`color-swatch variant-swatch${v.id === vid ? " active" : ""}${v.inStock ? "" : " out"}`}
+                      style={{ "--product-color": v.colorHex } as React.CSSProperties}
+                      onClick={pick}
+                    >
+                      {v.id === vid && <Icon name="check" />}
+                    </button>
+                  ) : (
+                    <button
+                      key={v.id}
+                      role="radio"
+                      aria-checked={v.id === vid}
+                      className={`variant-pill${v.id === vid ? " active" : ""}${v.inStock ? "" : " out"}`}
+                      onClick={pick}
+                    >
+                      {v.name}
+                      {v.price !== p.price && <small>{money(v.price)} ₾</small>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            p.color && (
+              <div className="p-color">
+                <span>ფერი:</span>
+                <span className="color-swatch" style={{ "--product-color": p.tone } as React.CSSProperties}>
+                  <Icon name="check" />
+                </span>
+                <strong>{p.color}</strong>
+              </div>
+            )
+          )}
           <div className="p-buy-row">
             <QtyInput value={qty} onChange={setQty} label="პროდუქტის რაოდენობა" />
-            <button className="button primary" onClick={() => addToCart(p.id, qty)}>
-              <Icon name="cart" /> კალათაში დამატება
+            <button className="button primary" disabled={!inStock} onClick={() => addToCart(key, qty)}>
+              <Icon name="cart" /> {inStock ? "კალათაში დამატება" : "არ არის მარაგში"}
             </button>
           </div>
           <button
             className="button p-buy-now"
+            disabled={!inStock}
             onClick={() => {
-              if (addToCart(p.id, qty, false)) router.push("/cart");
+              if (addToCart(key, qty, false)) router.push("/cart");
             }}
           >
             შეიძინე ახლა <Icon name="arrow" />
@@ -243,12 +296,14 @@ export function ProductView({ p }: { p: Product }) {
                 [
                   ["ბრენდი", p.brand],
                   ["დასახელება", p.name],
-                  ["პროდუქტის კოდი", p.sku],
+                  ["პროდუქტის კოდი", variant?.sku || p.sku],
                   ["კატეგორია", categoryName(p.category)],
                   ...p.specs,
-                  ["ფერი", p.color],
+                  ["ფერი", variant?.name || p.color],
                 ] as [string, string][]
-              ).map(([k, v]) => (
+              )
+                .filter(([, v]) => v)
+                .map(([k, v]) => (
                 <div key={k}>
                   <span>{k}</span>
                   <strong>{v}</strong>
@@ -262,24 +317,24 @@ export function ProductView({ p }: { p: Product }) {
                 <Icon name="truck" />
                 <h3>კურიერით მიწოდება</h3>
                 <p>
-                  თბილისი — 15 ₾
+                  თბილისი — {money(ship.tbilisi)} ₾
                   <br />
-                  ბათუმი — 25 ₾
+                  ბათუმი — {money(ship.batumi)} ₾
                   <br />
-                  სხვა რეგიონები — 35 ₾
+                  სხვა რეგიონები — {money(ship.regions)} ₾
                   <br />
-                  2 000 ₾-დან — უფასოდ
+                  {money(ship.freeFrom)} ₾-დან — უფასოდ
                 </p>
               </article>
               <article className="delivery-info-card">
                 <Icon name="store" />
                 <h3>თვითგატანა</h3>
-                <p>თვითგატანა უფასოა. მისამართი და სამუშაო საათები შეკვეთის დადასტურებისას გეცნობებათ.</p>
+                <p>{ship.pickupText}</p>
               </article>
               <article className="delivery-info-card">
                 <Icon name="shield" />
                 <h3>გარანტია და პირობები</h3>
-                <p>გარანტია და დაბრუნების პირობები განისაზღვრება კონკრეტული პროდუქტის მიხედვით.</p>
+                <p>{ship.warrantyText}</p>
               </article>
             </div>
           )}
@@ -303,7 +358,10 @@ export function ProductView({ p }: { p: Product }) {
           </Link>
         </div>
         <div className="related-grid">
-          {PRODUCTS.filter((x) => x.id !== p.id)
+          {[
+            ...products.filter((x) => x.id !== p.id && x.category === p.category),
+            ...products.filter((x) => x.id !== p.id && x.category !== p.category),
+          ]
             .slice(0, 4)
             .map((x) => (
               <ItemCard key={x.id} p={x} />
@@ -313,10 +371,10 @@ export function ProductView({ p }: { p: Product }) {
 
       <div className="mobile-buy-bar">
         <div>
-          <strong>{gel(p.price * 100)}</strong>
-          {p.oldPrice > p.price && <small>{gel(p.oldPrice * 100)}-ის ნაცვლად</small>}
+          <strong>{gel(cur.price * 100)}</strong>
+          {cur.oldPrice > cur.price && <small>{gel(cur.oldPrice * 100)}-ის ნაცვლად</small>}
         </div>
-        <button className="button primary" onClick={() => addToCart(p.id, qty)}>
+        <button className="button primary" disabled={!inStock} onClick={() => addToCart(key, qty)}>
           <Icon name="cart" /> კალათაში დამატება
         </button>
       </div>
