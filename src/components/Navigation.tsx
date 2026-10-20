@@ -148,7 +148,6 @@ export function Navigation() {
                     } else close();
                   }}
                 >
-                  <img src={m.image} alt="" width={34} height={36} />
                   <span>{m.name}</span>
                   <Icon name="chevron" />
                 </Link>

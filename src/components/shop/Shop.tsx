@@ -325,7 +325,6 @@ export function Shop() {
                 aria-pressed={active}
                 onClick={() => update({ category: active ? "all" : c.id })}
               >
-                {c.image && <img src={c.image} alt="" width={60} height={65} />}
                 <span>{c.name}</span>
               </button>
             );
