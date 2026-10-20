@@ -512,9 +512,9 @@ body .category-card span{font-family:var(--font)!important;font-weight:700;color
 
 
 /* შოპის კატეგორიები: ქვე-კატეგორიები dropdown-ით */
-.filter-tree>summary{list-style:none;cursor:pointer}
+.filter-tree>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:6px}
 .filter-tree>summary::-webkit-details-marker{display:none}
-.filter-tree>summary label{pointer-events:auto}
-.filter-tree[open]>summary label .filter-n::after{content:" ▴";font-size:11px;color:#777571}
-.filter-tree:not([open])>summary label .filter-n::after{content:" ▾";font-size:11px;color:#777571}
-.filter-sub{padding-left:22px}
+.filter-tree>summary>label{flex:1;min-width:0}
+.filter-tree>summary::after{content:"";flex:none;width:7px;height:7px;border-right:1.5px solid #777571;border-bottom:1.5px solid #777571;transform:rotate(45deg);margin:0 4px 4px 2px;transition:transform .2s}
+.filter-tree[open]>summary::after{transform:rotate(-135deg);margin-bottom:0}
+.filter-sub{padding-left:26px}
