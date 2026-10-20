@@ -555,3 +555,6 @@ body .perk-icon::after{right:-9px}
 body .category-card.sale-card{justify-content:flex-start}
 body .sale-card .sale-badge{margin:24px auto 0}
 body .category-card span::after{bottom:-4px}
+
+/* აქციის წრე: ზემოდან და ქვემოდან ისე, რომ წარწერა და ხაზი მეზობლებთან ერთ დონეზე იყოს */
+body .sale-card .sale-badge{margin:24px auto 23px}
