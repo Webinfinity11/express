@@ -157,13 +157,31 @@ export function Shop() {
             <span>ყველა პროდუქტი</span>
             <span className="filter-n">{PRODUCTS.length}</span>
           </label>
-          {CATEGORIES.map((c) => (
-            <label className="filter-check" key={c.id}>
-              <input type="radio" name="category" checked={f.category === c.id} onChange={() => update({ category: c.id })} />
-              <span>{c.name}</span>
-              <span className="filter-n">{counts.get(c.id)}</span>
-            </label>
-          ))}
+          {CATEGORIES.filter((c) => !c.parent).map((top) => {
+            const subs = CATEGORIES.filter((c) => c.parent === top.id);
+            const topLabel = (
+              <label className="filter-check">
+                <input type="radio" name="category" checked={f.category === top.id} onChange={() => update({ category: top.id })} />
+                <span>{top.name}</span>
+                <span className="filter-n">{counts.get(top.id)}</span>
+              </label>
+            );
+            if (!subs.length) return <div key={top.id}>{topLabel}</div>;
+            return (
+              <details className="filter-tree" key={top.id} open={f.category === top.id || subs.some((s) => s.id === f.category)}>
+                <summary>
+                  {topLabel}
+                </summary>
+                {subs.map((c) => (
+                  <label className="filter-check filter-sub" key={c.id}>
+                    <input type="radio" name="category" checked={f.category === c.id} onChange={() => update({ category: c.id })} />
+                    <span>{c.name}</span>
+                    <span className="filter-n">{counts.get(c.id)}</span>
+                  </label>
+                ))}
+              </details>
+            );
+          })}
         </div>
       </details>
       <details className="filter-section" open>
