@@ -69,7 +69,7 @@ export async function getCatalog(): Promise<Catalog> {
     categories: cats.map((c) => ({
       id: c.slug,
       name: c.name,
-      image: c.image || PLACEHOLDER_IMAGE,
+      image: c.image || "",
       parent: c.parentId ? (slugOf.get(c.parentId) ?? null) : null,
       showOnHome: c.showOnHome,
       showInMenu: c.showInMenu,

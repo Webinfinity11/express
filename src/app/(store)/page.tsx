@@ -57,7 +57,7 @@ export default async function Home() {
             <div className="categories-grid">
               {homeCategories.map((c) => (
                 <Link key={c.id} className="category-card" href={categoryHref(c.id)}>
-                  <img src={c.image} alt="" width={100} height={111} loading="lazy" />
+                  {c.image && <img src={c.image} alt="" width={100} height={111} loading="lazy" />}
                   <span>{c.name}</span>
                 </Link>
               ))}
