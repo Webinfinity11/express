@@ -522,3 +522,10 @@ body .category-card span{font-family:var(--font)!important;font-weight:700;color
 /* შოპი: ბანერსა და ფილტრ-ზონას შორის უფსკრული (ზედა კატეგორიების ზოლის მოშორების შემდეგ) */
 .catalog-layout{margin-top:32px}
 @media(max-width:700px){.catalog-layout{margin-top:20px}}
+
+/* მთავარი გვერდის ინფო-ბარათები: ღია ფონი, მსუბუქი ჩარჩო (ზოგადი სტილის მიხედვით) */
+body .perk{background:#fff;color:var(--ink);border:1px solid #efeeeb;box-shadow:0 8px 22px #15151507}
+body .perk:hover{background:#fffaf6}
+body .perk strong{color:var(--ink)}
+body .perk small{color:#6b6862}
+body .perk-icon{background:#fff3ea;border:none}
