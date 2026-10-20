@@ -558,3 +558,9 @@ body .category-card span::after{bottom:-4px}
 
 /* აქციის წრე: ზემოდან და ქვემოდან ისე, რომ წარწერა და ხაზი მეზობლებთან ერთ დონეზე იყოს */
 body .sale-card .sale-badge{margin:24px auto 23px}
+
+/* პროდუქტის ბარათები: თეთრი ფონი და ჰოვერზე ნარინჯისფერი ტონი, როგორც კატეგორიის ბარათებზე */
+body .product-card{background:#fff;transition:transform .22s,border-color .22s,background .22s,box-shadow .22s}
+body .product-card .product-image-button{background:#fff;transition:background .22s}
+body .product-card:hover{border-color:#ffd6bc;background:#fff7f1;box-shadow:0 8px 22px #10101009}
+body .product-card:hover .product-image-button{background:#fff7f1}
