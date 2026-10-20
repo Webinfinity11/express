@@ -510,6 +510,8 @@ body .category-card span{font-family:var(--font)!important;font-weight:700;color
 .admin-edit a+a{border-left:1px solid #ffffff26;color:#ffffffb3}
 .admin-edit a:hover{background:var(--orange);color:#fff}
 
-/* კატეგორიის სურათები: თავდაპირველი ზომა */
-body .category-card img{width:100px!important;max-width:none!important;height:111px!important;object-fit:cover;border-radius:8px;display:block}
-body .shop-cat img{width:60px!important;height:65px!important;object-fit:cover;border-radius:8px}
+/* კატეგორიის სურათები და წარწერები: დაპატარავებული */
+body .category-card img{width:80px!important;max-width:none!important;height:89px!important;object-fit:cover;border-radius:8px;display:block}
+body .category-card span{font-size:13px!important}
+body .shop-cat img{width:48px!important;height:52px!important;object-fit:cover;border-radius:8px}
+body .shop-cat span{font-size:13px!important}
