@@ -308,30 +308,6 @@ export function Shop() {
         </div>
       </section>
 
-      <div className="shop-cats-wrap">
-        <button className="carousel-arrow prev shop-cats-arrow" aria-label="წინა კატეგორიები" hidden={catEdges.start} onClick={() => scrollCats(-1)}>
-          <Icon name="chevron" />
-        </button>
-        <button className="carousel-arrow shop-cats-arrow next" aria-label="შემდეგი კატეგორიები" hidden={catEdges.end} onClick={() => scrollCats(1)}>
-          <Icon name="chevron" />
-        </button>
-        <div className="shop-categories" aria-label="კატეგორიის არჩევა" ref={catsRef} onScroll={syncCats}>
-          {STRIP.map((c) => {
-            const active = f.category === c.id;
-            return (
-              <button
-                key={c.id}
-                className={`shop-cat${active ? " active" : ""}`}
-                aria-pressed={active}
-                onClick={() => update({ category: active ? "all" : c.id })}
-              >
-                <span>{c.name}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <div className="catalog-layout">
         <div id="filterHome">{sidebar}</div>
         <section className="catalog-results" aria-labelledby="catalogTitle">
