@@ -59,8 +59,8 @@ dialog{color:var(--ink);border:0;padding:0;background:white;box-shadow:0 25px 85
 .sale-card{justify-content:center}
 .sale-badge{display:flex;align-items:center;justify-content:center;width:64px;height:64px;margin:auto 0 0;border-radius:50%;background:var(--orange);color:#fff;font:800 33px/1 var(--font)}
 .perks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
-.perk{display:flex;align-items:center;gap:18px;padding:22px 24px;border-radius:10px;background:#1a1816;color:#fff;transition:background .2s}
-.perk:hover{background:#25221f}
+.perk{display:flex;align-items:center;gap:18px;padding:22px 24px;border-radius:10px;background:#2e2b28;color:#fff;transition:background .2s}
+.perk:hover{background:#3b3733}
 .perk-icon{display:flex;align-items:center;justify-content:center;width:56px;height:56px;flex-shrink:0;border-radius:10px;border:1.5px solid var(--orange)}
 .perk-icon svg{width:32px;height:32px;fill:none;stroke:var(--orange);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .perk strong{display:block;font-size:18px;font-weight:700;line-height:1.4;margin-bottom:3px}
