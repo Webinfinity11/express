@@ -550,3 +550,8 @@ body .category-card span::after{position:absolute;left:50%;transform:translateX(
 /* ინფო-ბარათი: გამყოფი ხაზი ზუსტად ხატულასა და ტექსტს შორის უფსკრულის შუაში */
 body .perk{gap:18px}
 body .perk-icon::after{right:-9px}
+
+/* კატეგორიის ბარათები: ფოტოები და აქციის წრე ერთ სიმაღლეზე; ხაზი ოდნავ ამოწეული */
+body .category-card.sale-card{justify-content:flex-start}
+body .sale-card .sale-badge{margin:24px auto 0}
+body .category-card span::after{bottom:-4px}
