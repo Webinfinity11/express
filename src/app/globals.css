@@ -538,3 +538,7 @@ body .perk-icon::after{content:"";position:absolute;right:-19px;top:6px;bottom:6
 /* მთავარი გვერდის კატეგორიის ბარათები: ნარინჯისფერი პატარა ხაზი წარწერის ქვეშ */
 body .category-card span{display:block}
 body .category-card span::after{content:"";display:block;width:28px;height:2px;background:var(--orange);border-radius:2px;margin:9px auto 0}
+
+/* კატეგორიის წარწერა: ნარინჯისფერი ხაზი პირდაპირ წარწერის ქვეშ (არა ბარათის ბოლოში) */
+body .category-card span{display:block;margin:0;min-height:0}
+body .category-card span::after{margin-top:6px}
