@@ -8,7 +8,8 @@ import { categoryHref } from "@/lib/data";
 
 export async function generateStaticParams() {
   const { products } = await getCatalog();
-  return products.map((p) => ({ slug: p.slug }));
+  // Cache Components-ს ერთი პარამეტრი მაინც სჭირდება; პროდუქტების გარეშე → 404
+  return products.length ? products.map((p) => ({ slug: p.slug })) : [{ slug: "_" }];
 }
 
 async function find(slug: string) {
