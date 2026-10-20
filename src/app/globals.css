@@ -529,3 +529,8 @@ body .perk:hover{background:#fffaf6}
 body .perk strong{color:var(--ink)}
 body .perk small{color:#6b6862}
 body .perk-icon{background:#fff3ea;border:none}
+
+/* ინფო-ბარათები: ნარინჯისფერი ქვედა ხაზი და ვერტიკალური გამყოფი ხატულასა და ტექსტს შორის */
+body .perk{border-bottom:3px solid var(--orange);border-radius:12px}
+body .perk-icon{position:relative;border-radius:50%}
+body .perk-icon::after{content:"";position:absolute;right:-19px;top:6px;bottom:6px;width:2px;background:var(--orange);border-radius:2px}
