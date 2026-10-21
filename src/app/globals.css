@@ -586,3 +586,14 @@ body .product-card:hover .product-image-button{background:#fff7f1}
   body .category-card span{font-size:13px;min-height:0;text-align:left}
   body .category-card span::after{display:none}
 }
+
+/* მობილური: გვერდის ჰორიზონტალური "დაფრენა" — გვერდი მხოლოდ ვერტიკალურად გადაადგილდება; ბანერი კიდევ უფრო დაპატარავდა */
+@media(max-width:700px){
+  html,body{overflow-x:clip;max-width:100%;overscroll-behavior-x:none}
+  main,section,.wrap{max-width:100%}
+  img{max-width:100%}
+  .hx-media,.hx-shade{height:min(36vw,150px)!important}
+  .hx-content{margin-top:-16px;padding:0 18px 14px}
+  .hx h1{font-size:21px}
+  .hx p{font-size:12.5px;margin-bottom:12px}
+}
