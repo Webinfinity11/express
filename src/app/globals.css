@@ -573,8 +573,8 @@ body .product-card:hover .product-image-button{background:#fff7f1}
 
 /* მობილური: ბანერის სურათი დაპატარავდა, კატეგორიები 2 სვეტად უფრო კითხვადია */
 @media(max-width:700px){
-  .hx-media,.hx-shade{aspect-ratio:auto!important;height:min(50vw,210px)!important}
-  .hx-content{margin-top:-26px;padding:0 20px 18px}
+  .hx-media,.hx-shade{aspect-ratio:auto!important;height:min(40vw,170px)!important}
+  .hx-content{margin-top:-20px;padding:0 20px 16px}
   .hx-eyebrow{margin-bottom:6px}
   .hx h1{font-size:23px;margin-bottom:8px}
   .hx p{font-size:13px;margin-bottom:14px}
