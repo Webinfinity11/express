@@ -3,6 +3,12 @@ import type { Content } from "@/lib/content-schema";
 import { Icon } from "./Icon";
 import { InfoButton } from "./InfoButton";
 
+const legalLinks = [
+  { label: "კონფიდენციალურობის პოლიტიკა", href: "/privacy-policy" },
+  { label: "წესები და პირობები", href: "/terms" },
+  { label: "დაბრუნების პოლიტიკა", href: "/returns-policy" },
+];
+
 export function Footer({ content }: { content: Content }) {
   const { site, footer } = content;
   // სოციალური ბმული თუ არ არის მითითებული, ღილაკი საინფორმაციო ფანჯარას ხსნის
@@ -40,6 +46,13 @@ export function Footer({ content }: { content: Content }) {
           </div>
         </div>
         <div className="footer-bottom">
+          <nav className="footer-legal" aria-label="იურიდიული ინფორმაცია">
+            {legalLinks.map((l) => (
+              <Link key={l.href} href={l.href}>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
           <span>{footer.copyright}</span>
           <span className="demo-disclaimer">
             {site.address} · <a href={site.phoneHref}>{site.phone}</a>
