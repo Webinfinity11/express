@@ -597,3 +597,11 @@ body .product-card:hover .product-image-button{background:#fff7f1}
   .hx h1{font-size:21px}
   .hx p{font-size:12.5px;margin-bottom:12px}
 }
+
+/* მობილური: „აქციები“ ბარათი — ერთი ზომის კატეგორიებთან, სრული სიგანით */
+@media(max-width:700px){
+  .categories-grid .category-card.sale-card{grid-column:1/-1;min-height:0;height:auto;flex-direction:row;justify-content:flex-start;align-items:center;gap:10px;padding:10px 12px;text-align:left}
+  .categories-grid .category-card.sale-card .sale-badge{width:52px;height:52px;min-width:52px;font-size:22px;margin:0;flex-shrink:0}
+  body .category-card.sale-card span{margin:0;min-height:0;text-align:left}
+  body .category-card.sale-card span::after{display:none}
+}
