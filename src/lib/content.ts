@@ -30,7 +30,7 @@ export function sanitizeSection(key: ContentKey, input: unknown): Record<string,
   const str = (v: unknown, max = 4000) => String(v ?? "").slice(0, max);
   const safe = (name: string, s: string, fallback: string) => {
     const n = name.toLowerCase();
-    if ((n.endsWith("href") || ["facebook", "instagram", "tiktok", "youtube"].includes(n)) && s && !SAFE_HREF.test(s)) return fallback;
+    if ((n.endsWith("href") || ["facebook", "instagram", "tiktok"].includes(n)) && s && !SAFE_HREF.test(s)) return fallback;
     if (n.endsWith("image") && s && !SAFE_IMAGE.test(s)) return fallback;
     return s;
   };

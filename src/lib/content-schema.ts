@@ -14,7 +14,6 @@ export const contentDefaults = {
     facebook: "https://www.facebook.com/share/1FvymY5TAy/",
     instagram: "https://www.instagram.com/express.mix",
     tiktok: "https://www.tiktok.com/@expressmix0",
-    youtube: "",
   },
   header: {
     searchPlaceholder: "რას ეძებთ?",
@@ -204,7 +203,6 @@ export const contentSections: { key: ContentKey; title: string; description: str
       { name: "facebook", label: "Facebook ბმული", type: "text" },
       { name: "instagram", label: "Instagram ბმული", type: "text" },
       { name: "tiktok", label: "TikTok ბმული", type: "text" },
-      { name: "youtube", label: "YouTube ბმული", type: "text" },
     ],
   },
   {
