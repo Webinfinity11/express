@@ -42,6 +42,7 @@ export function Footer({ content }: { content: Content }) {
           <div className="socials">
             {social(site.facebook, "Facebook", <span className="facebook-letter">f</span>)}
             {social(site.instagram, "Instagram", <Icon name="instagram" />)}
+            {social(site.tiktok, "TikTok", <Icon name="tiktok" />)}
             {social(site.youtube, "YouTube", <Icon name="youtube" />)}
           </div>
         </div>
