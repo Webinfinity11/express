@@ -62,6 +62,14 @@ export function ProductForm({
   const [subtitle, setSubtitle] = useState(product?.subtitle ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [specs, setSpecs] = useState<Spec[]>(product?.specs ?? []);
+  const [dragSpec, setDragSpec] = useState<number | null>(null);
+  // მახასიათებლის გადატანა from → to პოზიციაზე (ისრებით ან გადათრევით)
+  const moveSpec = (from: number, to: number) => {
+    if (to < 0 || to >= specs.length || from === to) return;
+    const next = [...specs];
+    next.splice(to, 0, next.splice(from, 1)[0]);
+    setSpecs(next);
+  };
   const [keywords, setKeywords] = useState(product?.keywords ?? "");
   const [colorName, setColorName] = useState(product?.colorName ?? "");
   const [colorHex, setColorHex] = useState(product?.colorHex ?? "");
@@ -305,9 +313,43 @@ export function ProductForm({
           }
         >
           {specs.length === 0 && <p className="text-slate-500 text-sm">მაგ. სიმძლავრე, მოცულობა, ზომა, წონა.</p>}
+          {specs.length > 1 && <p className="text-slate-500 text-xs mb-2">რიგითობის შესაცვლელად გადაათრიეთ ⠿-ით ან გამოიყენეთ ▲▼. შემდეგ დააჭირეთ „შენახვას“.</p>}
           <div className="grid gap-2">
             {specs.map((s, i) => (
-              <div key={i} className="flex gap-2">
+              <div
+                key={i}
+                className={`flex gap-2 items-center rounded-lg ${dragSpec === i ? "opacity-50 bg-orange-50" : ""}`}
+                onDragOver={(e) => {
+                  if (dragSpec === null) return;
+                  e.preventDefault();
+                  if (dragSpec !== i) {
+                    moveSpec(dragSpec, i);
+                    setDragSpec(i);
+                  }
+                }}
+                onDrop={(e) => e.preventDefault()}
+              >
+                <span
+                  draggable
+                  onDragStart={(e) => {
+                    e.dataTransfer.effectAllowed = "move";
+                    setDragSpec(i);
+                  }}
+                  onDragEnd={() => setDragSpec(null)}
+                  className="cursor-grab active:cursor-grabbing select-none text-slate-400 hover:text-slate-700 px-1 text-lg leading-none"
+                  title="გადაათრიეთ"
+                  aria-hidden="true"
+                >
+                  ⠿
+                </span>
+                <div className="flex flex-col">
+                  <button type="button" onClick={() => moveSpec(i, i - 1)} disabled={i === 0} className="text-slate-500 hover:text-[#ff5a00] disabled:opacity-25 px-1 text-xs leading-4" aria-label="ზემოთ">
+                    ▲
+                  </button>
+                  <button type="button" onClick={() => moveSpec(i, i + 1)} disabled={i === specs.length - 1} className="text-slate-500 hover:text-[#ff5a00] disabled:opacity-25 px-1 text-xs leading-4" aria-label="ქვემოთ">
+                    ▼
+                  </button>
+                </div>
                 <input
                   placeholder="მაგ. სიმძლავრე"
                   value={s.label}
