@@ -24,14 +24,14 @@ export function ContactCards({ site, contact }: { site: Content["site"]; contact
           <p>{site.hours || contact.addressText}</p>
         </span>
       </div>
-      <a className="contact-card" href={site.email ? `mailto:${site.email}` : site.phoneHref}>
+      <a className="contact-card" href={site.phoneHref}>
         <span className="contact-icon">
           <Icon name="headphones" />
         </span>
         <span>
           <small>კონსულტაცია</small>
           <strong>{contact.consultTitle}</strong>
-          <p>{site.email || contact.consultText}</p>
+          <p>{contact.consultText}</p>
         </span>
       </a>
     </div>

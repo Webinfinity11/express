@@ -24,6 +24,44 @@ export default async function ContactPage() {
 
         <ContactCards site={site} contact={contact} />
 
+        <section className="contact-extra" aria-label="ელფოსტა და სოციალური ქსელები">
+          <div className="contact-card">
+            <span className="contact-icon">
+              <Icon name="send" />
+            </span>
+            <span>
+              <small>ელფოსტა</small>
+              {[site.email, site.salesEmail].filter(Boolean).map((e) => (
+                <a key={e} className="contact-email" href={`mailto:${e}`}>
+                  {e}
+                </a>
+              ))}
+            </span>
+          </div>
+          <div className="contact-card">
+            <span>
+              <small>სოციალური ქსელები</small>
+              <span className="contact-socials">
+                {site.facebook && (
+                  <a href={site.facebook} target="_blank" rel="noopener noreferrer">
+                    Facebook
+                  </a>
+                )}
+                {site.instagram && (
+                  <a href={site.instagram} target="_blank" rel="noopener noreferrer">
+                    <Icon name="instagram" /> Instagram
+                  </a>
+                )}
+                {site.tiktok && (
+                  <a href={site.tiktok} target="_blank" rel="noopener noreferrer">
+                    <Icon name="tiktok" /> TikTok
+                  </a>
+                )}
+              </span>
+            </span>
+          </div>
+        </section>
+
         {site.mapQuery && (
           <section className="contact-map" aria-label="რუკა">
             <iframe

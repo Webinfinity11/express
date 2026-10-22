@@ -7,7 +7,8 @@ export const contentDefaults = {
   site: {
     phone: "510 00 08 56",
     phoneHref: "tel:+995510000856",
-    email: "",
+    email: "info@expressmix.ge",
+    salesEmail: "sales@expressmix.ge",
     address: "მირიან მეფის ქ. #46",
     mapQuery: "Mirian Mepe St 46, Tbilisi, Georgia",
     hours: "",
@@ -162,7 +163,7 @@ export const contentDefaults = {
     warrantyText: "გარანტია და დაბრუნების პირობები განისაზღვრება კონკრეტული პროდუქტის მიხედვით.",
   },
   info: {
-    delivery: "კურიერით მიწოდება: თბილისი — 15 ₾, ბათუმი — 25 ₾, სხვა რეგიონები — 35 ₾. 2 000 ₾-დან მიწოდება უფასოა. თვითგატანა — უფასო.",
+    delivery: "თბილისში ექსპრეს მიწოდება — შეკვეთის დადასტურებიდან 4–5 საათში (სამუშაო დღეებსა და საათებში). სტანდარტული მიწოდება: თბილისი — 1–2 სამუშაო დღე, რეგიონები — 3–4 სამუშაო დღე.",
     warranty: "გარანტიის ვადა და პირობები განისაზღვრება კონკრეტული მოდელის მიხედვით. დეტალებისთვის დაგვიკავშირდით.",
     payment: "გადახდა შესაძლებელია ბარათით, განვადებით ან პროდუქტის მიღებისას.",
     about: "Express Mix — სახლისა და სამზარეულოს ტექნიკა ერთ სივრცეში. ხარისხიანი ბრენდები, საუკეთესო ფასები და კომფორტული შოპინგი.",
@@ -200,7 +201,8 @@ export const contentSections: { key: ContentKey; title: string; description: str
     fields: [
       { name: "phone", label: "ტელეფონი (როგორც ჩანს)", type: "text", hint: "მაგ. 510 00 08 56" },
       { name: "phoneHref", label: "ტელეფონი დასარეკად", type: "text", hint: "მაგ. tel:+995510000856" },
-      { name: "email", label: "ელფოსტა", type: "text" },
+      { name: "email", label: "ელფოსტა (ზოგადი)", type: "text" },
+      { name: "salesEmail", label: "ელფოსტა (გაყიდვები)", type: "text" },
       { name: "address", label: "მისამართი", type: "text" },
       { name: "mapQuery", label: "რუკის მისამართი (Google Maps)", type: "text", hint: "მაგ. Mirian Mepe St 46, Tbilisi, Georgia" },
       { name: "hours", label: "სამუშაო საათები", type: "text" },

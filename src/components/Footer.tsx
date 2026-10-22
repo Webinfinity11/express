@@ -36,7 +36,7 @@ export function Footer({ content }: { content: Content }) {
                 {l.label}
               </Link>
             ))}
-            <InfoButton info="delivery">მიწოდება</InfoButton>
+            <Link href="/delivery">მიწოდება</Link>
             <InfoButton info="payment">გადახდა</InfoButton>
           </div>
           <div className="socials">
