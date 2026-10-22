@@ -5,7 +5,7 @@ import { InfoButton } from "./InfoButton";
 
 const legalLinks = [
   { label: "კონფიდენციალურობის პოლიტიკა", href: "/privacy-policy" },
-  { label: "წესები და პირობები", href: "/terms" },
+  { label: "მიწოდების პირობები", href: "/terms" },
   { label: "დაბრუნების პოლიტიკა", href: "/returns-policy" },
 ];
 
@@ -36,7 +36,7 @@ export function Footer({ content }: { content: Content }) {
                 {l.label}
               </Link>
             ))}
-            <Link href="/delivery">მიწოდება</Link>
+            <Link href="/terms">მიწოდება</Link>
             <InfoButton info="payment">გადახდა</InfoButton>
           </div>
           <div className="socials">
