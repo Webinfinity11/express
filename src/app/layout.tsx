@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "Express Mix — ტექნიკა თქვენი სახლისთვის",
-  description: "Express Mix — სახლისა და სამზარეულოს ტექნიკა. ხარისხიანი ბრენდები, საუკეთესო ფასები, კომფორტული შოპინგი.",
+  title: "Express Mix | ტექნიკა თქვენი სახლისთვის",
+  description: "Express Mix: სახლისა და სამზარეულოს ტექნიკა. ხარისხიანი ბრენდები, საუკეთესო ფასები, კომფორტული შოპინგი.",
 };
 
 export const viewport: Viewport = { themeColor: "#141414" };

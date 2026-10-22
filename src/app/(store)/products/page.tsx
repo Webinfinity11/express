@@ -5,8 +5,8 @@ import { InnerFooterBlocks } from "@/components/InnerFooterBlocks";
 import { Shop } from "@/components/shop/Shop";
 
 export const metadata: Metadata = {
-  title: "მაღაზია — Express Mix",
-  description: "სახლისა და სამზარეულოს ტექნიკა — მაცივრები, სარეცხი მანქანები, ღუმელები, მტვერსასრუტები და სხვა.",
+  title: "მაღაზია | Express Mix",
+  description: "სახლისა და სამზარეულოს ტექნიკა: მაცივრები, სარეცხი მანქანები, ღუმელები, მტვერსასრუტები და სხვა.",
 };
 
 export default function ProductsPage() {

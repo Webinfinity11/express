@@ -109,7 +109,7 @@ export function CheckoutView() {
           </p>
           <p>
             ოპერატორი მალე დაგიკავშირდებათ ნომერზე <strong>{done.phone}</strong> შეკვეთის დასადასტურებლად
-            {done.delivery === "pickup" ? ` — თვითგატანა: ${CONTACT.address}.` : "."}
+            {done.delivery === "pickup" ? `. თვითგატანა: ${CONTACT.address}.` : "."}
           </p>
           <div className="empty-buttons">
             <Link className="button primary" href="/products">
@@ -298,7 +298,7 @@ export function CheckoutView() {
               </div>
             )}
             <div className="summary-line">
-              <span>{delivery === "pickup" ? "თვითგატანა" : `მიწოდება — ${CITIES[city]}`}</span>
+              <span>{delivery === "pickup" ? "თვითგატანა" : `მიწოდება: ${CITIES[city]}`}</span>
               <strong>{t.shipping ? gel(t.shipping) : "უფასო"}</strong>
             </div>
             {delivery === "courier" && t.shipping > 0 && (

@@ -191,7 +191,7 @@ export function Navigation() {
                             </Link>
                           ))}
                           <Link className="mega-item mega-item-all" href={g.href} onClick={close}>
-                            ყველა — {g.title} <Icon name="arrow" />
+                            ყველა: {g.title} <Icon name="arrow" />
                           </Link>
                         </div>
                       )}

@@ -7,8 +7,8 @@ import { InnerFooterBlocks } from "@/components/InnerFooterBlocks";
 import { getContent } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "ჩვენ შესახებ — Express Mix",
-  description: "Express Mix — სახლისა და სამზარეულოს ტექნიკის მაღაზია. ხარისხიანი ბრენდები, საუკეთესო ფასები, კომფორტული შოპინგი.",
+  title: "ჩვენ შესახებ | Express Mix",
+  description: "Express Mix: სახლისა და სამზარეულოს ტექნიკის მაღაზია. ხარისხიანი ბრენდები, საუკეთესო ფასები, კომფორტული შოპინგი.",
 };
 
 const VALUE_ICONS = ["shield", "tag", "truck"];

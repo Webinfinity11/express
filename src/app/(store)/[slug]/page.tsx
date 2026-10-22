@@ -20,7 +20,7 @@ async function find(slug: string) {
 export async function generateMetadata({ params }: PageProps<"/[slug]">): Promise<Metadata> {
   const page = await find((await params).slug);
   if (!page) return {};
-  return { title: `${page.title} — Express Mix`, description: page.metaDescription || page.subtitle || undefined };
+  return { title: `${page.title} | Express Mix`, description: page.metaDescription || page.subtitle || undefined };
 }
 
 /** body: ცარიელი ხაზი = ახალი აბზაცი, „## “ = ქვესათაური, „- “ = სია */

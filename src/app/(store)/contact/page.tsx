@@ -7,7 +7,7 @@ import { getContent } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { site } = await getContent();
-  return { title: "კონტაქტი — Express Mix", description: `Express Mix — ${site.address}, ტელ: ${site.phone}` };
+  return { title: "კონტაქტი | Express Mix", description: `Express Mix, ${site.address}, ტელ: ${site.phone}` };
 }
 
 export default async function ContactPage() {

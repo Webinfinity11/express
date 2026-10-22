@@ -20,7 +20,7 @@ async function find(slug: string) {
 export async function generateMetadata({ params }: PageProps<"/product/[slug]">): Promise<Metadata> {
   const { p } = await find((await params).slug);
   if (!p) return {};
-  return { title: `${p.name} — Express Mix`, description: p.desc.slice(0, 160) };
+  return { title: `${p.name} | Express Mix`, description: p.desc.slice(0, 160) };
 }
 
 export default async function ProductPage({ params }: PageProps<"/product/[slug]">) {
