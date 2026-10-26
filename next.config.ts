@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
     serverActions: { bodySizeLimit: "4mb" },
+    agentUpgrade: "security",
   },
   partialPrefetching: true,
   turbopack: {
