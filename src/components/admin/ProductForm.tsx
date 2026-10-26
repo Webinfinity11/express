@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import type { ProductRow, Spec, VariantRow } from "@/db/schema";
+import type { ProductRow, ShippingClassRow, Spec, VariantRow } from "@/db/schema";
 import { deleteProduct, saveProduct } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
 import { Button, Card, Field, inputCls } from "./ui";
 import { ImageUploader, SingleImage } from "./ImageUploader";
+import { inheritedClass, ShippingClassSelect } from "./ShippingClassSelect";
 
-type Cat = { id: number; name: string; parentId: number | null };
+type Cat = { id: number; name: string; parentId: number | null; shippingClassId: number | null };
 type VariantDraft = {
   id: number | null;
   name: string;
@@ -39,11 +40,13 @@ export function ProductForm({
   variants: initialVariants,
   categories,
   brands,
+  classes,
 }: {
   product: ProductRow | null;
   variants: VariantRow[];
   categories: Cat[];
   brands: string[];
+  classes: ShippingClassRow[];
 }) {
   const router = useRouter();
   const [pending, start] = useTransition();
@@ -55,6 +58,7 @@ export function ProductForm({
   const [label, setLabel] = useState(product?.label ?? "");
   const [brand, setBrand] = useState(product?.brand ?? "");
   const [categoryId, setCategoryId] = useState<number | null>(product?.categoryId ?? null);
+  const [shippingClassId, setShippingClassId] = useState<number | null>(product?.shippingClassId ?? null);
   const [price, setPrice] = useState(str(product?.price));
   const [oldPrice, setOldPrice] = useState(str(product?.oldPrice));
   const [images, setImages] = useState<string[]>(product?.images ?? []);
@@ -95,6 +99,7 @@ export function ProductForm({
         label,
         brand,
         categoryId,
+        shippingClassId,
         price: price || 0,
         oldPrice: oldPrice || null,
         images,
@@ -405,6 +410,16 @@ export function ProductForm({
               </option>
             ))}
           </select>
+        </Card>
+
+        <Card title="ლოჯისტიკური კლასი">
+          <ShippingClassSelect
+            value={shippingClassId}
+            onChange={setShippingClassId}
+            classes={classes}
+            inherited={inheritedClass(categories, categoryId, classes)}
+            inheritLabel="კატეგორიიდან"
+          />
         </Card>
 
         <Card title="ფასი">

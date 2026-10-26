@@ -196,7 +196,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const sub = lines.reduce((n, { l, q }) => n + Math.round(l.price * 100) * q, 0);
     const couponOff = promoDiscount(promo, sub);
     const after = sub - couponOff;
-    const shipping = shippingCost(content.shipping, city, after, lines.length > 0, delivery === "courier");
+    const shipItems = lines.map(({ l, q }) => ({ ship: l.product.ship, qty: q }));
+    const shipping = shippingCost(content.shipping, city, after, shipItems, delivery === "courier");
     return { list, sub, sale: list - sub, coupon: couponOff, after, shipping, total: after + shipping, saved: list - sub + couponOff };
   }, [cart, promo, delivery, city, line, content.shipping]);
 

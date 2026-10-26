@@ -3,15 +3,26 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import type { CategoryRow } from "@/db/schema";
+import type { CategoryRow, ShippingClassRow } from "@/db/schema";
 import { deleteCategory, saveCategory } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
 import { Button, Card, Field, inputCls } from "./ui";
 import { SingleImage } from "./ImageUploader";
+import { inheritedClass, ShippingClassSelect } from "./ShippingClassSelect";
 
-type Cat = { id: number; name: string; parentId: number | null };
+type Cat = { id: number; name: string; parentId: number | null; shippingClassId: number | null };
 
-export function CategoryForm({ category, all, defaultParent }: { category: CategoryRow | null; all: Cat[]; defaultParent: number | null }) {
+export function CategoryForm({
+  category,
+  all,
+  defaultParent,
+  classes,
+}: {
+  category: CategoryRow | null;
+  all: Cat[];
+  defaultParent: number | null;
+  classes: ShippingClassRow[];
+}) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
@@ -22,6 +33,7 @@ export function CategoryForm({ category, all, defaultParent }: { category: Categ
   const [showOnHome, setShowOnHome] = useState(category?.showOnHome ?? false);
   const [showInMenu, setShowInMenu] = useState(category?.showInMenu ?? true);
   const [sortOrder, setSortOrder] = useState(String(category?.sortOrder ?? 0));
+  const [shippingClassId, setShippingClassId] = useState<number | null>(category?.shippingClassId ?? null);
 
   // კატეგორია საკუთარ თავში ან ქვეკატეგორიაში ვერ გადავა
   const branch = new Set<number>(category ? [category.id] : []);
@@ -46,7 +58,7 @@ export function CategoryForm({ category, all, defaultParent }: { category: Categ
   const save = () =>
     start(async () => {
       setMessage(null);
-      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, showInMenu, sortOrder });
+      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, showInMenu, shippingClassId, sortOrder });
       if (!res.ok) return setMessage({ ok: false, text: res.error });
       setMessage({ ok: true, text: "შენახულია ✓" });
       if (!category) router.replace(`/admin/categories/${res.id}`);
@@ -98,6 +110,15 @@ export function CategoryForm({ category, all, defaultParent }: { category: Categ
               </select>
             </Field>
           </div>
+          <Field label="ლოჯისტიკური კლასი" hint="ვრცელდება ამ კატეგორიის ყველა ქვეკატეგორიასა და პროდუქტზე">
+            <ShippingClassSelect
+              value={shippingClassId}
+              onChange={setShippingClassId}
+              classes={classes}
+              inherited={inheritedClass(all, parentId, classes)}
+              inheritLabel="მშობლიდან"
+            />
+          </Field>
           <Field label="რიგითობა" hint="ნაკლები რიცხვი = უფრო წინ">
             <input type="number" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} className={`${inputCls} max-w-32`} />
           </Field>

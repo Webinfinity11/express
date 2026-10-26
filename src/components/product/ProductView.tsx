@@ -317,11 +317,21 @@ export function ProductView({ p }: { p: Product }) {
                 <Icon name="truck" />
                 <h3>კურიერით მიწოდება</h3>
                 <p>
-                  თბილისი: {money(ship.tbilisi)} ₾
-                  <br />
-                  ბათუმი: {money(ship.batumi)} ₾
-                  <br />
-                  სხვა რეგიონები: {money(ship.regions)} ₾
+                  {p.ship ? (
+                    <>
+                      თბილისი: {money(p.ship.tbilisi)} ₾
+                      <br />
+                      რეგიონები: {money(p.ship.regions)} ₾
+                    </>
+                  ) : (
+                    <>
+                      თბილისი: {money(ship.tbilisi)} ₾
+                      <br />
+                      ბათუმი: {money(ship.batumi)} ₾
+                      <br />
+                      სხვა რეგიონები: {money(ship.regions)} ₾
+                    </>
+                  )}
                   <br />
                   {money(ship.freeFrom)} ₾-დან უფასოდ
                 </p>

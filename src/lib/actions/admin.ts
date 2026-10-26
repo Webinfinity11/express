@@ -6,7 +6,7 @@ import { and, eq, ne, sql } from "drizzle-orm";
 import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { brands, categories, db, orders, pages, productVariants, products, promoCodes, settings } from "@/db";
+import { brands, categories, db, orders, pages, productVariants, products, promoCodes, settings, shippingClasses } from "@/db";
 import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { sanitizeSection } from "@/lib/content";
@@ -98,6 +98,7 @@ const productSchema = z.object({
   label: z.string().trim().max(120),
   brand: z.string().trim().max(80),
   categoryId: z.number().int().nullable(),
+  shippingClassId: z.number().int().nullable().optional(),
   price: money,
   oldPrice: optMoney,
   images: z.array(imageUrl).max(12),
@@ -132,6 +133,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
     label: d.label,
     brand: d.brand,
     categoryId: d.categoryId,
+    ...(d.shippingClassId !== undefined && { shippingClassId: d.shippingClassId }),
     price: d.price,
     oldPrice,
     images: d.images,
@@ -202,6 +204,7 @@ const categorySchema = z.object({
   image: z.union([z.literal(""), z.null(), imageUrl]),
   showOnHome: z.boolean(),
   showInMenu: z.boolean().optional(),
+  shippingClassId: z.number().int().nullable().optional(),
   sortOrder: z.coerce.number().int().min(-1000).max(1000),
 });
 export type CategoryInput = z.input<typeof categorySchema>;
@@ -226,6 +229,7 @@ export async function saveCategory(id: number | null, input: CategoryInput): Pro
     image: d.image || null,
     showOnHome: d.showOnHome,
     ...(d.showInMenu !== undefined && { showInMenu: d.showInMenu }),
+    ...(d.shippingClassId !== undefined && { shippingClassId: d.shippingClassId }),
     sortOrder: d.sortOrder,
   };
   let categoryId = id;
@@ -286,6 +290,39 @@ export async function saveBrand(id: number | null, input: BrandInput): Promise<A
 export async function deleteBrand(id: number): Promise<ActionResult> {
   await requireAdmin();
   await db.delete(brands).where(eq(brands.id, id));
+  updateTag("catalog");
+  return { ok: true };
+}
+
+// ───────── ლოჯისტიკური კლასები ─────────
+
+const shippingClassSchema = z.object({
+  id: z.number().int().nullable(),
+  code: z.string().trim().min(1, "მიუთითეთ კლასის კოდი").max(10),
+  name: z.string().trim().max(120),
+  tbilisi: money,
+  regions: money,
+});
+export type ShippingClassInput = z.input<typeof shippingClassSchema>;
+
+/** მთელი სია ერთად: არსებული განახლდება, ახალი დაემატება, ამოღებული წაიშლება */
+export async function saveShippingClasses(input: ShippingClassInput[]): Promise<ActionResult> {
+  await requireAdmin();
+  const parsed = z.array(shippingClassSchema).max(30).safeParse(input);
+  if (!parsed.success) return fail(parsed.error.issues[0].message);
+  const list = parsed.data.map((c) => ({ ...c, code: c.code.toUpperCase() }));
+  if (new Set(list.map((c) => c.code)).size !== list.length) return fail("კლასის კოდები არ უნდა მეორდებოდეს");
+
+  const existing = await db.select({ id: shippingClasses.id }).from(shippingClasses);
+  const keep = new Set(list.map((c) => c.id).filter((x): x is number => x !== null));
+  for (const c of existing) if (!keep.has(c.id)) await db.delete(shippingClasses).where(eq(shippingClasses.id, c.id));
+  // კოდები დროებით იცვლება, რომ გადანაცვლებისას unique არ დაირღვეს
+  for (const c of list) if (c.id) await db.update(shippingClasses).set({ code: `~${c.id}` }).where(eq(shippingClasses.id, c.id));
+  for (const [i, c] of list.entries()) {
+    const row = { code: c.code, name: c.name, tbilisi: c.tbilisi, regions: c.regions, sortOrder: i };
+    if (c.id && existing.some((e) => e.id === c.id)) await db.update(shippingClasses).set(row).where(eq(shippingClasses.id, c.id));
+    else await db.insert(shippingClasses).values(row);
+  }
   updateTag("catalog");
   return { ok: true };
 }

@@ -1,8 +1,8 @@
 import "server-only";
 import { asc, eq } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
-import { brands, categories, db, productVariants, products } from "@/db";
-import { PLACEHOLDER_IMAGE, type Catalog, type Product } from "@/lib/data";
+import { brands, categories, db, productVariants, products, shippingClasses } from "@/db";
+import { PLACEHOLDER_IMAGE, type Catalog, type Product, type ShipClass } from "@/lib/data";
 
 /** გამოქვეყნებული კატალოგი კლიენტის ფორმატში; ადმინში შენახვისას updateTag("catalog") ანახლებს. */
 export async function getCatalog(): Promise<Catalog> {
@@ -10,13 +10,23 @@ export async function getCatalog(): Promise<Catalog> {
   cacheLife("hours");
   cacheTag("catalog");
 
-  const [cats, rows, variants, brandRows] = await Promise.all([
+  const [cats, rows, variants, brandRows, classRows] = await Promise.all([
     db.select().from(categories).orderBy(asc(categories.sortOrder), asc(categories.id)),
     db.select().from(products).where(eq(products.published, true)).orderBy(asc(products.sortOrder), asc(products.id)),
     db.select().from(productVariants).orderBy(asc(productVariants.sortOrder), asc(productVariants.id)),
     db.select().from(brands).orderBy(asc(brands.sortOrder), asc(brands.id)),
+    db.select().from(shippingClasses),
   ]);
   const slugOf = new Map(cats.map((c) => [c.id, c.slug]));
+
+  // ლოჯისტიკური კლასი: პროდუქტის → კატეგორიის → მშობელი კატეგორიის
+  const classes = new Map<number, ShipClass>(classRows.map((c) => [c.id, { code: c.code, tbilisi: c.tbilisi, regions: c.regions }]));
+  const catById = new Map(cats.map((c) => [c.id, c]));
+  const categoryClass = (id: number | null): ShipClass | null => {
+    for (let n = 0, c = id ? catById.get(id) : undefined; c && n < 10; n++, c = c.parentId ? catById.get(c.parentId) : undefined)
+      if (c.shippingClassId && classes.has(c.shippingClassId)) return classes.get(c.shippingClassId)!;
+    return null;
+  };
 
   const list: Product[] = rows.map((p) => {
     const price = p.price;
@@ -61,6 +71,7 @@ export async function getCatalog(): Promise<Catalog> {
       inStock: vs.length ? vs.some((v) => v.inStock) : p.stockQty == null ? p.inStock : p.stockQty > 0,
       keywords: p.keywords,
       variants: vs,
+      ship: (p.shippingClassId && classes.get(p.shippingClassId)) || categoryClass(p.categoryId),
     };
   });
 

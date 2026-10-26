@@ -68,6 +68,7 @@ export function orderTotals(
   const sub = lines.reduce((n, l) => n + l.total, 0);
   const discount = promoDiscount(promo, sub);
   const after = sub - discount;
-  const ship = shippingCost(shipping, city, after, lines.length > 0, delivery === "courier");
+  const shipItems = lines.map((l) => ({ ship: cat.byId.get(String(l.productId))?.ship ?? null, qty: l.qty }));
+  const ship = shippingCost(shipping, city, after, shipItems, delivery === "courier");
   return { lines, sub, discount, shipping: ship, total: after + ship, cityName: CITIES[city] };
 }

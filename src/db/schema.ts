@@ -16,6 +16,16 @@ export type OrderLine = {
 const money = (name: string) => numeric(name, { precision: 10, scale: 2, mode: "number" });
 const created = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
 
+/** ლოჯისტიკური კლასი (S, M, L, XL): მიწოდების ფასი ერთეულზე. ბათუმი და სხვა რეგიონები = regions. */
+export const shippingClasses = pgTable("shipping_classes", {
+  id: serial("id").primaryKey(),
+  code: text("code").notNull().unique(),
+  name: text("name").notNull().default(""),
+  tbilisi: money("tbilisi").notNull().default(0),
+  regions: money("regions").notNull().default(0),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
 /** სექცია → ჯგუფი → ქვეკატეგორია (parentId-ით). showOnHome — მთავარი გვერდის ბადე და მაღაზიის ზოლი. */
 export const categories = pgTable(
   "categories",
@@ -28,6 +38,8 @@ export const categories = pgTable(
     showOnHome: boolean("show_on_home").notNull().default(false),
     // ჰედერის „კატეგორიების“ მენიუში ჩანს
     showInMenu: boolean("show_in_menu").notNull().default(true),
+    // null = მშობელი კატეგორიის ლოჯისტიკური კლასი
+    shippingClassId: integer("shipping_class_id").references(() => shippingClasses.id, { onDelete: "set null" }),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [index("categories_parent_idx").on(t.parentId)],
@@ -43,6 +55,8 @@ export const products = pgTable(
     label: text("label").notNull().default(""),
     brand: text("brand").notNull().default(""),
     categoryId: integer("category_id").references(() => categories.id, { onDelete: "set null" }),
+    // null = კატეგორიის ლოჯისტიკური კლასი
+    shippingClassId: integer("shipping_class_id").references(() => shippingClasses.id, { onDelete: "set null" }),
     price: money("price").notNull().default(0),
     oldPrice: money("old_price"),
     images: jsonb("images").$type<string[]>().notNull().default([]),
@@ -162,5 +176,6 @@ export type CategoryRow = typeof categories.$inferSelect;
 export type ProductRow = typeof products.$inferSelect;
 export type VariantRow = typeof productVariants.$inferSelect;
 export type BrandRow = typeof brands.$inferSelect;
+export type ShippingClassRow = typeof shippingClasses.$inferSelect;
 export type PromoRow = typeof promoCodes.$inferSelect;
 export type OrderRow = typeof orders.$inferSelect;
