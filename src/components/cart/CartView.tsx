@@ -209,9 +209,6 @@ export function CartView() {
                 <span>
                   <Icon name="card" /> განვადება
                 </span>
-                <span>
-                  <Icon name="box" /> მიღებისას
-                </span>
               </div>
             </section>
             {t.saved > 0 && (

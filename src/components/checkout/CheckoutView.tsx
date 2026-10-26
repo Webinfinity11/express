@@ -42,7 +42,7 @@ export function CheckoutView() {
   });
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", comment: "" });
-  const [payment, setPayment] = useState<Payment>("on-delivery");
+  const [payment, setPayment] = useState<Payment>("installment");
   const [errors, setErrors] = useState<OrderErrors>({});
   const [sending, setSending] = useState(false);
   const [serverError, setServerError] = useState("");

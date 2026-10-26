@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     city: typeof body.city === "string" && body.city in CITIES ? (body.city as OrderInput["city"]) : "tbilisi",
     address: str(body.address, 300),
     comment: str(body.comment, 1000),
-    payment: typeof body.payment === "string" && body.payment in PAYMENTS ? (body.payment as OrderInput["payment"]) : "on-delivery",
+    payment: typeof body.payment === "string" && body.payment in PAYMENTS ? (body.payment as OrderInput["payment"]) : "installment",
     coupon: str(body.coupon, 40),
     items,
   };
