@@ -21,7 +21,7 @@ export default async function OrderDetail({ params }: PageProps<"/admin/orders/[
       </a>,
     ],
     ...(order.email ? ([["ელფოსტა", order.email]] as [string, string][]) : []),
-    ["მიწოდება", `${DELIVERY_LABELS[order.delivery] ?? order.delivery}${order.delivery === "courier" ? ` · ${CITIES[order.city as keyof typeof CITIES] ?? order.city}` : ""}`],
+    ["მიწოდება", `${DELIVERY_LABELS[order.delivery] ?? order.delivery}${order.delivery === "courier" ? ` · ${CITIES[order.city as keyof typeof CITIES] ?? (order.city === "batumi" ? "ბათუმი" : order.city)}` : ""}`],
     ...(order.address ? ([["მისამართი", order.address]] as [string, string][]) : []),
     ["გადახდა", PAYMENT_LABELS[order.payment] ?? order.payment],
     ...(order.comment ? ([["კომენტარი", order.comment]] as [string, string][]) : []),

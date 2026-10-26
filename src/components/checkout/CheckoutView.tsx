@@ -36,7 +36,6 @@ export function CheckoutView() {
   const { cart, cartCount, totals: t, delivery, city, coupon } = store;
   const { line, content } = useCatalog();
   const CONTACT = content.site;
-  const FREE_SHIPPING_FROM = Math.round(content.shipping.freeFrom * 100);
   const entries = Object.entries(cart).flatMap(([id, q]) => {
     const l = line(id);
     return l ? [[id, q, l] as const] : [];
@@ -301,9 +300,6 @@ export function CheckoutView() {
               <span>{delivery === "pickup" ? "თვითგატანა" : `მიწოდება: ${CITIES[city]}`}</span>
               <strong>{t.shipping ? gel(t.shipping) : "უფასო"}</strong>
             </div>
-            {delivery === "courier" && t.shipping > 0 && (
-              <p className="demo-caption">უფასო მიწოდება {gel(FREE_SHIPPING_FROM)}-დან</p>
-            )}
             <div className="summary-total" aria-live="polite">
               <span>სულ გადასახდელი</span>
               <strong>{gel(t.total)}</strong>

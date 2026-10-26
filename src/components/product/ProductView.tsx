@@ -313,29 +313,17 @@ export function ProductView({ p }: { p: Product }) {
           )}
           {tab === "delivery" && (
             <div className="delivery-panel">
-              <article className="delivery-info-card">
-                <Icon name="truck" />
-                <h3>კურიერით მიწოდება</h3>
-                <p>
-                  {p.ship ? (
-                    <>
-                      თბილისი: {money(p.ship.tbilisi)} ₾
-                      <br />
-                      რეგიონები: {money(p.ship.regions)} ₾
-                    </>
-                  ) : (
-                    <>
-                      თბილისი: {money(ship.tbilisi)} ₾
-                      <br />
-                      ბათუმი: {money(ship.batumi)} ₾
-                      <br />
-                      სხვა რეგიონები: {money(ship.regions)} ₾
-                    </>
-                  )}
-                  <br />
-                  {money(ship.freeFrom)} ₾-დან უფასოდ
-                </p>
-              </article>
+              {p.ship && (
+                <article className="delivery-info-card">
+                  <Icon name="truck" />
+                  <h3>კურიერით მიწოდება</h3>
+                  <p>
+                    თბილისი: {money(p.ship.tbilisi)} ₾
+                    <br />
+                    რეგიონები: {money(p.ship.regions)} ₾
+                  </p>
+                </article>
+              )}
               <article className="delivery-info-card">
                 <Icon name="store" />
                 <h3>თვითგატანა</h3>

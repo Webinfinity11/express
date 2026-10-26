@@ -16,7 +16,7 @@ export type OrderLine = {
 const money = (name: string) => numeric(name, { precision: 10, scale: 2, mode: "number" });
 const created = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
 
-/** ლოჯისტიკური კლასი (S, M, L, XL): მიწოდების ფასი ერთეულზე. ბათუმი და სხვა რეგიონები = regions. */
+/** ლოჯისტიკური კლასი (S, M, L, XL): მიწოდების ფასი ერთეულზე: თბილისი და რეგიონები. */
 export const shippingClasses = pgTable("shipping_classes", {
   id: serial("id").primaryKey(),
   code: text("code").notNull().unique(),

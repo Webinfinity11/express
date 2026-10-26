@@ -1,4 +1,4 @@
-import { CITIES, promoDiscount, shippingCost, type CatalogIndex, type City, type Promo, type Shipping } from "./data";
+import { CITIES, promoDiscount, shippingCost, type CatalogIndex, type City, type Promo } from "./data";
 
 export type Delivery = "courier" | "pickup";
 export type Payment = "on-delivery" | "installment";
@@ -44,7 +44,6 @@ export function orderTotals(
   promo: Promo | null,
   delivery: Delivery,
   city: City,
-  shipping: Shipping,
 ) {
   const lines = Object.entries(items).flatMap(([key, q]) => {
     const l = cat.line(key);
@@ -69,6 +68,6 @@ export function orderTotals(
   const discount = promoDiscount(promo, sub);
   const after = sub - discount;
   const shipItems = lines.map((l) => ({ ship: cat.byId.get(String(l.productId))?.ship ?? null, qty: l.qty }));
-  const ship = shippingCost(shipping, city, after, shipItems, delivery === "courier");
+  const ship = shippingCost(city, shipItems, delivery === "courier");
   return { lines, sub, discount, shipping: ship, total: after + ship, cityName: CITIES[city] };
 }

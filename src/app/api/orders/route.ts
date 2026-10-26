@@ -2,7 +2,6 @@ import { and, eq, isNotNull, sql } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { db, orders, productVariants, products, promoCodes } from "@/db";
 import { getCatalog } from "@/lib/catalog";
-import { getContent } from "@/lib/content";
 import { CITIES, indexCatalog } from "@/lib/data";
 import { PAYMENTS, normalizePhone, orderTotals, validateOrder, type OrderInput } from "@/lib/order";
 import { findPromo } from "@/lib/promo";
@@ -37,14 +36,14 @@ export async function POST(request: Request) {
     items,
   };
 
-  const [catalog, content] = await Promise.all([getCatalog(), getContent()]);
+  const catalog = await getCatalog();
   const cat = indexCatalog(catalog);
   const errors = validateOrder(order, (key) => !!cat.line(key)?.inStock);
   if (Object.keys(errors).length) return Response.json({ errors }, { status: 422 });
 
   const found = order.coupon ? await findPromo(order.coupon) : null;
   const promo = found && "promo" in found ? found.promo : null;
-  const totals = orderTotals(cat, order.items, promo, order.delivery, order.city, content.shipping);
+  const totals = orderTotals(cat, order.items, promo, order.delivery, order.city);
   if (!totals.lines.length) return Response.json({ errors: { items: "კალათა ცარიელია." } }, { status: 422 });
 
   const now = new Date();

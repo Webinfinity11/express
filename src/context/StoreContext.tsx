@@ -54,7 +54,7 @@ export const MAX_QTY = 99;
 const clampQty = (n: number) => Math.max(1, Math.min(MAX_QTY, Number.isFinite(n) ? Math.trunc(n) : 1));
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const { line, byId, defaultKey, content } = useCatalog();
+  const { line, byId, defaultKey } = useCatalog();
   const [cart, setCart] = useState<Record<string, number>>({});
   const [favorites, setFavorites] = useState<string[]>([]);
   const [city, setCity] = useState<City>("tbilisi");
@@ -197,9 +197,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const couponOff = promoDiscount(promo, sub);
     const after = sub - couponOff;
     const shipItems = lines.map(({ l, q }) => ({ ship: l.product.ship, qty: q }));
-    const shipping = shippingCost(content.shipping, city, after, shipItems, delivery === "courier");
+    const shipping = shippingCost(city, shipItems, delivery === "courier");
     return { list, sub, sale: list - sub, coupon: couponOff, after, shipping, total: after + shipping, saved: list - sub + couponOff };
-  }, [cart, promo, delivery, city, line, content.shipping]);
+  }, [cart, promo, delivery, city, line]);
 
   return (
     <Ctx.Provider

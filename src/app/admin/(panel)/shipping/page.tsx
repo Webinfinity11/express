@@ -33,11 +33,7 @@ export default async function ShippingAdmin() {
           კლასი ენიჭება <Link href="/admin/categories" className="font-semibold text-[#ff5a00]">კატეგორიას</Link> (ვრცელდება მის
           ქვეკატეგორიებზეც) ან ცალკე პროდუქტს. პროდუქტის კლასი ჭარბობს კატეგორიისას.
         </p>
-        <p>
-          მიწოდების ფასი = კლასის ფასი × რაოდენობა. ბათუმი და სხვა ქალაქები ითვლება რეგიონად. კლასის გარეშე ნივთებზე მოქმედებს{" "}
-          <Link href="/admin/content/shipping" className="font-semibold text-[#ff5a00]">საერთო ტარიფი</Link>, იქვე მითითებული
-          უფასო მიწოდების ზღვარიც.
-        </p>
+        <p>მიწოდების ფასი = კლასის ფასი × რაოდენობა. კლასის გარეშე ნივთზე მიწოდება არ ემატება.</p>
       </div>
       <ShippingClassesForm classes={classes} usage={usage} />
     </>

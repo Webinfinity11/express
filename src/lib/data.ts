@@ -69,27 +69,17 @@ export const categoryHref = (slug: string) => "/products?category=" + slug;
 /** კალათის გასაღები: "12" ან ვარიაციით "12:5" */
 export const lineKey = (productId: string, variantId?: string | null) => (variantId ? `${productId}:${variantId}` : productId);
 
-// მიწოდება (ტარიფები ადმინიდან — content.shipping)
-export const CITIES = { tbilisi: "თბილისი", batumi: "ბათუმი", regions: "სხვა რეგიონები" } as const;
+// მიწოდება (ფასები ადმინიდან — ლოჯისტიკური კლასები)
+export const CITIES = { tbilisi: "თბილისი", regions: "რეგიონები" } as const;
 export type City = keyof typeof CITIES;
-export type Shipping = { tbilisi: number; batumi: number; regions: number; freeFrom: number };
 
 /** კლასის ფასი ქალაქისთვის (₾): თბილისი ან რეგიონი */
 export const classPrice = (c: ShipClass, city: City) => (city === "tbilisi" ? c.tbilisi : c.regions);
 
-/** მიწოდების ღირებულება თეთრებში: კლასიანი ნივთი — კლასის ფასი × რაოდენობა,
- *  კლასის გარეშე ნივთებზე — საერთო ტარიფი ერთხელ. */
-export function shippingCost(
-  s: Shipping,
-  city: City,
-  afterDiscount: number,
-  items: { ship: ShipClass | null; qty: number }[],
-  courier: boolean,
-) {
-  if (!items.length || !courier || afterDiscount >= Math.round(s.freeFrom * 100)) return 0;
-  const classed = items.reduce((n, i) => n + (i.ship ? Math.round(classPrice(i.ship, city) * 100) * i.qty : 0), 0);
-  const flat = items.some((i) => !i.ship) ? Math.round((s[city] ?? 0) * 100) : 0;
-  return classed + flat;
+/** მიწოდების ღირებულება თეთრებში: კლასის ფასი × რაოდენობა (კლასის გარეშე ნივთი = 0) */
+export function shippingCost(city: City, items: { ship: ShipClass | null; qty: number }[], courier: boolean) {
+  if (!courier) return 0;
+  return items.reduce((n, i) => n + (i.ship ? Math.round(classPrice(i.ship, city) * 100) * i.qty : 0), 0);
 }
 
 /** პრომოკოდის ფასდაკლება თეთრებში */

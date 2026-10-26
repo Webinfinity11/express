@@ -155,10 +155,6 @@ export const contentDefaults = {
     ctaText: "დაგვირეკეთ და ერთად შევარჩევთ თქვენთვის საუკეთესო ტექნიკას.",
   },
   shipping: {
-    tbilisi: 15,
-    batumi: 25,
-    regions: 35,
-    freeFrom: 2000,
     pickupText: "თვითგატანა უფასოა. მისამართი და სამუშაო საათები შეკვეთის დადასტურებისას გეცნობებათ.",
     warrantyText: "გარანტია და დაბრუნების პირობები განისაზღვრება კონკრეტული პროდუქტის მიხედვით.",
   },
@@ -338,12 +334,8 @@ export const contentSections: { key: ContentKey; title: string; description: str
   {
     key: "shipping",
     title: "მიწოდება",
-    description: "მიწოდების ტარიფები (₾) — გამოიყენება კალათაში და შეკვეთისას.",
+    description: "თვითგატანისა და გარანტიის ტექსტები. მიწოდების ფასები — ადმინი → მიწოდება (კლასები).",
     fields: [
-      { name: "tbilisi", label: "თბილისი (₾)", type: "number" },
-      { name: "batumi", label: "ბათუმი (₾)", type: "number" },
-      { name: "regions", label: "სხვა რეგიონები (₾)", type: "number" },
-      { name: "freeFrom", label: "უფასო მიწოდება (₾-დან)", type: "number" },
       { name: "pickupText", label: "თვითგატანის ტექსტი", type: "textarea" },
       { name: "warrantyText", label: "გარანტიის ტექსტი (პროდუქტის გვერდზე)", type: "textarea" },
     ],
