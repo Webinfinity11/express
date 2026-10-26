@@ -27,7 +27,7 @@ export default async function ShippingAdmin() {
 
   return (
     <>
-      <PageTitle>ლოჯისტიკური კლასები</PageTitle>
+      <PageTitle>მიწოდება</PageTitle>
       <div className="mb-5 text-sm text-slate-600 grid gap-1 max-w-3xl">
         <p>
           კლასი ენიჭება <Link href="/admin/categories" className="font-semibold text-[#ff5a00]">კატეგორიას</Link> (ვრცელდება მის
