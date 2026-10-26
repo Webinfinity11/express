@@ -42,7 +42,7 @@ export function ShippingClassSelect({
   return (
     <div className="grid gap-1.5">
       <select value={value ?? ""} onChange={(e) => onChange(Number(e.target.value) || null)} className={inputCls}>
-        <option value="">{inherited ? `${inheritLabel} (${inherited.cls.code}, ${inherited.from})` : "— საერთო ტარიფი —"}</option>
+        <option value="">{inherited ? `${inheritLabel} (${inherited.cls.code}, ${inherited.from})` : "— კლასის გარეშე —"}</option>
         {classes.map((c) => (
           <option key={c.id} value={c.id}>
             {`${c.code} · თბილისი ${money(c.tbilisi)} ₾ / რეგიონები ${money(c.regions)} ₾`}
@@ -51,8 +51,8 @@ export function ShippingClassSelect({
       </select>
       <p className="text-xs text-slate-500">
         {current
-          ? `მიწოდება: თბილისი ${money(current.tbilisi)} ₾ · რეგიონები ${money(current.regions)} ₾ (ერთეულზე)`
-          : "კლასის გარეშე მოქმედებს საერთო ტარიფი"}
+          ? `მიწოდება: თბილისი ${money(current.tbilisi)} ₾ · რეგიონები ${money(current.regions)} ₾`
+          : "კლასის გარეშე მიწოდება არ ემატება"}
       </p>
     </div>
   );

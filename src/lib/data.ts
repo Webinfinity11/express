@@ -76,10 +76,10 @@ export type City = keyof typeof CITIES;
 /** კლასის ფასი ქალაქისთვის (₾): თბილისი ან რეგიონი */
 export const classPrice = (c: ShipClass, city: City) => (city === "tbilisi" ? c.tbilisi : c.regions);
 
-/** მიწოდების ღირებულება თეთრებში: კლასის ფასი × რაოდენობა (კლასის გარეშე ნივთი = 0) */
+/** მიწოდების ღირებულება თეთრებში: ერთი მიწოდება — კალათის ყველაზე ძვირი კლასის ფასი (კლასის გარეშე ნივთი = 0) */
 export function shippingCost(city: City, items: { ship: ShipClass | null; qty: number }[], courier: boolean) {
   if (!courier) return 0;
-  return items.reduce((n, i) => n + (i.ship ? Math.round(classPrice(i.ship, city) * 100) * i.qty : 0), 0);
+  return items.reduce((n, i) => Math.max(n, i.ship ? Math.round(classPrice(i.ship, city) * 100) : 0), 0);
 }
 
 /** პრომოკოდის ფასდაკლება თეთრებში */
