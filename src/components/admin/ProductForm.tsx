@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import type { ProductRow, ShippingClassRow, Spec, VariantRow } from "@/db/schema";
 import { deleteProduct, saveProduct } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
+import type { AttrSuggestions } from "@/lib/attribute-suggestions";
 import { Button, Card, Field, inputCls } from "./ui";
 import { ImageUploader, SingleImage } from "./ImageUploader";
 import { inheritedClass, ShippingClassSelect } from "./ShippingClassSelect";
@@ -41,12 +42,14 @@ export function ProductForm({
   categories,
   brands,
   classes,
+  suggestions,
 }: {
   product: ProductRow | null;
   variants: VariantRow[];
   categories: Cat[];
   brands: string[];
   classes: ShippingClassRow[];
+  suggestions: AttrSuggestions;
 }) {
   const router = useRouter();
   const [pending, start] = useTransition();
@@ -66,6 +69,14 @@ export function ProductForm({
   const [subtitle, setSubtitle] = useState(product?.subtitle ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [specs, setSpecs] = useState<Spec[]>(product?.specs ?? []);
+  // არჩეული კატეგორიის (ან უახლოესი მშობლის) პროდუქტებში გამოყენებული ველები
+  let catSpecs: string[] = [];
+  for (let c = categoryId; c && !catSpecs.length; c = categories.find((x) => x.id === c)?.parentId ?? null)
+    catSpecs = suggestions.categorySpecs[c] ?? [];
+  const fillCatSpecs = () => {
+    const have = new Set(specs.map((s) => s.label.trim()));
+    setSpecs([...specs.filter((s) => s.label.trim() || s.value.trim()), ...catSpecs.filter((l) => !have.has(l)).map((label) => ({ label, value: "" }))]);
+  };
   const [dragSpec, setDragSpec] = useState<number | null>(null);
   // მახასიათებლის გადატანა from → to პოზიციაზე (ისრებით ან გადათრევით)
   const moveSpec = (from: number, to: number) => {
@@ -222,7 +233,17 @@ export function ProductForm({
                 <div key={v.id ?? `new-${i}`} className="rounded-lg border border-slate-200 bg-slate-50 p-3 grid gap-3">
                   <div className="grid sm:grid-cols-[1fr_150px_1fr] gap-3">
                     <Field label="სახელი *" hint="მაგ. შავი, თეთრი, 7 კგ">
-                      <input value={v.name} onChange={(e) => setVariant(i, { name: e.target.value })} required className={inputCls} />
+                      <input
+                        value={v.name}
+                        onChange={(e) => {
+                          // ნაცნობი ფერის არჩევისას ფერის კოდიც ივსება
+                          const known = suggestions.colors.find((c) => c.name === e.target.value);
+                          setVariant(i, known?.hex && !v.colorHex ? { name: e.target.value, colorHex: known.hex } : { name: e.target.value });
+                        }}
+                        list="color-list"
+                        required
+                        className={inputCls}
+                      />
                     </Field>
                     <Field label="ფერი">
                       <div className="flex gap-2 items-center">
@@ -312,9 +333,16 @@ export function ProductForm({
         <Card
           title="მახასიათებლები"
           actions={
-            <Button type="button" variant="secondary" onClick={() => setSpecs([...specs, { label: "", value: "" }])}>
-              + დამატება
-            </Button>
+            <div className="flex gap-2">
+              {catSpecs.length > 0 && (
+                <Button type="button" variant="secondary" onClick={fillCatSpecs} title="ამ კატეგორიის სხვა პროდუქტებში გამოყენებული ველები">
+                  კატეგორიის ველები
+                </Button>
+              )}
+              <Button type="button" variant="secondary" onClick={() => setSpecs([...specs, { label: "", value: "" }])}>
+                + დამატება
+              </Button>
+            </div>
           }
         >
           {specs.length === 0 && <p className="text-slate-500 text-sm">მაგ. სიმძლავრე, მოცულობა, ზომა, წონა.</p>}
@@ -359,14 +387,23 @@ export function ProductForm({
                   placeholder="მაგ. სიმძლავრე"
                   value={s.label}
                   onChange={(e) => setSpecs(specs.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))}
+                  list="spec-labels"
                   className={`${inputCls} w-2/5`}
                 />
                 <input
                   placeholder="მაგ. 2400 W"
                   value={s.value}
+                  list={suggestions.specValues[s.label.trim()] ? `spec-values-${i}` : undefined}
                   onChange={(e) => setSpecs(specs.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)))}
                   className={inputCls}
                 />
+                {suggestions.specValues[s.label.trim()] && (
+                  <datalist id={`spec-values-${i}`}>
+                    {suggestions.specValues[s.label.trim()].map((v) => (
+                      <option key={v} value={v} />
+                    ))}
+                  </datalist>
+                )}
                 <Button type="button" variant="danger" onClick={() => setSpecs(specs.filter((_, j) => j !== i))} aria-label="წაშლა">
                   ✕
                 </Button>
@@ -459,7 +496,16 @@ export function ProductForm({
           <Card title="ფერი">
             <div className="grid grid-cols-[1fr_auto] gap-3 items-end">
               <Field label="ფერის სახელი" hint="მაგ. შავი / ოქროსფერი">
-                <input value={colorName} onChange={(e) => setColorName(e.target.value)} className={inputCls} />
+                <input
+                  value={colorName}
+                  onChange={(e) => {
+                    setColorName(e.target.value);
+                    const known = suggestions.colors.find((c) => c.name === e.target.value);
+                    if (known?.hex) setColorHex(known.hex);
+                  }}
+                  list="color-list"
+                  className={inputCls}
+                />
               </Field>
               <input
                 type="color"
@@ -472,6 +518,16 @@ export function ProductForm({
           </Card>
         )}
       </div>
+      <datalist id="spec-labels">
+        {suggestions.specLabels.map((l) => (
+          <option key={l} value={l} />
+        ))}
+      </datalist>
+      <datalist id="color-list">
+        {suggestions.colors.map((c) => (
+          <option key={c.name} value={c.name} />
+        ))}
+      </datalist>
     </form>
   );
 }

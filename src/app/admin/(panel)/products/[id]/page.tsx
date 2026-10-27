@@ -6,6 +6,7 @@ import { requireAdmin } from "@/lib/auth";
 import { PageTitle } from "@/components/admin/ui";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { DuplicateButton } from "@/components/admin/DuplicateButton";
+import { getAttrSuggestions } from "@/lib/attribute-suggestions";
 
 export default async function EditProduct({ params }: PageProps<"/admin/products/[id]">) {
   await requireAdmin();
@@ -13,7 +14,7 @@ export default async function EditProduct({ params }: PageProps<"/admin/products
   const isNew = id === "new";
   const [product] = isNew ? [null] : await db.select().from(products).where(eq(products.id, Number(id) || 0));
   if (!isNew && !product) notFound();
-  const [cats, variants, brandRows, classes] = await Promise.all([
+  const [cats, variants, brandRows, classes, suggestions] = await Promise.all([
     db
       .select({ id: categories.id, name: categories.name, parentId: categories.parentId, shippingClassId: categories.shippingClassId })
       .from(categories)
@@ -23,6 +24,7 @@ export default async function EditProduct({ params }: PageProps<"/admin/products
       : [],
     db.select({ name: brands.name }).from(brands).orderBy(asc(brands.name)),
     db.select().from(shippingClasses).orderBy(asc(shippingClasses.sortOrder)),
+    getAttrSuggestions(),
   ]);
 
   return (
@@ -46,7 +48,7 @@ export default async function EditProduct({ params }: PageProps<"/admin/products
         </Link>{" "}
         {product ? product.name : "ახალი პროდუქტი"}
       </PageTitle>
-      <ProductForm product={product} variants={variants} categories={cats} brands={brandRows.map((b) => b.name)} classes={classes} />
+      <ProductForm product={product} variants={variants} categories={cats} brands={brandRows.map((b) => b.name)} classes={classes} suggestions={suggestions} />
     </>
   );
 }
