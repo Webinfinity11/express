@@ -188,6 +188,27 @@ export async function deleteProduct(id: number): Promise<ActionResult> {
   return { ok: true };
 }
 
+/** ასლი დამალულ (დრაფტ) მდგომარეობაში, ვარიაციებით; აბრუნებს ახალ id-ს. */
+export async function duplicateProduct(id: number): Promise<ActionResult> {
+  await requireAdmin();
+  const [src] = await db.select().from(products).where(eq(products.id, id));
+  if (!src) return fail("პროდუქტი ვერ მოიძებნა");
+  const taken = new Set(
+    (await db.select({ slug: products.slug }).from(products).where(sql`${products.slug} like ${src.slug + "-copy%"}`)).map((r) => r.slug),
+  );
+  let slug = `${src.slug}-copy`;
+  for (let n = 2; taken.has(slug); n++) slug = `${src.slug}-copy-${n}`;
+  const { id: _id, createdAt: _c, updatedAt: _u, ...rest } = src;
+  const [copy] = await db
+    .insert(products)
+    .values({ ...rest, slug, name: `${src.name} (ასლი)`, published: false, featured: false })
+    .returning({ id: products.id });
+  const variants = await db.select().from(productVariants).where(eq(productVariants.productId, id));
+  if (variants.length) await db.insert(productVariants).values(variants.map(({ id: _v, ...v }) => ({ ...v, productId: copy.id })));
+  updateTag("catalog");
+  return { ok: true, id: copy.id };
+}
+
 export async function setProductFlag(id: number, flag: "published" | "inStock" | "featured", value: boolean): Promise<ActionResult> {
   await requireAdmin();
   await db.update(products).set({ [flag]: value, updatedAt: new Date() }).where(eq(products.id, id));

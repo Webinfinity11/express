@@ -5,6 +5,7 @@ import { brands, categories, db, productVariants, products, shippingClasses } fr
 import { requireAdmin } from "@/lib/auth";
 import { PageTitle } from "@/components/admin/ui";
 import { ProductForm } from "@/components/admin/ProductForm";
+import { DuplicateButton } from "@/components/admin/DuplicateButton";
 
 export default async function EditProduct({ params }: PageProps<"/admin/products/[id]">) {
   await requireAdmin();
@@ -28,10 +29,15 @@ export default async function EditProduct({ params }: PageProps<"/admin/products
     <>
       <PageTitle
         actions={
-          product?.published && (
-            <a href={`/product/${product.slug}`} target="_blank" className="text-sm font-semibold text-[#ff5a00]">
-              საიტზე ნახვა ↗
-            </a>
+          product && (
+            <div className="flex items-center gap-4">
+              <DuplicateButton id={product.id} />
+              {product.published && (
+                <a href={`/product/${product.slug}`} target="_blank" className="text-sm font-semibold text-[#ff5a00]">
+                  საიტზე ნახვა ↗
+                </a>
+              )}
+            </div>
           )
         }
       >

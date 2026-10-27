@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth";
 import { money } from "@/lib/data";
 import { Button, PageTitle, inputCls } from "@/components/admin/ui";
 import { FlagToggle } from "@/components/admin/Toggles";
+import { DuplicateButton } from "@/components/admin/DuplicateButton";
 
 const PER_PAGE = 50;
 const filters = { "": "ყველა", hidden: "დამალული", sale: "ფასდაკლებით", noimage: "სურათის გარეშე", out: "არ არის მარაგში", low: "მცირე მარაგი (≤5)" };
@@ -114,6 +115,7 @@ export default async function ProductsAdmin({ searchParams }: PageProps<"/admin/
               <th className="p-3 text-center">მარაგში</th>
               <th className="p-3 text-center">პოპულარული</th>
               <th className="p-3 text-center">საიტზე</th>
+              <th className="p-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -154,12 +156,15 @@ export default async function ProductsAdmin({ searchParams }: PageProps<"/admin/
                   <td className="p-3 text-center">
                     <FlagToggle id={p.id} flag="published" value={p.published} />
                   </td>
+                  <td className="p-3 text-right whitespace-nowrap">
+                    <DuplicateButton id={p.id} />
+                  </td>
                 </tr>
               );
             })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-8 text-center text-slate-500">
+                <td colSpan={8} className="p-8 text-center text-slate-500">
                   ვერაფერი მოიძებნა
                 </td>
               </tr>
