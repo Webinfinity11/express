@@ -20,7 +20,7 @@ export function DuplicateButton({ id, className = "" }: { id: number; className?
           else if (!res.ok) alert(res.error);
         })
       }
-      className={`${className || "text-sm font-semibold text-slate-600"} hover:text-[#ff5a00] disabled:opacity-50`}
+      className={`${className || "text-sm font-semibold text-slate-600"} cursor-pointer hover:text-[#ff5a00] disabled:opacity-50 disabled:cursor-wait`}
     >
       {pending ? "იქმნება…" : "⧉ დუბლიკატი"}
     </button>

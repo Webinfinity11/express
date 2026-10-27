@@ -133,8 +133,8 @@ export default async function ProductsAdmin({ searchParams }: PageProps<"/admin/
                     </Link>
                     <div className="text-xs text-slate-500">
                       {[p.brand, p.sku, variants ? `${variants} ვარიაცია` : ""].filter(Boolean).join(" · ")}
-                      <DuplicateButton id={p.id} className="ml-3 text-slate-400" />
                     </div>
+                    <DuplicateButton id={p.id} className="block mt-1 text-xs text-slate-400" />
                   </td>
                   <td className="p-3 text-slate-600">{p.categoryId ? catName.get(p.categoryId) : <span className="text-amber-600">—</span>}</td>
                   <td className="p-3 text-right whitespace-nowrap">
