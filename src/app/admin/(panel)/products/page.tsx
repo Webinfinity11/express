@@ -115,7 +115,6 @@ export default async function ProductsAdmin({ searchParams }: PageProps<"/admin/
               <th className="p-3 text-center">მარაგში</th>
               <th className="p-3 text-center">პოპულარული</th>
               <th className="p-3 text-center">საიტზე</th>
-              <th className="p-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -134,6 +133,7 @@ export default async function ProductsAdmin({ searchParams }: PageProps<"/admin/
                     </Link>
                     <div className="text-xs text-slate-500">
                       {[p.brand, p.sku, variants ? `${variants} ვარიაცია` : ""].filter(Boolean).join(" · ")}
+                      <DuplicateButton id={p.id} className="ml-3 text-slate-400" />
                     </div>
                   </td>
                   <td className="p-3 text-slate-600">{p.categoryId ? catName.get(p.categoryId) : <span className="text-amber-600">—</span>}</td>
@@ -156,15 +156,12 @@ export default async function ProductsAdmin({ searchParams }: PageProps<"/admin/
                   <td className="p-3 text-center">
                     <FlagToggle id={p.id} flag="published" value={p.published} />
                   </td>
-                  <td className="p-3 text-right whitespace-nowrap">
-                    <DuplicateButton id={p.id} />
-                  </td>
                 </tr>
               );
             })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={8} className="p-8 text-center text-slate-500">
+                <td colSpan={7} className="p-8 text-center text-slate-500">
                   ვერაფერი მოიძებნა
                 </td>
               </tr>
