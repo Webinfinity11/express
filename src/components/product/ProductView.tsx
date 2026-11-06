@@ -283,7 +283,7 @@ export function ProductView({ p }: { p: Product }) {
                     p.subtitle
                   )}
                 </h2>
-                <p>{p.desc}</p>
+                <p style={{ whiteSpace: "pre-line" }}>{p.desc}</p>
               </div>
               <div className="p-story-image">
                 <img src={p.scene} alt={`${p.name} — ინტერიერის ფოტო`} loading="lazy" />
