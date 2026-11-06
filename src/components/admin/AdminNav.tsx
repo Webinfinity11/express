@@ -8,6 +8,7 @@ const links = [
   ["/admin", "მთავარი"],
   ["/admin/orders", "შეკვეთები"],
   ["/admin/products", "პროდუქცია"],
+  ["/admin/import-export", "იმპორტი / ექსპორტი"],
   ["/admin/categories", "კატეგორიები"],
   ["/admin/brands", "ბრენდები"],
   ["/admin/promos", "პრომოკოდები"],

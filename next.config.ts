@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  allowedDevOrigins: ["100.71.189.109"],
   cacheComponents: true,
   experimental: {
     serverActions: { bodySizeLimit: "4mb" },
