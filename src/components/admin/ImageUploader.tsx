@@ -6,7 +6,7 @@ import { uploadImage } from "@/lib/actions/admin";
 const MAX_SIDE = 2000;
 
 /** ტელეფონის ფოტოები (HEIC, 5–15MB) ბრაუზერშივე მცირდება JPEG-მდე, რომ server action-ის ლიმიტში მოთავსდეს. */
-async function shrink(file: File): Promise<File> {
+export async function shrink(file: File): Promise<File> {
   if (file.type === "image/svg+xml" || file.type === "image/gif") return file;
   if (file.size < 900 * 1024 && ["image/jpeg", "image/png", "image/webp"].includes(file.type)) return file;
   try {

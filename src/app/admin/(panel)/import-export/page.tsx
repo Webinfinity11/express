@@ -3,6 +3,7 @@ import { db, products } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { PageTitle } from "@/components/admin/ui";
 import { ImportExportPanel } from "@/components/admin/ImportExportPanel";
+import { PhotoUploadPanel } from "@/components/admin/PhotoUploadPanel";
 
 export default async function ImportExportAdmin() {
   await requireAdmin();
@@ -11,6 +12,9 @@ export default async function ImportExportAdmin() {
     <>
       <PageTitle>იმპორტი / ექსპორტი</PageTitle>
       <ImportExportPanel total={total} />
+      <div className="mt-5 max-w-5xl">
+        <PhotoUploadPanel />
+      </div>
     </>
   );
 }

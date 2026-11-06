@@ -2,9 +2,13 @@
 
 import { eq } from "drizzle-orm";
 import { updateTag } from "next/cache";
+import { z } from "zod";
 import { categories, db, products, shippingClasses } from "@/db";
 import { requireAdmin } from "@/lib/auth";
+import { matchPhotos, type PhotoMatch } from "@/lib/photo-match";
 import { parseWorkbook, planImport, type ImportPlan } from "@/lib/product-sheet";
+
+const MAX_IMAGES = 12;
 
 const MAX_FILE = 3.5 * 1024 * 1024;
 const PREVIEW_ITEMS = 300;
@@ -92,4 +96,39 @@ export async function applyImport(form: FormData): Promise<ImportResult> {
     if (created || updated) updateTag("catalog");
   }
   return { ok: true, created, updated, same: items.length - created - updated };
+}
+
+// ───────── ფოტოები დასახელებით ─────────
+
+const fileNames = z.array(z.string().min(1).max(300)).min(1).max(1000);
+
+/** ბაზას არ ცვლის: აჩვენებს, რომელი ფაილი რომელ პროდუქტს ერგება. */
+export async function matchPhotoFiles(files: string[]): Promise<{ ok: true; matches: PhotoMatch[] } | { ok: false; error: string }> {
+  await requireAdmin();
+  const parsed = fileNames.safeParse(files);
+  if (!parsed.success) return { ok: false, error: "ერთ ჯერზე მაქსიმუმ 1000 ფოტოა დაშვებული" };
+  const rows = await db.select({ id: products.id, name: products.name, published: products.published, images: products.images }).from(products);
+  const list = rows.map((p) => ({ id: p.id, name: p.name, published: p.published, imageCount: p.images.length }));
+  return { ok: true, matches: matchPhotos(parsed.data, list) };
+}
+
+const blobUrl = z.url({ protocol: /^https$/ }).refine((u) => new URL(u).hostname.endsWith(".public.blob.vercel-storage.com"), "არასწორი ბმული");
+const attachInput = z.object({ productId: z.number().int(), urls: z.array(blobUrl).min(1).max(MAX_IMAGES), replace: z.boolean() });
+
+export async function attachPhotos(input: z.input<typeof attachInput>): Promise<{ ok: true; added: number; skipped: number } | { ok: false; error: string }> {
+  await requireAdmin();
+  const parsed = attachInput.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "ფოტოს მონაცემები არასწორია" };
+  const { productId, urls, replace } = parsed.data;
+  const [product] = await db.select({ images: products.images }).from(products).where(eq(products.id, productId));
+  if (!product) return { ok: false, error: "პროდუქტი ვერ მოიძებნა" };
+  const base = replace ? [] : product.images;
+  const room = Math.max(0, MAX_IMAGES - base.length);
+  const fresh = urls.filter((u) => !base.includes(u));
+  const added = fresh.slice(0, room);
+  if (added.length || replace) {
+    await db.update(products).set({ images: [...base, ...added], updatedAt: new Date() }).where(eq(products.id, productId));
+    updateTag("catalog");
+  }
+  return { ok: true, added: added.length, skipped: fresh.length - added.length };
 }
