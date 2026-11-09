@@ -620,3 +620,6 @@ body .product-card:hover .product-image-button{background:#fff7f1}
 .p-story-image img{width:100%;height:auto;max-height:420px;object-fit:contain;object-position:center}
 .p-story-image:before{display:none}
 @media (max-width:900px){.p-story-image{height:auto;padding:20px}.p-story-image img{max-height:300px}}
+
+/* Product page title: BPG Nino Mtavruli has no bold file, so thicken it */
+body .p-details h1{-webkit-text-stroke:.9px currentColor;paint-order:stroke fill;letter-spacing:0}
