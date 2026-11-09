@@ -614,3 +614,9 @@ body .product-card:hover .product-image-button{background:#fff7f1}
 .contact-socials a{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid var(--border);border-radius:999px;font-weight:700;font-size:14px}
 .contact-socials .icon{width:18px;height:18px}
 @media(max-width:1000px){.contact-extra{grid-template-columns:1fr}}
+
+/* Product description image: show the whole product, never crop */
+.p-story-image{max-height:none;height:auto;display:flex;align-items:center;justify-content:center;padding:28px;align-self:stretch}
+.p-story-image img{width:100%;height:auto;max-height:420px;object-fit:contain;object-position:center}
+.p-story-image:before{display:none}
+@media (max-width:900px){.p-story-image{height:auto;padding:20px}.p-story-image img{max-height:300px}}
