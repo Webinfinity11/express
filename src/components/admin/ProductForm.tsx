@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import type { ProductRow, ShippingClassRow, Spec, VariantRow } from "@/db/schema";
-import { deleteProduct, saveProduct, setBrandLogo } from "@/lib/actions/admin";
+import { deleteProduct, saveProduct, setBrandLogo, uploadImage } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
 import type { AttrSuggestions } from "@/lib/attribute-suggestions";
 import { Button, Card, Field, inputCls } from "./ui";
-import { ImageUploader, SingleImage } from "./ImageUploader";
+import { ImageUploader, shrink, SingleImage } from "./ImageUploader";
 import { inheritedClass, ShippingClassSelect } from "./ShippingClassSelect";
 
 type Cat = { id: number; name: string; parentId: number | null; shippingClassId: number | null };
@@ -535,26 +535,54 @@ export function ProductForm({
 
 function BrandLogo({ brand, brands }: { brand: string; brands: { name: string; logo: string | null }[] }) {
   const router = useRouter();
+  const input = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
   const key = brand.trim().toLowerCase();
   const logo = brands.find((b) => b.name.trim().toLowerCase() === key)?.logo ?? "";
   // საწყისი (seed) ლოგოები მხოლოდ მთავარი გვერდის ზოლისთვისაა; პროდუქტზე ჩანს მხოლოდ ატვირთული
   const saved = logo.startsWith("/images/brands/") ? "" : logo;
   if (!key) return null;
+
+  async function save(url: string | null) {
+    setBusy(true);
+    setMsg("");
+    const r = await setBrandLogo(brand, url);
+    setBusy(false);
+    setMsg(r.ok ? "" : r.error);
+    router.refresh();
+  }
+
+  async function pick(files: FileList | null) {
+    const file = files?.[0];
+    if (!file) return;
+    setBusy(true);
+    try {
+      const form = new FormData();
+      form.set("file", await shrink(file));
+      const res = await uploadImage(form);
+      if (res.ok) await save(res.url);
+      else setMsg(res.error);
+    } catch {
+      setMsg("ატვირთვა ვერ მოხერხდა");
+    }
+    setBusy(false);
+    if (input.current) input.current.value = "";
+  }
+
   return (
-    <div className="mt-2">
-      <div className="text-xs text-slate-500 mb-1">ბრენდის ლოგო (საიტზე ჩანს ტექსტის ნაცვლად)</div>
-      <SingleImage
-        key={key}
-        value={saved}
-        onChange={async (url) => {
-          setMsg("ინახება…");
-          const r = await setBrandLogo(brand, url || null);
-          setMsg(r.ok ? "ლოგო შენახულია" : r.error);
-          router.refresh();
-        }}
-      />
-      {msg && <div className="text-xs text-slate-500 mt-1">{msg}</div>}
+    <div className="mt-2 flex items-center gap-3 text-xs text-slate-500">
+      {saved ? <img src={saved} alt="" className="h-7 max-w-[100px] object-contain rounded border border-slate-200 bg-white px-1" /> : <span>ლოგო:</span>}
+      <button type="button" disabled={busy} onClick={() => input.current?.click()} className="text-blue-600 hover:underline disabled:opacity-50">
+        {busy ? "იტვირთება…" : saved ? "შეცვლა" : "ატვირთვა"}
+      </button>
+      {saved && !busy && (
+        <button type="button" onClick={() => save(null)} className="text-red-500 hover:underline">
+          წაშლა
+        </button>
+      )}
+      {msg && <span className="text-red-600">{msg}</span>}
+      <input ref={input} type="file" accept="image/*" hidden onChange={(e) => pick(e.target.files)} />
     </div>
   );
 }
