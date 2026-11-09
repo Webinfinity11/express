@@ -117,7 +117,11 @@ export function ProductView({ p }: { p: Product }) {
 
         <div className="p-details">
           <div className="p-brand-row">
-            <span className="p-brand">{p.brand.toUpperCase()}</span>
+            {p.brandLogo ? (
+              <img className="p-brand-logo" src={p.brandLogo} alt={p.brand} />
+            ) : (
+              <span className="p-brand">{p.brand.toUpperCase()}</span>
+            )}
             {(variant?.sku || p.sku) && <span className="p-sku">SKU: {variant?.sku || p.sku}</span>}
           </div>
           <h1>{p.name}</h1>

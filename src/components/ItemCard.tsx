@@ -31,7 +31,7 @@ export function ItemCard({ p }: { p: Product }) {
         <Icon name="heart" />
       </button>
       <div className="item-body">
-        <span className="item-brand">{p.brand.toUpperCase()}</span>
+        {p.brandLogo ? <img className="item-brand-logo" src={p.brandLogo} alt={p.brand} /> : <span className="item-brand">{p.brand.toUpperCase()}</span>}
         <Link className="item-name" href={href}>
           {p.name}
         </Link>

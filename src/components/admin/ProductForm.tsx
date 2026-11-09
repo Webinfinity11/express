@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import type { ProductRow, ShippingClassRow, Spec, VariantRow } from "@/db/schema";
-import { deleteProduct, saveProduct } from "@/lib/actions/admin";
+import { deleteProduct, saveProduct, setBrandLogo } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
 import type { AttrSuggestions } from "@/lib/attribute-suggestions";
 import { Button, Card, Field, inputCls } from "./ui";
@@ -47,7 +47,7 @@ export function ProductForm({
   product: ProductRow | null;
   variants: VariantRow[];
   categories: Cat[];
-  brands: string[];
+  brands: { name: string; logo: string | null }[];
   classes: ShippingClassRow[];
   suggestions: AttrSuggestions;
 }) {
@@ -192,9 +192,10 @@ export function ProductForm({
                 <input value={brand} onChange={(e) => setBrand(e.target.value)} list="brand-list" className={inputCls} />
                 <datalist id="brand-list">
                   {brands.map((b) => (
-                    <option key={b} value={b} />
+                    <option key={b.name} value={b.name} />
                   ))}
                 </datalist>
+                <BrandLogo brand={brand} brands={brands} />
               </Field>
               <Field label="კოდი (SKU)">
                 <input value={sku} onChange={(e) => setSku(e.target.value)} className={inputCls} />
@@ -529,5 +530,29 @@ export function ProductForm({
         ))}
       </datalist>
     </form>
+  );
+}
+
+function BrandLogo({ brand, brands }: { brand: string; brands: { name: string; logo: string | null }[] }) {
+  const router = useRouter();
+  const [msg, setMsg] = useState("");
+  const key = brand.trim().toLowerCase();
+  const saved = brands.find((b) => b.name.trim().toLowerCase() === key)?.logo ?? "";
+  if (!key) return null;
+  return (
+    <div className="mt-2">
+      <div className="text-xs text-slate-500 mb-1">ბრენდის ლოგო (საიტზე ჩანს ტექსტის ნაცვლად)</div>
+      <SingleImage
+        key={key}
+        value={saved}
+        onChange={async (url) => {
+          setMsg("ინახება…");
+          const r = await setBrandLogo(brand, url || null);
+          setMsg(r.ok ? "ლოგო შენახულია" : r.error);
+          router.refresh();
+        }}
+      />
+      {msg && <div className="text-xs text-slate-500 mt-1">{msg}</div>}
+    </div>
   );
 }

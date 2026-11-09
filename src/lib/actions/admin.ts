@@ -308,6 +308,18 @@ export async function saveBrand(id: number | null, input: BrandInput): Promise<A
   return { ok: true, id: brandId! };
 }
 
+// პროდუქტის ფორმიდან ბრენდის ლოგოს დაყენება (ბრენდი იქმნება, თუ არ არსებობს)
+export async function setBrandLogo(name: string, logo: string | null): Promise<ActionResult> {
+  await requireAdmin();
+  const n = name.trim();
+  if (!n) return fail("ჯერ ბრენდის სახელი ჩაწერე");
+  const [row] = await db.select({ id: brands.id }).from(brands).where(sql`lower(${brands.name}) = lower(${n})`);
+  if (row) await db.update(brands).set({ logo: logo || null }).where(eq(brands.id, row.id));
+  else await db.insert(brands).values({ name: n, logo: logo || null, showInStrip: false });
+  updateTag("catalog");
+  return { ok: true };
+}
+
 export async function deleteBrand(id: number): Promise<ActionResult> {
   await requireAdmin();
   await db.delete(brands).where(eq(brands.id, id));

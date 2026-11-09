@@ -20,6 +20,7 @@ export type Product = {
   label: string;
   category: string; // კატეგორიის slug
   brand: string;
+  brandLogo?: string | null;
   price: number;
   oldPrice: number; // ფასდაკლების გარეშე = price
   image: string;
