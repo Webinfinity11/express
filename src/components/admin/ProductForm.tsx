@@ -537,7 +537,9 @@ function BrandLogo({ brand, brands }: { brand: string; brands: { name: string; l
   const router = useRouter();
   const [msg, setMsg] = useState("");
   const key = brand.trim().toLowerCase();
-  const saved = brands.find((b) => b.name.trim().toLowerCase() === key)?.logo ?? "";
+  const logo = brands.find((b) => b.name.trim().toLowerCase() === key)?.logo ?? "";
+  // საწყისი (seed) ლოგოები მხოლოდ მთავარი გვერდის ზოლისთვისაა; პროდუქტზე ჩანს მხოლოდ ატვირთული
+  const saved = logo.startsWith("/images/brands/") ? "" : logo;
   if (!key) return null;
   return (
     <div className="mt-2">

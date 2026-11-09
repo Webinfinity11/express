@@ -28,7 +28,7 @@ export async function getCatalog(): Promise<Catalog> {
     return null;
   };
 
-  const logoOf = new Map(brandRows.filter((b) => b.logo).map((b) => [b.name.trim().toLowerCase(), b.logo!]));
+  const logoOf = new Map(brandRows.filter((b) => b.logo && !b.logo.startsWith("/images/brands/")).map((b) => [b.name.trim().toLowerCase(), b.logo!]));
   const list: Product[] = rows.map((p) => {
     const price = p.price;
     const oldPrice = p.oldPrice && p.oldPrice > price ? p.oldPrice : price;
