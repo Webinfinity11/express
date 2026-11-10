@@ -32,7 +32,7 @@ function Steps({ step }: { step: 2 | 3 }) {
   );
 }
 
-export function CheckoutView({ cardEnabled = false }: { cardEnabled?: boolean }) {
+export function CheckoutView({ cardEnabled = false, keepzEnabled = false }: { cardEnabled?: boolean; keepzEnabled?: boolean }) {
   const store = useStore();
   const t = useT();
   const lang = useLang();
@@ -46,7 +46,8 @@ export function CheckoutView({ cardEnabled = false }: { cardEnabled?: boolean })
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", comment: "" });
   // განვადება არ გვაქვს: ონლაინ ბარათი, ან (თუ BOG გამორთულია) ოპერატორთან შეთანხმება
-  const methods: Payment[] = cardEnabled ? ["card"] : ["manual"];
+  const online: Payment[] = [...(cardEnabled ? (["card"] as const) : []), ...(keepzEnabled ? (["keepz"] as const) : [])];
+  const methods: Payment[] = online.length ? online : ["manual"];
   const [payment, setPayment] = useState<Payment>(methods[0]);
   const [errors, setErrors] = useState<OrderErrors>({});
   const [sending, setSending] = useState(false);
@@ -317,7 +318,7 @@ export function CheckoutView({ cardEnabled = false }: { cardEnabled?: boolean })
             </div>
             {serverError && <p className="field-error checkout-server-error">{serverError}</p>}
             <button className="button primary full-width checkout-cta" type="submit" disabled={sending}>
-              {sending ? t("იგზავნება...") : payment === "card" ? t("გადახდაზე გადასვლა") : t("შეკვეთის დადასტურება")} <Icon name="check" />
+              {sending ? t("იგზავნება...") : payment !== "manual" ? t("გადახდაზე გადასვლა") : t("შეკვეთის დადასტურება")} <Icon name="check" />
             </button>
             <div className="secure-note">
               <Icon name="lock" /> {t("თქვენი მონაცემები დაცულია")}

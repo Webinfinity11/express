@@ -2,7 +2,7 @@ import { CITIES, promoDiscount, shippingCost, type CatalogIndex, type City, type
 
 export type Delivery = "courier" | "pickup";
 // manual — ონლაინ გადახდა გამორთულია: ოპერატორი დაუკავშირდება
-export type Payment = "card" | "manual";
+export type Payment = "card" | "keepz" | "manual";
 
 export type OrderInput = {
   name: string;
@@ -24,6 +24,10 @@ export const PAYMENTS: Record<Payment, { title: string; text: string; logo?: str
     title: "ბარათით გადახდა",
     text: "Visa და Mastercard ბარათებით — საქართველოს ბანკის დაცულ გვერდზე",
     logo: "/images/payments/bog.svg",
+  },
+  keepz: {
+    title: "კრედო ბანკი — Keepz",
+    text: "ბარათით ან ბანკის აპლიკაციით Keepz-ის დაცულ გვერდზე",
   },
   manual: { title: "ოპერატორთან შეთანხმებით", text: "ოპერატორი დაგიკავშირდებათ გადახდის დეტალებისთვის" },
 };

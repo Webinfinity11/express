@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { after } from "next/server";
 import { db, orders } from "@/db";
 import { sendOrderEmails } from "@/lib/mail";
+import { createKeepzOrder, keepzEnabled } from "@/lib/keepz";
 import { bogEnabled, commitOrderStock, createBogOrder, ensurePaymentSchema } from "@/lib/bog";
 import { getCatalog } from "@/lib/catalog";
 import { CITIES, indexCatalog } from "@/lib/data";
@@ -51,8 +52,8 @@ export async function POST(request: Request) {
   const now = new Date();
   const number = `EM-${now.toISOString().slice(2, 10).replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-  const online = order.payment === "card";
-  if (online && !(await bogEnabled()))
+  const online = order.payment === "card" || order.payment === "keepz";
+  if ((order.payment === "card" && !(await bogEnabled())) || (order.payment === "keepz" && !(await keepzEnabled())))
     return Response.json({ error: "ონლაინ გადახდა დროებით მიუწვდომელია. აირჩიეთ სხვა მეთოდი." }, { status: 422 });
 
   await ensurePaymentSchema();
@@ -80,7 +81,11 @@ export async function POST(request: Request) {
     // ონლაინ გადახდისას მარაგი და პრომოკოდი ჩამოიჭრება მხოლოდ გადახდის დადასტურების შემდეგ (src/lib/bog.ts)
     const origin = new URL(request.url).origin;
     try {
-      const bog = await createBogOrder({
+      const lang = body.lang === "en" ? "en" : "ka";
+      const bog =
+        order.payment === "keepz"
+          ? await createKeepzOrder({ number, total: totals.total, origin, lang })
+          : await createBogOrder({
         number,
         lines: totals.lines,
         discount: totals.discount,
@@ -89,14 +94,14 @@ export async function POST(request: Request) {
         name: order.name.trim(),
         // ბანკი callback-ს მხოლოდ https-ზე აგზავნის; ლოკალურად ტესტისას სტატუსს redirect-ის გვერდი ამოწმებს
         origin,
-        lang: body.lang === "en" ? "en" : "ka",
+        lang,
       });
       await db.update(orders).set({ bogOrderId: bog.id }).where(eq(orders.id, saved.id));
       // მაღაზიას შეტყობინება მაშინვე (გადახდის მოლოდინში); გადახდის შემდეგ — მეორე მეილი (src/lib/bog.ts)
       after(() => sendOrderEmails({ ...saved, bogOrderId: bog.id }, origin.startsWith("https") ? origin : undefined));
       return Response.json({ id: number, total: totals.total, redirect: bog.redirect });
     } catch (e) {
-      console.error("[bog] create order failed", e);
+      console.error("[payment] create order failed", order.payment, e);
       await db.update(orders).set({ paymentStatus: "failed", status: "cancelled" }).where(eq(orders.id, saved.id));
       return Response.json({ error: "ბანკთან დაკავშირება ვერ მოხერხდა. სცადეთ თავიდან ან აირჩიეთ სხვა მეთოდი." }, { status: 502 });
     }

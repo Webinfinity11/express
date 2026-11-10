@@ -197,6 +197,13 @@ export async function syncBogOrder(bogOrderId: string) {
   if (PAID.has(key)) next = "paid";
   else if (REFUNDED.has(key)) next = "refunded";
   else if (FAILED.has(key) && order.paymentStatus !== "paid") next = "failed";
+  return applyPaymentStatus(order, next);
+}
+
+type OrderRow = typeof orders.$inferSelect;
+
+/** გადახდის სტატუსის შეცვლა (ყველა ბანკისთვის): paid → მარაგი, პრომოკოდი, მეილი; failed → შეკვეთა გაუქმდება */
+export async function applyPaymentStatus(order: OrderRow, next: string | null) {
   if (next === order.paymentStatus) return order;
 
   // ატომური გადასვლა pending → paid, რომ მარაგი ორჯერ არ ჩამოიჭრას (callback + redirect ერთდროულად)

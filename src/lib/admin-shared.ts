@@ -30,6 +30,7 @@ export const PAYMENT_LABELS: Record<string, string> = {
   "on-delivery": "მიღებისას გადახდა",
   installment: "განვადება",
   card: "ბარათით გადახდა (BOG)",
+  keepz: "Keepz — კრედო ბანკი",
   manual: "ოპერატორთან შეთანხმებით",
 };
 

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { eq } from "drizzle-orm";
 import { db, orders } from "@/db";
 import { ensurePaymentSchema, syncBogOrder } from "@/lib/bog";
+import { syncKeepzOrder } from "@/lib/keepz";
 import { gel } from "@/lib/data";
 import { Icon } from "@/components/Icon";
 import { ClearCart } from "@/components/checkout/ClearCart";
@@ -24,7 +25,7 @@ async function Result({ searchParams, lang }: { searchParams: PageProps<"/[lang]
   // callback შეიძლება ჯერ არ მოსულიყო — სტატუსს ბანკში თავად ვამოწმებთ
   if (order?.bogOrderId && order.paymentStatus === "pending") {
     try {
-      order = (await syncBogOrder(order.bogOrderId)) ?? order;
+      order = (order.payment === "keepz" ? await syncKeepzOrder(order.number) : await syncBogOrder(order.bogOrderId)) ?? order;
     } catch (e) {
       console.error("[bog] result sync failed", e);
     }
