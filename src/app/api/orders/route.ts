@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db, orders } from "@/db";
-import { bogEnabled, commitOrderStock, createBogOrder } from "@/lib/bog";
+import { bogEnabled, commitOrderStock, createBogOrder, ensurePaymentSchema } from "@/lib/bog";
 import { getCatalog } from "@/lib/catalog";
 import { CITIES, indexCatalog } from "@/lib/data";
 import { PAYMENTS, normalizePhone, orderTotals, validateOrder, type OrderInput } from "@/lib/order";
@@ -53,6 +53,7 @@ export async function POST(request: Request) {
   if (online && !(await bogEnabled()))
     return Response.json({ error: "ონლაინ გადახდა დროებით მიუწვდომელია. აირჩიეთ სხვა მეთოდი." }, { status: 422 });
 
+  await ensurePaymentSchema();
   const promoCode = totals.discount && promo ? promo.code : null;
   const [saved] = await db.insert(orders).values({
     number,

@@ -2,10 +2,12 @@ import { Suspense } from "react";
 import { eq, sql } from "drizzle-orm";
 import { db, orders } from "@/db";
 import { requireAdmin } from "@/lib/auth";
+import { ensurePaymentSchema } from "@/lib/bog";
 import { AdminNav } from "@/components/admin/AdminNav";
 
 async function Nav() {
   await requireAdmin();
+  await ensurePaymentSchema();
   const [{ n }] = await db.select({ n: sql<number>`count(*)::int` }).from(orders).where(eq(orders.status, "new"));
   return <AdminNav newOrders={n} />;
 }

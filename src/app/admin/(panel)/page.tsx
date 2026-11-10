@@ -2,6 +2,7 @@ import Link from "next/link";
 import { desc, sql } from "drizzle-orm";
 import { categories, db, orders, products, promoCodes } from "@/db";
 import { requireAdmin } from "@/lib/auth";
+import { ensurePaymentSchema } from "@/lib/bog";
 import { ORDER_STATUS_LABELS } from "@/lib/admin-shared";
 import { gel } from "@/lib/data";
 import { Card, PageTitle, StatusBadge } from "@/components/admin/ui";
@@ -9,6 +10,7 @@ import { AutoRefresh } from "@/components/admin/AutoRefresh";
 
 export default async function Dashboard() {
   await requireAdmin();
+  await ensurePaymentSchema();
   const [[stats], [cats], [promos], recent] = await Promise.all([
     db
       .select({

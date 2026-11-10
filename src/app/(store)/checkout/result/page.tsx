@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { eq } from "drizzle-orm";
 import { db, orders } from "@/db";
-import { syncBogOrder } from "@/lib/bog";
+import { ensurePaymentSchema, syncBogOrder } from "@/lib/bog";
 import { gel } from "@/lib/data";
 import { Icon } from "@/components/Icon";
 import { ClearCart } from "@/components/checkout/ClearCart";
@@ -13,6 +13,7 @@ export const metadata: Metadata = { title: "გადახდის შედ�
 async function Result({ searchParams }: { searchParams: PageProps<"/checkout/result">["searchParams"] }) {
   const raw = (await searchParams).order;
   const number = typeof raw === "string" ? raw.slice(0, 40) : "";
+  await ensurePaymentSchema();
   let [order] = number ? await db.select().from(orders).where(eq(orders.number, number)) : [];
 
   // callback შეიძლება ჯერ არ მოსულიყო — სტატუსს ბანკში თავად ვამოწმებთ

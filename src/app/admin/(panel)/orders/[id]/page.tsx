@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db, orders } from "@/db";
 import { requireAdmin } from "@/lib/auth";
+import { ensurePaymentSchema } from "@/lib/bog";
 import { DELIVERY_LABELS, PAYMENT_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/admin-shared";
 import { CITIES, gel } from "@/lib/data";
 import { Card, PageTitle } from "@/components/admin/ui";
@@ -10,6 +11,7 @@ import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
 
 export default async function OrderDetail({ params }: PageProps<"/admin/orders/[id]">) {
   await requireAdmin();
+  await ensurePaymentSchema();
   const [order] = await db.select().from(orders).where(eq(orders.id, Number((await params).id) || 0));
   if (!order) notFound();
   const info: [string, React.ReactNode][] = [

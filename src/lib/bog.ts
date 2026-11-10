@@ -19,6 +19,21 @@ tcBuHV4f7qsynQT+f2UYbESX/TLHwT5qFWZDHZ0YUOUIvb8n7JujVSGZO9/+ll/g
 PwIDAQAB
 -----END PUBLIC KEY-----`;
 
+/**
+ * ონლაინ გადახდის ველები orders ცხრილში — თუ ჯერ არ არსებობს, ერთხელ ემატება (ცარიელი ველები,
+ * არსებულ მონაცემებს არ ეხება). drizzle-kit push-ის ნაცვლად, რომ ადმინიდან/საიტიდან თავად მოეწყოს.
+ */
+let schemaReady: Promise<unknown> | null = null;
+export function ensurePaymentSchema() {
+  schemaReady ??= db
+    .execute(sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status text, ADD COLUMN IF NOT EXISTS bog_order_id text`)
+    .catch((e) => {
+      schemaReady = null;
+      throw e;
+    });
+  return schemaReady;
+}
+
 /** პარამეტრები ადმინიდან (settings, key "_bog" — საიტის ტექსტებში არ ერევა და კლიენტს არ მიეწოდება) */
 export const BOG_SETTINGS_KEY = "_bog";
 export type BogConfig = { enabled: boolean; clientId: string; clientSecret: string };
@@ -173,6 +188,7 @@ const REFUNDED = new Set(["refunded", "refunded_partially"]);
  * ბანკის პასუხს ყოველთვის თავად ვკითხულობთ (receipt), callback-ის ტანს არ ვენდობით.
  */
 export async function syncBogOrder(bogOrderId: string) {
+  await ensurePaymentSchema();
   const [order] = await db.select().from(orders).where(eq(orders.bogOrderId, bogOrderId));
   if (!order || order.paymentStatus === "refunded") return order ?? null;
   const r = await getBogReceipt(bogOrderId);

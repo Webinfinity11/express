@@ -2,6 +2,7 @@ import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 import { db, orders } from "@/db";
 import { requireAdmin } from "@/lib/auth";
+import { ensurePaymentSchema } from "@/lib/bog";
 import { ORDER_STATUSES, ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/admin-shared";
 import { gel } from "@/lib/data";
 import { PageTitle, StatusBadge } from "@/components/admin/ui";
@@ -9,6 +10,7 @@ import { AutoRefresh } from "@/components/admin/AutoRefresh";
 
 export default async function OrdersAdmin({ searchParams }: PageProps<"/admin/orders">) {
   await requireAdmin();
+  await ensurePaymentSchema();
   const status = (await searchParams).status;
   const valid = ORDER_STATUSES.find((s) => s === status);
   const rows = await db

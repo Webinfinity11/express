@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db, settings } from "@/db";
 import { requireAdmin } from "@/lib/auth";
+import { ensurePaymentSchema } from "@/lib/bog";
 import { saveBogSettings } from "@/lib/actions/admin";
 import { BOG_SETTINGS_KEY } from "@/lib/bog";
 import { Card, PageTitle } from "@/components/admin/ui";
@@ -13,6 +14,7 @@ const MESSAGES: Record<string, [string, string]> = {
 
 export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/payments">) {
   await requireAdmin();
+  await ensurePaymentSchema();
   const r = (await searchParams).r;
   const [row] = await db.select().from(settings).where(eq(settings.key, BOG_SETTINGS_KEY));
   const v = (row?.value ?? {}) as { enabled?: boolean; clientId?: string; clientSecret?: string };
