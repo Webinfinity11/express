@@ -1,7 +1,11 @@
+"use client";
+
 import type { Content } from "@/lib/content-schema";
+import { useT } from "@/i18n/client";
 import { Icon } from "./Icon";
 
 export function ContactCards({ site, contact }: { site: Content["site"]; contact: Content["contact"] }) {
+  const t = useT();
   return (
     <div className="contact-cards">
       <a className="contact-card" href={site.phoneHref}>
@@ -9,7 +13,7 @@ export function ContactCards({ site, contact }: { site: Content["site"]; contact
           <Icon name="phone" />
         </span>
         <span>
-          <small>ტელეფონი</small>
+          <small>{t("ტელეფონი")}</small>
           <strong>{site.phone}</strong>
           <p>{contact.phoneText}</p>
         </span>
@@ -19,7 +23,7 @@ export function ContactCards({ site, contact }: { site: Content["site"]; contact
           <Icon name="pin" />
         </span>
         <span>
-          <small>მისამართი</small>
+          <small>{t("მისამართი")}</small>
           <strong>{site.address}</strong>
           <p>{site.hours || contact.addressText}</p>
         </span>
@@ -29,7 +33,7 @@ export function ContactCards({ site, contact }: { site: Content["site"]; contact
           <Icon name="headphones" />
         </span>
         <span>
-          <small>კონსულტაცია</small>
+          <small>{t("კონსულტაცია")}</small>
           <strong>{contact.consultTitle}</strong>
           <p>{contact.consultText}</p>
         </span>

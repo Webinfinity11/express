@@ -1,15 +1,16 @@
-import Link from "next/link";
+import { getT, localePath, type Lang } from "@/i18n";
+import { Link } from "@/i18n/client";
 import type { Content } from "@/lib/content-schema";
 import { Icon } from "./Icon";
 import { InfoButton } from "./InfoButton";
 
-const legalLinks = [
-  { label: "კონფიდენციალურობის პოლიტიკა", href: "/privacy-policy" },
-  { label: "მიწოდების პირობები", href: "/terms" },
-  { label: "დაბრუნების პოლიტიკა", href: "/returns-policy" },
-];
-
-export function Footer({ content }: { content: Content }) {
+export function Footer({ content, lang }: { content: Content; lang: Lang }) {
+  const t = getT(lang);
+  const legalLinks = [
+    { label: t("კონფიდენციალურობის პოლიტიკა"), href: "/privacy-policy" },
+    { label: t("მიწოდების პირობები"), href: "/terms" },
+    { label: t("დაბრუნების პოლიტიკა"), href: "/returns-policy" },
+  ];
   const { site, footer } = content;
   // სოციალური ბმული თუ არ არის მითითებული, ღილაკი საინფორმაციო ფანჯარას ხსნის
   const social = (href: string, label: string, icon: React.ReactNode) =>
@@ -27,17 +28,17 @@ export function Footer({ content }: { content: Content }) {
     <footer className="site-footer">
       <div className="wrap">
         <div className="footer-top">
-          <Link className="brand footer-brand" href="/" aria-label="Express Mix — მთავარი">
+          <Link className="brand footer-brand" href={localePath(lang, "/")} aria-label={t("Express Mix — მთავარი")}>
             <img src="/images/logo.webp" alt="Express Mix — Home & Kitchen" width={459} height={191} loading="lazy" />
           </Link>
           <div className="footer-links">
             {footer.links.map((l) => (
-              <Link key={l.href + l.label} href={l.href}>
+              <Link key={l.href + l.label} href={localePath(lang, l.href)}>
                 {l.label}
               </Link>
             ))}
-            <Link href="/terms">მიწოდება</Link>
-            <InfoButton info="payment">გადახდა</InfoButton>
+            <Link href={localePath(lang, "/terms")}>{t("მიწოდება")}</Link>
+            <InfoButton info="payment">{t("გადახდა")}</InfoButton>
           </div>
           <div className="socials">
             {social(site.facebook, "Facebook", <span className="facebook-letter">f</span>)}
@@ -46,9 +47,9 @@ export function Footer({ content }: { content: Content }) {
           </div>
         </div>
         <div className="footer-bottom">
-          <nav className="footer-legal" aria-label="იურიდიული ინფორმაცია">
+          <nav className="footer-legal" aria-label={t("იურიდიული ინფორმაცია")}>
             {legalLinks.map((l) => (
-              <Link key={l.href} href={l.href}>
+              <Link key={l.href} href={localePath(lang, l.href)}>
                 {l.label}
               </Link>
             ))}

@@ -1,0 +1,4220 @@
+{
+  "categories": [
+    {
+      "id": 53,
+      "name": "Computer Equipment"
+    },
+    {
+      "id": 54,
+      "name": "Accessories"
+    },
+    {
+      "id": 55,
+      "name": "Speakers"
+    },
+    {
+      "id": 56,
+      "name": "Power Supplies"
+    },
+    {
+      "id": 57,
+      "name": "Laptops"
+    },
+    {
+      "id": 58,
+      "name": "Memory Cards"
+    },
+    {
+      "id": 59,
+      "name": "Monitors"
+    },
+    {
+      "id": 60,
+      "name": "Printers"
+    },
+    {
+      "id": 61,
+      "name": "Interactive Touch Displays"
+    },
+    {
+      "id": 62,
+      "name": "TVs"
+    },
+    {
+      "id": 63,
+      "name": "TV Mounts"
+    },
+    {
+      "id": 64,
+      "name": "Cooling, Heating & Air Purification"
+    },
+    {
+      "id": 65,
+      "name": "Gas Heaters"
+    },
+    {
+      "id": 66,
+      "name": "Boilers"
+    },
+    {
+      "id": 67,
+      "name": "Heater Brackets"
+    },
+    {
+      "id": 68,
+      "name": "Fans"
+    },
+    {
+      "id": 69,
+      "name": "Air Conditioners"
+    },
+    {
+      "id": 70,
+      "name": "Air Purifiers & Humidifiers"
+    },
+    {
+      "id": 71,
+      "name": "Leisure"
+    },
+    {
+      "id": 72,
+      "name": "Electric Scooters"
+    },
+    {
+      "id": 73,
+      "name": "Treadmills"
+    },
+    {
+      "id": 74,
+      "name": "Garden & Outdoor"
+    },
+    {
+      "id": 75,
+      "name": "Grills & BBQ"
+    },
+    {
+      "id": 76,
+      "name": "Hair & Personal Care"
+    },
+    {
+      "id": 77,
+      "name": "Bathroom Scales"
+    },
+    {
+      "id": 78,
+      "name": "Epilators"
+    },
+    {
+      "id": 79,
+      "name": "Hair Clippers"
+    },
+    {
+      "id": 80,
+      "name": "Hair Dryers"
+    },
+    {
+      "id": 81,
+      "name": "Hair Stylers"
+    },
+    {
+      "id": 82,
+      "name": "Hair Straighteners"
+    },
+    {
+      "id": 83,
+      "name": "Trimmers"
+    },
+    {
+      "id": 84,
+      "name": "Shavers"
+    },
+    {
+      "id": 85,
+      "name": "Large Home Appliances"
+    },
+    {
+      "id": 86,
+      "name": "Induction Hobs"
+    },
+    {
+      "id": 87,
+      "name": "Refrigerators"
+    },
+    {
+      "id": 88,
+      "name": "Washing Machines"
+    },
+    {
+      "id": 89,
+      "name": "Washer Dryers"
+    },
+    {
+      "id": 90,
+      "name": "Freezers"
+    },
+    {
+      "id": 91,
+      "name": "Dryers"
+    },
+    {
+      "id": 92,
+      "name": "Water Dispensers"
+    },
+    {
+      "id": 93,
+      "name": "Water Bottles"
+    },
+    {
+      "id": 94,
+      "name": "Dishwashers"
+    },
+    {
+      "id": 95,
+      "name": "Household Goods"
+    },
+    {
+      "id": 96,
+      "name": "Trash Bins"
+    },
+    {
+      "id": 97,
+      "name": "Kitchen Accessories"
+    },
+    {
+      "id": 98,
+      "name": "Cutlery"
+    },
+    {
+      "id": 99,
+      "name": "Coffee Machines"
+    },
+    {
+      "id": 100,
+      "name": "Kettles"
+    },
+    {
+      "id": 101,
+      "name": "Mugs & Thermoses"
+    },
+    {
+      "id": 102,
+      "name": "Dish Racks"
+    },
+    {
+      "id": 103,
+      "name": "Wooden Kitchenware"
+    },
+    {
+      "id": 104,
+      "name": "Small Kitchen Appliances"
+    },
+    {
+      "id": 105,
+      "name": "Air Fryers"
+    },
+    {
+      "id": 106,
+      "name": "Blenders"
+    },
+    {
+      "id": 107,
+      "name": "Crepe Makers"
+    },
+    {
+      "id": 108,
+      "name": "Vegetable Cutters"
+    },
+    {
+      "id": 109,
+      "name": "Grill Toasters"
+    },
+    {
+      "id": 110,
+      "name": "Mini Ovens"
+    },
+    {
+      "id": 111,
+      "name": "Vacuum Sealers"
+    },
+    {
+      "id": 112,
+      "name": "Thermo Pots"
+    },
+    {
+      "id": 113,
+      "name": "Milk Frothers"
+    },
+    {
+      "id": 114,
+      "name": "Microwave Ovens"
+    },
+    {
+      "id": 115,
+      "name": "Mixers"
+    },
+    {
+      "id": 116,
+      "name": "Stand Mixers"
+    },
+    {
+      "id": 117,
+      "name": "Multicookers"
+    },
+    {
+      "id": 118,
+      "name": "Ice Cream Makers"
+    },
+    {
+      "id": 119,
+      "name": "Popcorn Makers"
+    },
+    {
+      "id": 120,
+      "name": "Bread Makers"
+    },
+    {
+      "id": 121,
+      "name": "Food Processors"
+    },
+    {
+      "id": 122,
+      "name": "Kitchen Scales"
+    },
+    {
+      "id": 123,
+      "name": "Slicers"
+    },
+    {
+      "id": 124,
+      "name": "Toasters & Roasters"
+    },
+    {
+      "id": 125,
+      "name": "Automatic Coffee Machines"
+    },
+    {
+      "id": 126,
+      "name": "Turkish Coffee Makers"
+    },
+    {
+      "id": 127,
+      "name": "Coffee Grinders"
+    },
+    {
+      "id": 128,
+      "name": "Ice Makers"
+    },
+    {
+      "id": 129,
+      "name": "Electric Kettles"
+    },
+    {
+      "id": 130,
+      "name": "Food Dehydrators"
+    },
+    {
+      "id": 131,
+      "name": "Choppers"
+    },
+    {
+      "id": 132,
+      "name": "Juicers"
+    },
+    {
+      "id": 133,
+      "name": "Meat Grinders"
+    },
+    {
+      "id": 134,
+      "name": "Home Cleaning"
+    },
+    {
+      "id": 135,
+      "name": "Upright Vacuum Cleaners"
+    },
+    {
+      "id": 136,
+      "name": "Vacuum Cleaners"
+    },
+    {
+      "id": 137,
+      "name": "Steam Cleaners"
+    },
+    {
+      "id": 138,
+      "name": "Robot Vacuum Cleaners"
+    },
+    {
+      "id": 139,
+      "name": "Cordless Vacuum Cleaners"
+    },
+    {
+      "id": 140,
+      "name": "Window Cleaning Robots"
+    },
+    {
+      "id": 141,
+      "name": "Hand Dryers"
+    },
+    {
+      "id": 142,
+      "name": "Cookware"
+    },
+    {
+      "id": 143,
+      "name": "Frying Pans"
+    },
+    {
+      "id": 144,
+      "name": "Pan & Pot Sets"
+    },
+    {
+      "id": 145,
+      "name": "Pots"
+    },
+    {
+      "id": 146,
+      "name": "Garment Care"
+    },
+    {
+      "id": 147,
+      "name": "Steam Generators"
+    },
+    {
+      "id": 148,
+      "name": "Steam Irons"
+    },
+    {
+      "id": 149,
+      "name": "Ironing Boards"
+    },
+    {
+      "id": 150,
+      "name": "Handheld Steamers"
+    },
+    {
+      "id": 151,
+      "name": "Built-in Appliances"
+    },
+    {
+      "id": 152,
+      "name": "Gas Hobs"
+    },
+    {
+      "id": 153,
+      "name": "Cooker Hoods"
+    },
+    {
+      "id": 154,
+      "name": "Electric Ovens"
+    },
+    {
+      "id": 155,
+      "name": "Built-in Microwave Ovens"
+    },
+    {
+      "id": 156,
+      "name": "TVs"
+    },
+    {
+      "id": 157,
+      "name": "Built-in Dishwashers"
+    }
+  ],
+  "products": [
+    {
+      "id": 101,
+      "name": "Franko Steam Iron FSI-9049",
+      "label": "FSI-9049",
+      "subtitle": "",
+      "description": "•\tType: 2-in-1 garment steamer\n\n•\tDry ironing / continuous steam ironing \n•\tAdjustable steam settings\n•\tLow water warning indicator\n•\tTemperature control\n•\tAuto shut-off\n•\tCeramic soleplate \n•\t1.9 m cord with VDE plug\n•\tFrequency and voltage: 50Hz / 220–240V\n•\tPower: 1800W",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "2-in-1 garment steamer"
+        },
+        {
+          "label": "Mode",
+          "value": "Dry ironing / continuous steam ironing"
+        },
+        {
+          "label": "Indicator",
+          "value": "Low water warning"
+        },
+        {
+          "label": "Soleplate",
+          "value": "Ceramic"
+        },
+        {
+          "label": "Temperature control",
+          "value": "Yes"
+        },
+        {
+          "label": "Auto shut-off",
+          "value": "Yes"
+        },
+        {
+          "label": "Steam control",
+          "value": "Yes"
+        },
+        {
+          "label": "Frequency and voltage",
+          "value": "50Hz / 220–240V"
+        },
+        {
+          "label": "Power",
+          "value": "1800 W"
+        },
+        {
+          "label": "Brand",
+          "value": "Franko"
+        },
+        {
+          "label": "Model",
+          "value": "FSI-9049"
+        },
+        {
+          "label": "Color",
+          "value": "Gold/navy blue"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Gold / navy blue"
+    },
+    {
+      "id": 102,
+      "name": "Franko Refrigerator FT-237NFSS",
+      "label": "FT-237NFSS",
+      "subtitle": "",
+      "description": "• Total capacity:         237 L\n• Fridge compartment:          183 L\n• Freezer compartment:        54  L\n• Control panel:         Electronic\n• Defrost system: Automatic\n• Climate class:          ST/T\n• Energy efficiency class:       A+\n• Noise level:        42 dB\n• Freezer star rating:    4****  -18℃\n• Freezing capacity (kg/24 h) :        3.5 \n• Cold retention time during power outage (hours):   14\n• Door:            Reversible\n• Interior lighting:         LED\n• Crisper cover:        Glass\n• Adjustable shelf: Glass with metal trim\n• Ice tray:        1 pc\n• Egg tray:        2 pcs\n• Dimensions (W × D × H), mm :   545*635*1550\n• Package dimensions (W × D × H), mm:   575*660*1590\n• Weight (net/gross, kg):          50.6/55.5",
+      "specs": [
+        {
+          "label": "Brand",
+          "value": "Franko"
+        },
+        {
+          "label": "Model",
+          "value": "FT-237NFSS"
+        },
+        {
+          "label": "Type",
+          "value": "Top freezer"
+        },
+        {
+          "label": "Cooling",
+          "value": "No Frost"
+        },
+        {
+          "label": "Total capacity",
+          "value": "237 L"
+        },
+        {
+          "label": "Fridge compartment",
+          "value": "183 L"
+        },
+        {
+          "label": "Freezer compartment",
+          "value": "54 L"
+        },
+        {
+          "label": "Control panel",
+          "value": "Electronic"
+        },
+        {
+          "label": "Defrost system",
+          "value": "Automatic"
+        },
+        {
+          "label": "Climate class",
+          "value": "ST/T"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A+"
+        },
+        {
+          "label": "Noise level",
+          "value": "42 dB"
+        },
+        {
+          "label": "Freezer star rating",
+          "value": "4****  -18℃"
+        },
+        {
+          "label": "Freezing capacity (kg/24 h)",
+          "value": "3,5"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 103,
+      "name": "Franko Refrigerator FT-483NFDWDIS",
+      "label": "FT-483NFDWDIS",
+      "subtitle": "Spacious, energy-efficient refrigerator with inverter motor",
+      "description": "Total capacity:        483 L\nFridge compartment:         362 L\nFreezer compartment:       121 L\nControl panel:        Electronic\nDefrost system:       Automatic\nClimate class:         ST/T\nEnergy efficiency class:      A++  Europe F\nAnnual energy consumption (kWh/year):   336\nNoise level:       42 dB\nFreezer star rating:    4****  -18℃\nFreezing capacity (kg/24 h) :       5.5 \nCold retention time during power outage (hours):      14\nDoor:           Reversible\nInterior lighting:        LED\nCrisper cover:       Glass\nAdjustable shelf:         Glass with metal trim\nIce tray:       1 pc\nEgg tray:       2 pcs\nDimensions (W × D × H), mm :   790*695*1735\nPackage dimensions (W × D × H), mm:   835*745*1810\nWeight (net/gross, kg):          80/88",
+      "specs": [
+        {
+          "label": "Brand",
+          "value": "Franko"
+        },
+        {
+          "label": "Model",
+          "value": "FT-483NFDWDIS"
+        },
+        {
+          "label": "Type",
+          "value": "Top freezer"
+        },
+        {
+          "label": "Cooling",
+          "value": "No Frost"
+        },
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Total capacity",
+          "value": "483 L"
+        },
+        {
+          "label": "Fridge compartment",
+          "value": "362 L"
+        },
+        {
+          "label": "Freezer compartment",
+          "value": "121 L"
+        },
+        {
+          "label": "Control panel",
+          "value": "Electronic"
+        },
+        {
+          "label": "Defrost system",
+          "value": "Automatic"
+        },
+        {
+          "label": "Climate class",
+          "value": "ST/T"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A++  Europe F"
+        },
+        {
+          "label": "Noise level",
+          "value": "42 dB"
+        },
+        {
+          "label": "Freezer star rating",
+          "value": "4****  -18℃"
+        },
+        {
+          "label": "Freezing capacity (kg/24 h)",
+          "value": "5,5"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 104,
+      "name": "Franko Refrigerator FT-483NFDWDIS",
+      "label": "FT-483NFDWDIS",
+      "subtitle": "Spacious, energy-efficient refrigerator with inverter motor",
+      "description": "Total capacity:        483 L\nFridge compartment:         362 L\nFreezer compartment:       121 L\nControl panel:        Electronic\nDefrost system:       Automatic\nClimate class:         ST/T\nEnergy efficiency class:      A++  Europe F\nAnnual energy consumption (kWh/year):   336\nNoise level:       42 dB\nFreezer star rating:    4****  -18℃\nFreezing capacity (kg/24 h) :       5.5 \nCold retention time during power outage (hours):      14\nDoor:           Reversible\nInterior lighting:        LED\nCrisper cover:       Glass\nAdjustable shelf:         Glass with metal trim\nIce tray:       1 pc\nEgg tray:       2 pcs\nDimensions (W × D × H), mm :   790*695*1735\nPackage dimensions (W × D × H), mm:   835*745*1810\nWeight (net/gross, kg):          80/88",
+      "specs": [
+        {
+          "label": "Brand",
+          "value": "Franko"
+        },
+        {
+          "label": "Model",
+          "value": "FT-483NFDWDIS"
+        },
+        {
+          "label": "Type",
+          "value": "Top freezer"
+        },
+        {
+          "label": "Cooling",
+          "value": "No Frost"
+        },
+        {
+          "label": "Total capacity",
+          "value": "483 L"
+        },
+        {
+          "label": "Fridge compartment",
+          "value": "362 L"
+        },
+        {
+          "label": "Freezer compartment",
+          "value": "121 L"
+        },
+        {
+          "label": "Control panel",
+          "value": "Electronic"
+        },
+        {
+          "label": "Defrost system",
+          "value": "Automatic"
+        },
+        {
+          "label": "Climate class",
+          "value": "ST/T"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A++  Europe F"
+        },
+        {
+          "label": "Noise level",
+          "value": "42 dB"
+        },
+        {
+          "label": "Freezer star rating",
+          "value": "4****  -18℃"
+        },
+        {
+          "label": "Freezing capacity (kg/24 h)",
+          "value": "5,5"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        },
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 105,
+      "name": "Franko Refrigerator FB-326NFDWDSS",
+      "label": "FB-326NFDWDSS",
+      "subtitle": "No Frost, with water dispenser",
+      "description": "• Total capacity:         326 L\n• Fridge compartment:          226 L\n• Freezer compartment:        100 L\n• Control panel:         Electronic\n• Defrost system:        Automatic\n• Climate class:          ST/T\n• Energy efficiency class:       A+\n• Annual energy consumption (kWh/year):    249\n• Noise level:        42 dB\n• Freezer star rating:    4****  -18℃\n• Freezing capacity (kg/24 h) :        5\n• Cold retention time during power outage (hours):  19.5\n• Door:            Reversible\n• Interior lighting:          LED\n• Crisper cover:        Glass\n• Adjustable shelf:          Glass with metal trim\n• Ice tray:        1 pc\n• Egg tray:        2 pcs\n• Dimensions (W × D × H), mm :   590*660*1852\n• Package dimensions (W × D × H), mm:   636*700*1900\n• Weight (net/gross, kg):          70/74",
+      "specs": [
+        {
+          "label": "Brand",
+          "value": "Franko"
+        },
+        {
+          "label": "Model",
+          "value": "FB-326NFDWDSS"
+        },
+        {
+          "label": "Type",
+          "value": "Bottom freezer"
+        },
+        {
+          "label": "Cooling",
+          "value": "No Frost"
+        },
+        {
+          "label": "Total capacity",
+          "value": "326 L"
+        },
+        {
+          "label": "Fridge compartment",
+          "value": "226 L"
+        },
+        {
+          "label": "Freezer compartment",
+          "value": "100 L"
+        },
+        {
+          "label": "Control panel",
+          "value": "Electronic"
+        },
+        {
+          "label": "Defrost system",
+          "value": "Automatic"
+        },
+        {
+          "label": "Climate class",
+          "value": "ST/T"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A+"
+        },
+        {
+          "label": "Annual energy consumption (kWh/year)",
+          "value": "249"
+        },
+        {
+          "label": "Noise level",
+          "value": "42 dB"
+        },
+        {
+          "label": "Freezer star rating",
+          "value": "4****  -18℃"
+        },
+        {
+          "label": "Freezing capacity (kg/24 h)",
+          "value": "5"
+        },
+        {
+          "label": "Dimensions (W × D × H), mm",
+          "value": "590*660*1852"
+        },
+        {
+          "label": "Package dimensions (W × D × H), mm",
+          "value": "636*700*1900"
+        },
+        {
+          "label": "Weight (net/gross, kg)",
+          "value": "70/74"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 107,
+      "name": "Franko Air Fryer FAF-1217",
+      "label": "FAF-1217",
+      "subtitle": "Air fryer, 3.2 L capacity",
+      "description": "• Type: Air fryer\n• Capacity: 3.2 L\n• Mechanical controls, 60-minute timer, 80–200°C temperature range\n• Single container + non-stick basket\n• Color: black body + stainless steel\n• VDE plug, power cord length 0.65–0.68 m\n• Power and frequency: 1300W, 220-240V, ~50-60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Air fryer"
+        },
+        {
+          "label": "Model",
+          "value": "FAF-1217"
+        },
+        {
+          "label": "Capacity",
+          "value": "3.2 L"
+        },
+        {
+          "label": "Temperature range",
+          "value": "80-200C"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 108,
+      "name": "Franko Air Fryer FAF-1218",
+      "label": "FAF-1218",
+      "subtitle": "Air fryer, 5.5 L capacity",
+      "description": "• Type: Air fryer\n• Capacity: 5.5 L\n• Mechanical controls, 60-minute timer, 80–200°C temperature range\n• Single container + non-stick basket\n• Color: black body + stainless steel\n• VDE plug, power cord length 0.65–0.68 m\n• Power and frequency: 1500W, 220-240V, ~50-60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Air fryer"
+        },
+        {
+          "label": "Model",
+          "value": "FAF-1218"
+        },
+        {
+          "label": "Capacity",
+          "value": "5.5 L"
+        },
+        {
+          "label": "Temperature range",
+          "value": "80-200C"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black with silver"
+    },
+    {
+      "id": 109,
+      "name": "Franko Air Fryer FAF-1232",
+      "label": "FAF-1232",
+      "subtitle": "Air fryer with 5.3 L + 3.3 L dual baskets",
+      "description": "• Type: Air fryer oven\n• Capacity: 5.3 L + 3.3 L dual baskets\n• LED display on the front panel\n• 8 preset programs\n• Non-stick coating\n• Stainless steel inlay in the housing\n• Overheat protection\n• Accessory: rack\n• Power and frequency: 2700W, 220-240V, ~50-60Hz,",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Air fryer"
+        },
+        {
+          "label": "Model",
+          "value": "FAF-1232"
+        },
+        {
+          "label": "Capacity",
+          "value": "8.6 L"
+        },
+        {
+          "label": "Temperature range",
+          "value": "80-200C"
+        },
+        {
+          "label": "Power",
+          "value": "2700 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black with silver"
+    },
+    {
+      "id": 110,
+      "name": "Franko Air Fryer FAF-9027",
+      "label": "FAF-9027",
+      "subtitle": "Air fryer, 8 L capacity",
+      "description": "• Type: Air fryer oven\n• Capacity: 8 L\n• Programs: 10 preset menus\n• Mechanical controls: 60-minute timer, temperature 80–200°C\n• One pot + food rack \n• Non-stick coating \n• Color: black plastic decorative front panel, stainless steel\n• VDE plug, power cord length approx. 0.9 m\n• Power and frequency: 1800W, 220-240V, ~50-60Hz,",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Air fryer"
+        },
+        {
+          "label": "Model",
+          "value": "FAF-9027"
+        },
+        {
+          "label": "Capacity",
+          "value": "8.0 L"
+        },
+        {
+          "label": "Temperature range",
+          "value": "80-200C"
+        },
+        {
+          "label": "Power",
+          "value": "1800 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black with silver"
+    },
+    {
+      "id": 111,
+      "name": "Franko Air Fryer FSF-9051",
+      "label": "FSF-9051",
+      "subtitle": "Air fryer with top and bottom heating",
+      "description": "• Type: Air fryer oven (steam air fryer)\n• Capacity: 8 L\n• 12 preset menus\n• Top and bottom heating\n• Steam cooking function\n• Touch controls\n• LED display, 60-minute timer, temperature range 35-200℃\n• Removable non-stick rack\n• Upper housing: stainless steel\n• Color: black with glossy stainless steel accents\n• Overheat protection\n• Power and frequency: 2000W, 220-240V, ~50-60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Air fryer"
+        },
+        {
+          "label": "Model",
+          "value": "FAF-9051"
+        },
+        {
+          "label": "Capacity",
+          "value": "8.0 L"
+        },
+        {
+          "label": "Use",
+          "value": "Top and bottom heating"
+        },
+        {
+          "label": "Temperature range",
+          "value": "80-200C"
+        },
+        {
+          "label": "Power",
+          "value": "2000 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black with silver"
+    },
+    {
+      "id": 112,
+      "name": "Franko Air Fryer FSF-9071",
+      "label": "FSF-9071",
+      "subtitle": "Air fryer with top and bottom heating",
+      "description": "• Type: Air fryer oven (steam air fryer)\n• Capacity: 8 L\n• 12 preset menus\n• Top and bottom heating\n• Steam cooking function\n• Touch controls\n• LED display, 60-minute timer, temperature range 35-200℃\n• Removable non-stick rack\n• Upper housing: stainless steel\n• Color: matte dark gray \n• Overheat protection\n• Power and frequency: 2000W, 220-240V, ~50-60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Air fryer"
+        },
+        {
+          "label": "Model",
+          "value": "FAF-9071"
+        },
+        {
+          "label": "Capacity",
+          "value": "8.0 L"
+        },
+        {
+          "label": "Use",
+          "value": "Top and bottom heating"
+        },
+        {
+          "label": "Temperature range",
+          "value": "80-200C"
+        },
+        {
+          "label": "Power",
+          "value": "2000 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 113,
+      "name": "Franko Air Fryer FSF-9039",
+      "label": "FSF-9039",
+      "subtitle": "Air fryer with top and bottom heating",
+      "description": "Model: FAF -  9039\nType: Air fryer oven\n\n• Capacity: 9.1 L\n• Top and bottom heating\n• 8 preset menus \n• Temperature control from 40 to 200°C (in 5°C steps) \n• Auto shut-off and ready signal when cooking is complete\n• Non-stick, removable, dishwasher-safe frying basket\n• Non-slip feet\n• Overheat protection\n• Power cut-off when the outer pot is removed\n• VDE plug\n• Frequency and power: 220-240V~1700W +300W",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Air fryer"
+        },
+        {
+          "label": "Model",
+          "value": "FAF-9039"
+        },
+        {
+          "label": "Capacity",
+          "value": "9.1 L"
+        },
+        {
+          "label": "Use",
+          "value": "Top and bottom heating"
+        },
+        {
+          "label": "Temperature range",
+          "value": "80-200C"
+        },
+        {
+          "label": "Power",
+          "value": "2000 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver / black"
+    },
+    {
+      "id": 114,
+      "name": "Franko Blender FBL-1127",
+      "label": "FBL-1127",
+      "subtitle": "Blender with glass jar",
+      "description": "• Type: Countertop 1+1 (blender + grinder)\n• Blades: stainless steel\n• Ice crushing mode\n• Number of speeds: 5 + turbo\n• Jar: 1.5 L \n• Jar material: glass\n• Power: 700W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "FBL-1127"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "5 + turbo"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Grinder",
+          "value": "Yes"
+        },
+        {
+          "label": "Power",
+          "value": "700 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver / black"
+    },
+    {
+      "id": 115,
+      "name": "Franko Blender FBL-1037",
+      "label": "FBL-1037",
+      "subtitle": "Blender with 2 jars and grinder",
+      "description": "• Type: Countertop 2+1 (2 blender jars + grinder)\n• Blades: stainless steel\n• Number of speeds: 5 + turbo\n• Jar: 1.5 L \n• Jar material: 1 glass, 1 plastic\n• Power: 500W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "FBL-1037"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "5 + turbo"
+        },
+        {
+          "label": "Jar material",
+          "value": "1 glass + 1 plastic"
+        },
+        {
+          "label": "Grinder",
+          "value": "Yes"
+        },
+        {
+          "label": "Power",
+          "value": "500 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver / black"
+    },
+    {
+      "id": 116,
+      "name": "Franko Blender FBL-9022",
+      "label": "FBL-9022",
+      "subtitle": "Smart blender with cooking mode",
+      "description": "• Type: Countertop blender with heating function\n• 8 stainless steel blades\n• LED display\n• 1.2 L high borosilicate glass jar\n• Copper motor with overheat protection;\n• Smart automatic preset programs\n• 9 speed settings\n• Self-cleaning function\n• Power: 1200W\n• VDE cord\n• Frequency: 220-240V~ 50-60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "FBL-9022"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.2 L"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "9"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Grinder",
+          "value": "No"
+        },
+        {
+          "label": "Power",
+          "value": "1200 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 117,
+      "name": "Franko Blender FBL-9023",
+      "label": "FBL-9023",
+      "subtitle": "Retro-style blender",
+      "description": "• Type: Countertop blender\n• 6 titanium-coated blades\n• 1.5 L PCTG BPA-free blender jar\n• CCA motor with overheat protection;\n• Smart automatic preset programs\n• Power: 1800W\n• VDE  cord\n• Frequency: 220-240V~ 50-60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "FBL-9023"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "BPA-free plastic"
+        },
+        {
+          "label": "Grinder",
+          "value": "No"
+        },
+        {
+          "label": "Power",
+          "value": "1800 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 118,
+      "name": "Braun Blender JB3100BK",
+      "label": "JB3100BK",
+      "subtitle": "Blender",
+      "description": "• Type: Countertop  : blender\n• Body material :plastic\n• Jar material: plastic\n• Jar: 1.5 L \n• 4 blades: stainless steel\n• Ice crushing mode\n• Number of speeds: 4 + turbo\n• Power: 800 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "JB3100BK"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Plastic"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "4 + turbo"
+        },
+        {
+          "label": "Power",
+          "value": "800 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 119,
+      "name": "Franko Blender FBL-9057",
+      "label": "FBL-9057",
+      "subtitle": "Mini blender",
+      "description": "•  Type:  Mini blender\n• Blades: stainless steel\n• Ice crushing function\n• Body: stainless steel\n• Cups: 2 pcs, 700 ml + 500 ml\n• Number of speeds: 2 + pulse mode\n• Voltage: 220-240V 50/60\n• Power:  300W",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "FBL-9057"
+        },
+        {
+          "label": "Capacity",
+          "value": "700 ml + 500 ml"
+        },
+        {
+          "label": "Jar material",
+          "value": "Plastic"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2 + turbo"
+        },
+        {
+          "label": "Grinder",
+          "value": "No"
+        },
+        {
+          "label": "Power",
+          "value": "300 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 120,
+      "name": "Franko Blender FBL-1230",
+      "label": "FBL-1230",
+      "subtitle": "High-power professional blender",
+      "description": "• Type: Professional countertop blender\n• Capacity: 2.2 L\n• Container: premium shatterproof plastic\n• Speed settings: 10\n• Body: ABS, dark gray\n• Blades: 304 SS; waterproof rubber and dustproof cover\n• Base: rubber\n• Power: 1800W\n• Voltage: 220V - 50Hz~60Hz\n• Power cord: VD - 1.6 m",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "FBL-1230"
+        },
+        {
+          "label": "Capacity",
+          "value": "2.2 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Shatterproof plastic"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "10"
+        },
+        {
+          "label": "Grinder",
+          "value": "No"
+        },
+        {
+          "label": "Power",
+          "value": "1800 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 121,
+      "name": "Franko Chopper FCH-1224",
+      "label": "FCH-1224",
+      "subtitle": "Chopper with 2 bowls",
+      "description": "• Type: Chopper + mini chopper\n• Motor material: copper\n• Power: 300W\n• Capacity: 2.5 L + 0.3 L\n• Bowl: glass\n• Blades: 6 + 4 chrome-plated steel blades\n• Extra: VDE copper wiring\n• Voltage and frequency: 220V/50Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chopper"
+        },
+        {
+          "label": "Model",
+          "value": "FCH-1224"
+        },
+        {
+          "label": "Capacity",
+          "value": "2.5 L + 0.3 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2"
+        },
+        {
+          "label": "Power",
+          "value": "300 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver / black"
+    },
+    {
+      "id": 122,
+      "name": "Franko Chopper FCH-1225",
+      "label": "FCH-1225",
+      "subtitle": "Chopper with 6 blades",
+      "description": "• Type: Chopper\n• Motor material: copper\n• Power: 300W\n• Capacity: 3 L\n• Bowl: glass\n• Blades: 6 chrome-plated steel blades\n• Extra: VDE copper wiring\n• Voltage and frequency:220V/50Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chopper"
+        },
+        {
+          "label": "Model",
+          "value": "FCH-1225"
+        },
+        {
+          "label": "Capacity",
+          "value": "3 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2"
+        },
+        {
+          "label": "Power",
+          "value": "300 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 123,
+      "name": "Franko Chopper FCH-1226",
+      "label": "FCH-1226",
+      "subtitle": "Chopper with 6 blades",
+      "description": "• Type: Chopper\n• Motor material: copper\n• Power: 300W\n• Capacity: 3 L\n• Bowl: glass\n• Blades: 6 chrome-plated steel blades\n• Extra: VDE copper wiring\n• Voltage and frequency:220V/50Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chopper"
+        },
+        {
+          "label": "Model",
+          "value": "FCH-1226"
+        },
+        {
+          "label": "Capacity",
+          "value": "3 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2"
+        },
+        {
+          "label": "Power",
+          "value": "300 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 124,
+      "name": "Franko Chopper FCH-1202",
+      "label": "FCH-1202",
+      "subtitle": "Chopper with 4 blades",
+      "description": "• Type: Chopper\n• Bowl capacity: 1.5 L\n• Body material: plastic\n• Bowl material: glass\n• Power: 500W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chopper"
+        },
+        {
+          "label": "Model",
+          "value": "FCH-1202"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2"
+        },
+        {
+          "label": "Power",
+          "value": "500 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black with silver"
+    },
+    {
+      "id": 125,
+      "name": "Franko Chopper FCH-1202 (copy)",
+      "label": "FCH-1202",
+      "subtitle": "Chopper with 4 blades",
+      "description": "• Type: Chopper\n• Bowl capacity: 1.5 L\n• Body material: plastic\n• Bowl material: glass\n• Power: 500W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chopper"
+        },
+        {
+          "label": "Model",
+          "value": "FCH-1202"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2"
+        },
+        {
+          "label": "Power",
+          "value": "500 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black with silver"
+    },
+    {
+      "id": 126,
+      "name": "Franko Electric Scooter FS-E9PRO",
+      "label": "FS-E9PRO",
+      "subtitle": "Foldable electric scooter",
+      "description": "• Type: Foldable electric scooter\n• Material: aluminum\n• Wheels: 8.5\" tubeless, solid rubber\n• Brakes: rear spring brake, front motor brake\n• Display\n• Max speed: 30 km/h\n• Max range: 30 km\n• Battery: 36 V/7.5AH\n• Power: 350 W \n• Max load: 120 kg\n• Climbing angle: 15 °\n• Charging time: 4-5 h\n• Cruise control\n• App control\n• Front and rear lights",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Foldable electric scooter"
+        },
+        {
+          "label": "Model",
+          "value": "FS-E9PRO"
+        },
+        {
+          "label": "Material",
+          "value": "Aluminum"
+        },
+        {
+          "label": "Tires",
+          "value": "8,5''"
+        },
+        {
+          "label": "Brakes",
+          "value": "Rear wheel brake, front motor brake"
+        },
+        {
+          "label": "Max speed",
+          "value": "30 km/h"
+        },
+        {
+          "label": "Max range",
+          "value": "30 km"
+        },
+        {
+          "label": "Max load",
+          "value": "120 kg"
+        },
+        {
+          "label": "Power",
+          "value": "350 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 127,
+      "name": "Franko Electric Scooter FS-M1",
+      "label": "FS-M1",
+      "subtitle": "Foldable electric scooter",
+      "description": "• Type: Foldable electric scooter\n• Material: metal\n• Wheels: 10 \" tubeless, solid rubber\n• Brakes: rear spring brake, front motor brake\n• Display\n• Max speed: 30 km/h\n• Max range: 30 km\n• Battery: 36V/10AH \n• Power: 350 W \n• Max load: 120 kg\n• Climbing angle: 15 °\n• Charging time: 4-5 h\n• Cruise control\n• App control\n• Front and rear lights, horn",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Foldable electric scooter"
+        },
+        {
+          "label": "Model",
+          "value": "FS-M1"
+        },
+        {
+          "label": "Material",
+          "value": "Steel"
+        },
+        {
+          "label": "Tires",
+          "value": "10''"
+        },
+        {
+          "label": "Brakes",
+          "value": "Rear wheel brake, front motor brake"
+        },
+        {
+          "label": "Max speed",
+          "value": "30 km/h"
+        },
+        {
+          "label": "Max range",
+          "value": "30 km"
+        },
+        {
+          "label": "Max load",
+          "value": "120 kg"
+        },
+        {
+          "label": "Power",
+          "value": "350 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 128,
+      "name": "Franko Electric Scooter FS-M2",
+      "label": "FS-M2",
+      "subtitle": "Foldable electric scooter",
+      "description": "• Type: Foldable electric scooter\n• Material: steel\n• Wheels: 8.5 \" tubeless, solid rubber\n• Brakes: electric brake + rear disc brake\n• Display\n• Max speed: 30 km/h\n• Max range: 30 km\n• Battery: 36V/10AH \n• Power: 350 W \n• Max load: 120 kg\n• Climbing angle: 15 °\n• Charging time: 4-5 h\n• Charger: 42V/1.5A \n• Cruise control\n• App control\n• Front and rear lights, horn",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Foldable electric scooter"
+        },
+        {
+          "label": "Model",
+          "value": "FS-M2"
+        },
+        {
+          "label": "Material",
+          "value": "Steel"
+        },
+        {
+          "label": "Tires",
+          "value": "8,5''"
+        },
+        {
+          "label": "Brakes",
+          "value": "Rear wheel brake, front motor brake"
+        },
+        {
+          "label": "Max speed",
+          "value": "30 km/h"
+        },
+        {
+          "label": "Max range",
+          "value": "30 km"
+        },
+        {
+          "label": "Max load",
+          "value": "120 kg"
+        },
+        {
+          "label": "Power",
+          "value": "350 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 129,
+      "name": "Franko Electric Scooter FS-EB5",
+      "label": "FS-EB5",
+      "subtitle": "Foldable electric scooter",
+      "description": "• Type: Foldable electric scooter \n• Material: aluminum alloy stem + magnesium alloy deck \n• Wheel size: 12 inches \n• Tire type: pneumatic \n• Brakes: electric brake + rear disc brake \n• Display shows battery level, range and speed \n• Speed modes: 3 speeds \n• Battery: 36v/10ah \n• Motor: 500W brushless motor \n• Max speed: 25 km/h \n• Max load: 120 kg \n• Climbing ability: 15 degrees \n• Charger: 42V/1.5A \n• Charging time: 4-5 hours \n• Front LED headlights + rear brake lights \n• Cruise control",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Foldable electric scooter"
+        },
+        {
+          "label": "Model",
+          "value": "FS-EB5"
+        },
+        {
+          "label": "Material",
+          "value": "Aluminum alloy stem + magnesium alloy deck"
+        },
+        {
+          "label": "Tires",
+          "value": "12''"
+        },
+        {
+          "label": "Brakes",
+          "value": "Electric brake + rear disc brake"
+        },
+        {
+          "label": "Max speed",
+          "value": "25 km/h"
+        },
+        {
+          "label": "Max range",
+          "value": "25 km"
+        },
+        {
+          "label": "Max load",
+          "value": "120 kg"
+        },
+        {
+          "label": "Power",
+          "value": "500 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 130,
+      "name": "Franko Electric Scooter FS-EB6",
+      "label": "FS-EB6",
+      "subtitle": "Foldable electric scooter",
+      "description": "• Type: Foldable electric scooter \n• Material: aluminum alloy stem + magnesium alloy deck \n• Wheel size: 14 inches \n• Tire type: pneumatic \n• Brakes: electric brake + rear disc brake \n• Display shows battery level, range and speed \n• Speed modes: 3 speeds \n• Battery: 48v/10ah \n• Motor: 500W brushless motor \n• Range: 25 km (depends on rider weight, road conditions, etc.) \n• Max speed: 25 km/h \n• Max load: 120 kg \n• Climbing ability: 15 degrees \n• Charger: 42V/2A \n• Charging time: 4-5 hours \n• Front LED headlights + rear brake lights \n• Cruise control \n• App control and turn signals",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Foldable electric scooter"
+        },
+        {
+          "label": "Model",
+          "value": "FS-EB6"
+        },
+        {
+          "label": "Material",
+          "value": "Aluminum alloy stem + magnesium alloy deck"
+        },
+        {
+          "label": "Tires",
+          "value": "14''"
+        },
+        {
+          "label": "Brakes",
+          "value": "Electric brake + rear disc brake"
+        },
+        {
+          "label": "Max speed",
+          "value": "25 km/h"
+        },
+        {
+          "label": "Max range",
+          "value": "25 km"
+        },
+        {
+          "label": "Max load",
+          "value": "120 kg"
+        },
+        {
+          "label": "Power",
+          "value": "500 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 131,
+      "name": "Franko Electric Scooter FS-T10A",
+      "label": "FS-T10A",
+      "subtitle": "Foldable electric scooter",
+      "description": "• Type: Foldable electric scooter\n• Material: aluminum\n• Wheels: 10 \", tubeless\n• Brakes: front and rear wheel brakes\n• Display\n• Max speed: 40 km/h\n• Max range: 45 km\n• Battery: 48V/12.5 AH \n• Power: 600 W \n• Motor: brushless \n• Max load: 120 kg\n• Climbing angle: 15 °\n• Charging time: 5-7 h\n• Cruise control\n• App control\n• Front and rear lights, horn\n• Turn signal lights",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Foldable electric scooter"
+        },
+        {
+          "label": "Model",
+          "value": "FS-T10A"
+        },
+        {
+          "label": "Material",
+          "value": "Aluminum alloy stem + magnesium alloy deck"
+        },
+        {
+          "label": "Tires",
+          "value": "10''"
+        },
+        {
+          "label": "Brakes",
+          "value": "Electric brake + rear disc brake"
+        },
+        {
+          "label": "Max speed",
+          "value": "40 km/h"
+        },
+        {
+          "label": "Max range",
+          "value": "45 km"
+        },
+        {
+          "label": "Max load",
+          "value": "120 kg"
+        },
+        {
+          "label": "Power",
+          "value": "600 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 132,
+      "name": "Franko Electric Scooter FS-T8B",
+      "label": "FS-T8B",
+      "subtitle": "Foldable electric scooter",
+      "description": "• Type: Foldable electric scooter\n• Material: aluminum\n• Wheels: 10 \" tubeless\n• Brakes: front and rear wheel brakes\n• Display\n• Max speed: 45 km/h\n• Max range: 50 km\n• Battery: 48V/15AH \n• Power: 800 W \n• Motor: brushless \n• Max load: 150 kg\n• Climbing angle: 25 °\n• Charging time: 5-7 h\n• Cruise control\n• App control\n• Front and rear lights, horn\n• Turn signal lights",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Foldable electric scooter"
+        },
+        {
+          "label": "Model",
+          "value": "FS-T8B"
+        },
+        {
+          "label": "Material",
+          "value": "Aluminum alloy stem + magnesium alloy deck"
+        },
+        {
+          "label": "Tires",
+          "value": "10''"
+        },
+        {
+          "label": "Brakes",
+          "value": "Electric brake + rear disc brake"
+        },
+        {
+          "label": "Max speed",
+          "value": "45 km/h"
+        },
+        {
+          "label": "Max range",
+          "value": "50 km"
+        },
+        {
+          "label": "Max load",
+          "value": "150 kg"
+        },
+        {
+          "label": "Power",
+          "value": "800 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 133,
+      "name": "Franko Speaker FSK-9014",
+      "label": "FSK-9014",
+      "subtitle": "Portable speaker",
+      "description": "• Type: Speaker\n• Product dimensions: 250*150*175 mm\n• Portable USB/TF card speaker with karaoke function\n• 11.1V 4500 MAH rechargeable battery\n• Frequency: 100 Hz–20 kHz\n• Signal-to-noise ratio: ≥ 125db\n• Bluetooth 5.2\n• Woofer: 4''+1.5*2\n• Power: 100 W",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Portable speaker"
+        },
+        {
+          "label": "Model",
+          "value": "FSK-9014"
+        },
+        {
+          "label": "Product dimensions",
+          "value": "250*150*175 mm"
+        },
+        {
+          "label": "Frequency",
+          "value": "100 Hz–20 kHz"
+        },
+        {
+          "label": "Bluetooth",
+          "value": "5.2"
+        },
+        {
+          "label": "Power",
+          "value": "100 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black / gold"
+    },
+    {
+      "id": 134,
+      "name": "Franko Speaker FSK-9015",
+      "label": "FSK-9015",
+      "subtitle": "Portable speaker",
+      "description": "• Type: Speaker\n• Product dimensions: 344*170*210 mm\n• Portable USB/TF card speaker with karaoke function\n• 11.1V 6 000 MAH rechargeable battery\n• Frequency: 100 Hz–20 kHz\n• Signal-to-noise ratio: ≥ 125db\n• Bluetooth 5.2\n• Woofer: 4''*2+1.5*2\n• Power: 100 W",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Portable speaker"
+        },
+        {
+          "label": "Model",
+          "value": "FSK-9015"
+        },
+        {
+          "label": "Product dimensions",
+          "value": "344*170*210 mm"
+        },
+        {
+          "label": "Frequency",
+          "value": "100 Hz–20 kHz"
+        },
+        {
+          "label": "Bluetooth",
+          "value": "5.2"
+        },
+        {
+          "label": "Power",
+          "value": "100 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black / gold"
+    },
+    {
+      "id": 135,
+      "name": "Franko Speaker FSK-9016",
+      "label": "FSK-9016",
+      "subtitle": "Portable speaker",
+      "description": "• Type: Speaker\n• Product dimensions: 280*180*330 mm\n• Portable USB/TF card speaker with karaoke function\n• 11.1V 6 000 MAH rechargeable battery\n• Frequency: 100 Hz–20 kHz\n• Signal-to-noise ratio: ≥ 125db\n• Bluetooth 5.2\n• Woofer: 8''+2''*2\n• Power: 100 W",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Portable speaker"
+        },
+        {
+          "label": "Model",
+          "value": "FSK-9016"
+        },
+        {
+          "label": "Product dimensions",
+          "value": "280*180*330 mm"
+        },
+        {
+          "label": "Frequency",
+          "value": "100 Hz–20 kHz"
+        },
+        {
+          "label": "Bluetooth",
+          "value": "5.2"
+        },
+        {
+          "label": "Power",
+          "value": "100 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black / gold"
+    },
+    {
+      "id": 138,
+      "name": "Braun Blender JB703AI-JB7550BK",
+      "label": "JB703AI-JB7550BK",
+      "subtitle": "Blender",
+      "description": "• Type: Countertop  : blender\n• Body material : stainless steel + plastic\n• Jar material: glass\n• Jar: max 2 L, working capacity 1.7 L \n• 4 blades: stainless steel\n• Ice crushing mode\n• Number of speeds: 10 + turbo\n• Power: 1400 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "JB703AI-JB7550BK"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.7 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Power",
+          "value": "1400 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "10 + turbo"
+        }
+      ],
+      "colorName": "Black with silver"
+    },
+    {
+      "id": 139,
+      "name": "Braun Blender JB3150BK",
+      "label": "JB3150BK",
+      "subtitle": "Blender",
+      "description": "• Type: Countertop  : blender\n• Body material :plastic\n• Jar material: glass\n• Jar: 1.5 L \n• 4 blades: stainless steel\n• Ice crushing mode\n• Number of speeds: 4 + turbo\n• Power: 800 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "JB3150BK"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "4 + turbo"
+        },
+        {
+          "label": "Power",
+          "value": "800 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 140,
+      "name": "PHILIPS Blender HR2191/01",
+      "label": "HR2191/01",
+      "subtitle": "Blender",
+      "description": "• Type: Countertop  : blender\n• Body material :plastic\n• Jar material: plastic\n• Jar: 1.25 L \n• 4 blades: stainless steel\n• Ice crushing mode\n• Number of speeds: 2 + turbo\n• Power: 600 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "HR2191/01"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.25 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Plastic"
+        },
+        {
+          "label": "Power",
+          "value": "600 W"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2 + turbo"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 142,
+      "name": "PHILIPS Blender HR2105/00",
+      "label": "HR2105/00",
+      "subtitle": "Blender",
+      "description": "• Type: Countertop  : blender\n• Body material :plastic\n• Jar material: glass\n• Jar: 1.25 L \n• 4 blades: stainless steel\n• Ice crushing mode\n• Number of speeds: 2 + turbo\n• Power: 400 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Blender"
+        },
+        {
+          "label": "Model",
+          "value": "HR2105/00"
+        },
+        {
+          "label": "Capacity",
+          "value": "1.25 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Glass"
+        },
+        {
+          "label": "Power",
+          "value": "400 W"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2 + turbo"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 143,
+      "name": "PHILIPS Food Processor HR7520/00",
+      "label": "HR7520/00",
+      "subtitle": "Food processor",
+      "description": "• Type: Food processor\n• Housing material: Plastic\n• Jar material: Plastic\n• Main bowl: 1.5 L\n• Blender jar: 1 L \n• Included: grinder cup, citrus press, reversible stainless steel disc (slicing on one side, grating on the other), S-blade (for chopping and blending), dough kneading attachment, emulsifying disc / whisk (for whipping eggs, cream or mayonnaise)\n• Blades (4): stainless steel\n• Ice crushing mode\n• Number of speeds: 2 + turbo\n• Power: 850 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Food processor"
+        },
+        {
+          "label": "Model",
+          "value": "HR7520/00"
+        },
+        {
+          "label": "Main bowl capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Blender jar",
+          "value": "1 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Plastic"
+        },
+        {
+          "label": "Power",
+          "value": "850 W"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2 + turbo"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 145,
+      "name": "PHILIPS Food Processor HR7310/00",
+      "label": "HR7310/00",
+      "subtitle": "Food processor",
+      "description": "• Type: Food processor\n• Housing material: Plastic\n• Jar material: Plastic\n• Processor bowl: 1.5 L \n• Included: reversible stainless steel disc (slicing on one side, grating on the other), S-blade (for chopping and blending), dough kneading attachment, emulsifying disc / whisk (for whipping eggs, cream or mayonnaise)\n• Blades (2): stainless steel\n• Ice crushing mode\n• Number of speeds: 2 + turbo\n• Power: 700 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Food processor"
+        },
+        {
+          "label": "Model",
+          "value": "HR7310/00"
+        },
+        {
+          "label": "Main bowl capacity",
+          "value": "1.5 L"
+        },
+        {
+          "label": "Jar material",
+          "value": "Plastic"
+        },
+        {
+          "label": "Power",
+          "value": "700 W"
+        },
+        {
+          "label": "Number of speeds",
+          "value": "2 + turbo"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 146,
+      "name": "KENWOOD Juicer JMP400WH",
+      "label": "JMP400WH",
+      "subtitle": "Slow juicer",
+      "description": "• Type: Slow juicer\n• Housing material: Plastic\n• Jar material: Plastic\n• Jar: 1 L\n• Anti-drip system\n• Speeds: ON/OFF/Reverse\n• Power: 140 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Slow juicer"
+        },
+        {
+          "label": "Model",
+          "value": "JMP400WH"
+        },
+        {
+          "label": "Capacity",
+          "value": "1 L"
+        },
+        {
+          "label": "Power",
+          "value": "140 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Silver / black"
+    },
+    {
+      "id": 147,
+      "name": "KENWOOD Juicer JMP85.000SI",
+      "label": "JMP85.000SI",
+      "subtitle": "Slow juicer",
+      "description": "• Type: Slow juicer that preserves maximum vitamins\n• Housing material: High-quality plastic with stainless steel details\n• Jar material: Plastic\n• Juice cup: 600 ml\n• Pulp container: 1 L\n• Anti-drip system\n• Speeds: ON/OFF/Reverse\n• Power: 230 W\n• Frequency: 220-240V, 50/60Hz",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Slow juicer"
+        },
+        {
+          "label": "Model",
+          "value": "JMP85.000SI"
+        },
+        {
+          "label": "Juice cup",
+          "value": "600 ml"
+        },
+        {
+          "label": "Capacity",
+          "value": "1 L"
+        },
+        {
+          "label": "Power",
+          "value": "230 W"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 148,
+      "name": "Franko Mixer FHM-1118",
+      "label": "Hand Mixer 500 W",
+      "subtitle": "",
+      "description": "• Type: Hand mixer\n• Number of speeds: 5 + turbo\n• Power: 500 W\n• Frequency: 220-240V, 50/60Hz\n• Color: Black",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 149,
+      "name": "Franko Mixer FHM-9045",
+      "label": "Hand Mixer 500 W",
+      "subtitle": "",
+      "description": "• Type: Hand mixer\n•\tVariable 4 speeds with Turbo function\n•\tButton for easy accessory release\n•\tLED lighting \n•\tPlastic housing + stainless steel decorative parts\n•\tChrome-plated whisks and dough hooks\n•\tMotor: 500 W",
+      "specs": [],
+      "colorName": "White"
+    },
+    {
+      "id": 150,
+      "name": "Franko Mixer FHM-9046",
+      "label": "Hand Mixer 500 W",
+      "subtitle": "",
+      "description": "•Type: Hand mixer\n•\tVariable 4 speeds with Turbo function\n•\tButton for easy accessory release\n•\tLED lighting \n•\tPlastic housing + stainless steel decorative parts\n•\tChrome-plated whisks and dough hooks\n•\tMotor: 500 W",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 151,
+      "name": "Franko Mixer FMX-1084",
+      "label": "Hand Mixer 500 W",
+      "subtitle": "",
+      "description": "• Type: Hand mixer\n• Number of speeds: 5 + turbo\n• Cord storage compartment \n• Power: 500 W\n• Frequency: 220-240V, 50/60Hz\n• Color: Black",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 152,
+      "name": "Franko Mixer FMX-1148",
+      "label": "Hand Mixer 350 W",
+      "subtitle": "",
+      "description": "• Type: Hand mixer\n• Number of speeds: 5 + turbo\n• Power: 350 W\n• Frequency: 220-240V, 50/60Hz\n• Color: Black",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 153,
+      "name": "Philips Mixer HR3705/00",
+      "label": "Hand Mixer 300 W",
+      "subtitle": "",
+      "description": "• Type: Hand mixer\n• Number of speeds: 5 + turbo\n• Power: 300 W\n• Frequency: 220-240V, 50/60Hz\n• Color: White",
+      "specs": [],
+      "colorName": "White"
+    },
+    {
+      "id": 154,
+      "name": "Philips Mixer HR3705/10",
+      "label": "Hand Mixer 300 W",
+      "subtitle": "",
+      "description": "• Type: Hand mixer\n• Number of speeds: 5 + turbo\n• Power: 350 W\n• Frequency: 220-240V, 50/60Hz\n• Color: Black",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 155,
+      "name": "Franko Stand Mixer FMX-1149",
+      "label": "Mixer with Metal Bowl",
+      "subtitle": "",
+      "description": "• Type: Stand mixer\n• Number of speeds: 5 + turbo\n• Bowl capacity: 4.5 L\n• Power: 450 W\n• Frequency: 220-240V, 50/60Hz\n• Color: Black",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 156,
+      "name": "Franko Stand Mixer FMX-1182",
+      "label": "Mixer with Dough Kneader",
+      "subtitle": "",
+      "description": "• Type: Kitchen machine\n• Max power: 1500 W\n• Die-cast housing with brushed silver finish\n• Stainless steel bowl 6.0 L\n• 8 speed settings (including \"P\" and \"OFF\")\n• 4 non-slip rubber feet\n• Accessories: S.S Whisk, Aluminum Beater & Hook\n• VDE Plug\n• Frequency 220-240V,50/60HZ,",
+      "specs": [],
+      "colorName": "Silver"
+    },
+    {
+      "id": 157,
+      "name": "Franko Stand Mixer FMX-9053",
+      "label": "Mixer with Dough Kneader",
+      "subtitle": "",
+      "description": "• Type: Stand mixer\n• Housing, lid: Plastic\n• Motor: Copper\n• Gearbox: Metal\n• Bowl: 6 L, stainless steel\n• Included: 1 whisk, 2 dough kneaders\n• Dough hook: Teflon coating; whisk: stainless steel\n• Number of speeds: 6 + turbo\n• System: Auto shut-off\n• Illuminated switch\n• Power: 2200\n• Frequency: 220-240V, 50/60Hz\n• Color: Cream",
+      "specs": [],
+      "colorName": "Cream"
+    },
+    {
+      "id": 158,
+      "name": "Midea Washing Machine MF100W70",
+      "label": "MF100W70",
+      "subtitle": "Midea Washing Machine MF100W70",
+      "description": "• Number of programs: 15 \n• Max load: 7 kg\n• Spin speed: 1200 rpm\n• Antibacterial wash\n• Display on control panel\n• Energy efficiency class\t\tA+++\n• Spin noise level\t80 db\n• Warranty: 3 years",
+      "specs": [
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "7 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1200"
+        },
+        {
+          "label": "Control display",
+          "value": "Yes"
+        },
+        {
+          "label": "Jeans",
+          "value": "Yes"
+        },
+        {
+          "label": "Eco",
+          "value": "40-60"
+        },
+        {
+          "label": "Cotton",
+          "value": "Cold / 20℃ / 40℃ / 60℃"
+        },
+        {
+          "label": "Hygiene",
+          "value": "90℃"
+        },
+        {
+          "label": "Quick",
+          "value": "15'"
+        },
+        {
+          "label": "Daily",
+          "value": "45'"
+        },
+        {
+          "label": "Mixed",
+          "value": "20℃/40℃/60℃"
+        },
+        {
+          "label": "Delicates",
+          "value": "✅"
+        },
+        {
+          "label": "Rinse and spin",
+          "value": "✅"
+        },
+        {
+          "label": "Rinse only",
+          "value": "✅"
+        },
+        {
+          "label": "Spin speed selection",
+          "value": "0-400-600-800-1000-1200"
+        },
+        {
+          "label": "Delay start / extra rinse / child lock (combined)",
+          "value": "✅"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 400 × 850"
+        },
+        {
+          "label": "Package dimensions (W × D × H), mm",
+          "value": "655 × 500 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "55 kg/58 kg"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 159,
+      "name": "Midea Washing Machine MF100W60",
+      "label": "MF100W60",
+      "subtitle": "Midea Washing Machine MF100W60",
+      "description": "• Max load: 7 kg\n• Spin speed: 1000 rpm\n• Antibacterial wash\n• Display on control panel\n• Energy efficiency class\t\tA+++\n• Spin noise level\t80 db\n• Number of programs: 15 \n    Jeans - ✅    \n    Eco  - 40-60\n    Cotton - Cold /20℃/40℃/60℃\n    Hygiene - 90℃\n    Quick  - 15'\n    Daily  - 45'\n    Mixed -  20℃/40℃/60℃\n    Delicates - ✅\n    Rinse and spin - ✅\n    Rinse only - ✅\n    Spin speed selection - 0-400-600-800-1000\n    Delay start / extra rinse / child lock (combined)  - ✅\n    Product dimensions (W × D × H)\tmm -  595 × 400 × 850\n    Package dimensions (W × D × H) mm - 655 × 500 × 885\n    Product weight / packed weight - 52 kg/54 kg\n• Warranty: 3 years",
+      "specs": [
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "6 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1000"
+        },
+        {
+          "label": "Control display",
+          "value": "Yes"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A+++"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "80 db"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 161,
+      "name": "Midea Washing Machine MF200W90WB/T",
+      "label": "MF200W90WB/T",
+      "subtitle": "Midea Washing Machine MF200W90WB/T",
+      "description": "•  The Midea MF200W90WB/T washing machine handles loads of up to 9 kg. Its modern features and inverter motor ensure efficient energy use, low noise and an optimized washing process.\n\n•  Key benefits and features\n   Quattro inverter motor – saves up to 70% of electricity, reduces operating noise by 10.4% and offers a longer service life.\n• Turbo mode – cuts wash time by up to 40%.\n• Convenient control – washing functions and programs are controlled via buttons and a digital display.\n• Self-cleaning function – uses a powerful water jet to clean the inner and outer surfaces of the drum.\n\n14 wash programs – choose the right mode for different fabric types.\n Steam wash – helps sterilize fabrics for a hygienic wash. According to the manufacturer, sterilization efficiency reaches 99.99%.\n Water consumption control – adjust the water volume to the selected mode.\n Wi-Fi control – operate the washing machine remotely via a dedicated app.\n Auto Clean – automatic cleaning function that helps keep the washing machine clean during the wash cycle.\nVoltage 220-240V ~50Hz\nWarranty: 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "9 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Product / package dimensions (W × D × H), mm",
+          "value": "595 × 535 × 850 / 680 × 695 × 875"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "65 kg/70 kg"
+        }
+      ],
+      "colorName": "Titanium silver"
+    },
+    {
+      "id": 162,
+      "name": "Midea Washing Machine MFK03W70B/S",
+      "label": "MFK03W70B/S",
+      "subtitle": "Midea Washing Machine MFK03W70B/S",
+      "description": "• The Midea MFK03W70B/S washing machine features an inverter motor that helps save electricity and runs quieter than standard motors.\n\n- Key features and benefits\n •  14 wash programs – choose the right mode for different fabric types.\n •  Add garment function – add extra laundry after the wash has started.\n •  Steam wash – provides additional hygienic treatment of fabrics.\n  • Pre-soak – helps soften stubborn stains and dirt before washing.\n  Quick wash – designed for washing clothes in a short time.\n • Antibacterial wash – additional hygienic treatment mode.\n\n -Technical specifications\n• Max load: 7 kg\n• Spin speed: 1200 rpm\n• Display: LED\n• Motor type: Inverter\n• Quick wash: ✅\n• Steam wash: ✅\n• Antibacterial wash:✅\n• Wash programs: 14\n• Warranty: 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "7 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1200"
+        },
+        {
+          "label": "Control display",
+          "value": "✅"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 400 × 850"
+        },
+        {
+          "label": "Package dimensions (W × D × H), mm",
+          "value": "655 × 500 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "55 kg/58 kg"
+        },
+        {
+          "label": "Voltage",
+          "value": "220-240V ~,50Hz"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 163,
+      "name": "Midea Washing Machine MFK03W80B/S",
+      "label": "MFK03W80B/S",
+      "subtitle": "Midea Washing Machine MFK03W80B/S",
+      "description": "•  The Midea MFK03W80B/S washing machine features an inverter motor that saves electricity and reduces operating noise compared to standard motors.\n•  Key features and benefits\n- 14 wash programs – choose the right mode for different fabric types.\n- Add garment function – add extra laundry after the wash has started.\n- Steam wash – for additional hygienic treatment of fabrics.\n- Pre-soak – helps soften stubborn dirt and stains.\n- Quick wash – wash clothes in a short time.\n- Antibacterial wash – additional hygienic treatment mode.\n•  Technical specifications\n- Max load: 8 kg\n- Spin speed: 1400 rpm\n- Wash programs: 14\n- Display: LED\n- Motor type: Inverter\n- Quick wash: Yes\n- Steam wash: Yes\n- Antibacterial wash: Yes\n- Warranty: 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A+++"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "LED control display",
+          "value": "✅"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 475 × 850"
+        },
+        {
+          "label": "Package dimensions (W × D × H), mm",
+          "value": "650 × 555 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "63 kg/66 kg"
+        },
+        {
+          "label": "Voltage",
+          "value": "220-240V ~,50Hz"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 164,
+      "name": "Midea Washing Machine MFK03W120B/S",
+      "label": "MFK03W120B/S",
+      "subtitle": "Midea Washing Machine MFK03W80B/S",
+      "description": "• The Midea MFK03W120B/S features an inverter motor that saves electricity and keeps noise lower than standard motors.\n- Key features and benefits\n• 14 wash programs – choose the right mode for different fabric types.\n• Add garment function – add extra laundry during the wash.\n• Steam wash – for additional hygienic treatment of fabrics.\n• Pre-soak – helps soften stubborn dirt and stains.\n• Inverter motor – energy-efficient and relatively quiet operation.\n• Technical specifications\nMax load: 12 kg\nSpin speed: 1400 rpm\nWash programs: 14\nMotor type: Inverter\nAdd garment function: ✅\nSteam wash: ✅\nPre-soak: ✅\nWarranty: 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A+++"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "12 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "76 db"
+        },
+        {
+          "label": "LED control display",
+          "value": "✅"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × \t595 × 850"
+        },
+        {
+          "label": "Package dimensions (W × D × H), mm",
+          "value": "680 × 725 × 875"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "73 kg/78 kg"
+        },
+        {
+          "label": "Voltage",
+          "value": "220-240V ~,50Hz"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 165,
+      "name": "Midea Washing Machine MFA01W80B/W",
+      "label": "MFA01W80B/W",
+      "subtitle": "Midea Washing Machine MFA01W80B/W",
+      "description": "•  Washing machine – 8 kg\n\nThe washing machine offers 14 wash programs, so you can choose the right mode for different fabric types.\n\nExtra functions make washing more convenient: add garments during the wash, steam wash and pre-soak.\n\n Key specifications\n- Max load: 8 kg\n- Max spin speed: 1400 rpm\n- 14 wash programs\n- Inverter motor\n- LED display\n- Quick wash mode\n- Steam wash function\n- Antibacterial wash mode\n- Add garment function\n- Pre-soak function\n\nWarranty: 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A+++"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "78 db"
+        },
+        {
+          "label": "LED control display",
+          "value": "✅"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × \t475 × 850"
+        },
+        {
+          "label": "Package dimensions (W × D × H), mm",
+          "value": "650 × 555 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "60 kg/63 kg"
+        },
+        {
+          "label": "Voltage",
+          "value": "220-240V ~,50Hz"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 166,
+      "name": "Midea Washing Machine MFA01W70B/W",
+      "label": "MFA01W70B/W",
+      "subtitle": "Midea Washing Machine MFA01W70B/W",
+      "description": "Midea MFA01W70B/W washing machine – 7 kg\n\nThe washing machine offers 14 wash programs designed for different fabric types. It features add garment, steam wash and pre-soak functions.\n\n Wash programs -\n• Synthetics • Cotton •Mixed fabrics • Baby care • 20°C wash • Care+                        • Pet hair removal • Drum clean • Spin only • Jeans                                                  • Bulky items • Wool • Eco 40–60 •  Quick 59' •  Quick 15'",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Energy efficiency class",
+          "value": "A+++"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "7 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1200"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "79 db"
+        },
+        {
+          "label": "Product / package dimensions (W × D × H), mm",
+          "value": "595 × \t400 × 850  / 655 × 500 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "55 kg/58 kg"
+        },
+        {
+          "label": "Voltage",
+          "value": "220-240V ~,50Hz"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 167,
+      "name": "Midea Washing Machine MF01610US40/W",
+      "label": "MF01610US40/W",
+      "subtitle": "Midea Washing Machine MF01610US40/W",
+      "description": "Midea MF01610US40/W washing machine – 6 kg\n\nThe washing machine offers 15 wash programs designed for different fabric types. \n\nWash programs -\nQuick 45'/15' • Cotton • Delicates • Synthetics • 20°C wash • Eco 40–60 • Bulky items • Mixed fabrics • Health Guard (hygiene protection) • Jeans • Allergy Care • Hand wash / Wool • Rinse and spin • Spin only • Drum clean\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Energy efficiency class",
+          "value": "A+++"
+        },
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "6 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1000"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "79 db"
+        },
+        {
+          "label": "Product / package dimensions (W × D × H), mm",
+          "value": "595 × \t400 × 850  / 655 × 500 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "52 kg/55 kg"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 168,
+      "name": "Midea Washing Machine MF01610US40/T",
+      "label": "MF01610US40/T",
+      "subtitle": "Midea Washing Machine MF01610US40/T - 6 kg",
+      "description": "The washing machine offers 15 wash programs designed for different fabric types. \n\nWash programs -\nQuick 45'/15' • Cotton • Delicates • Synthetics • 20°C wash • Eco 40–60 • Bulky items • Mixed fabrics • Health Guard (hygiene protection) • Jeans • Allergy Care • Hand wash / Wool • Rinse and spin • Spin only • Drum clean\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Energy efficiency class",
+          "value": "A+"
+        },
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "6 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1000"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "79 db"
+        },
+        {
+          "label": "Product / package dimensions (W × D × H), mm",
+          "value": "595 × 465 × 850  / 655 × 500 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "52 kg/56 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 169,
+      "name": "Midea Washing Machine MF01814BS47/W",
+      "label": "MF01814BS47/W",
+      "subtitle": "Midea Washing Machine MF01814BS47/W",
+      "description": "The washing machine offers 15 wash programs designed for different fabric types. \n\nWash programs -\nQuick wash 45’/15′ • Cotton • Delicates • Synthetics • 20°C • ECO 40–60 • Bulky • Mix • Health Guard (hygiene wash) • Jeans • Allergy Care (anti-allergy) • Hand wash / Wool • Rinse and spin • Spin only • Drum clean\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "BLDC inverter"
+        },
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × \t475 × 850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "61 kg/64 kg"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 170,
+      "name": "Midea Washing Machine MF210W100WB/T",
+      "label": "MF210W100WB/T",
+      "subtitle": "Midea Washing Machine MF210W100WB/T",
+      "description": "The washing machine offers 14 wash programs designed for different fabric types. \n\nWash programs - Cotton • Quick 30'/15' • Synthetics • Delicates • Mixed • Wool • Colors • 20°C • HealthGuard (hygiene protection) • ECO 40–60 • Drum clean • Rinse and spin • Spin and drain • Cycle download\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter BLDC motor"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "10 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 535 × 850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "68 kg/72 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 171,
+      "name": "Midea Washing Machine MF210W100WB/W",
+      "label": "MF210W100WB/W",
+      "subtitle": "Midea Washing Machine MF210W100WB/W",
+      "description": "The washing machine offers 14 wash programs designed for different fabric types. \n\nWash programs - Cotton • Quick 30'/15' • Synthetics • Delicates • Mixed • Wool • Colors • 20°C • HealthGuard (hygiene protection) • ECO 40–60 • Drum clean • Rinse and spin • Spin and drain • Cycle download\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter BLDC motor"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "10 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 535 × 850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "68 kg/72 kg"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 172,
+      "name": "Midea Washing Machine MF01814BS47/T",
+      "label": "MF01814BS47/T",
+      "subtitle": "Midea Washing Machine MF01814BS47/T",
+      "description": "The washing machine offers 15 wash programs designed for different fabric types. \n\nWash programs -\nQuick wash 45’/15′ • Cotton • Delicates • Synthetics • 20°C • ECO 40–60 • Bulky • Mix • Health Guard (hygiene wash) • Jeans • Allergy Care (anti-allergy) • Hand wash / Wool • Rinse and spin • Spin only • Drum clean\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "BLDC inverter"
+        },
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × \t475 × 850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "61 kg/64 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 173,
+      "name": "Midea Washing Machine MF110W100B/W",
+      "label": "MF110W100B/W",
+      "subtitle": "Midea Washing Machine MF110W100B/W",
+      "description": "The washing machine offers 15 wash programs designed for different fabric types. \n\nWash programs - Quick 45'/15' • Cotton • Delicates • Synthetics • 20°C • ECO 40–60 • Bulky • Mix • Health Guard (hygiene wash) • Jeans • Anti-allergy (Allergy Care) • Hand wash / Wool • Rinse and spin • Spin only • Drum clean\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "10 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 535 × 850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "61 kg/64 kg"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 174,
+      "name": "Midea Washing Machine MF110W100B/T",
+      "label": "MF110W100B/T",
+      "subtitle": "Midea Washing Machine MF110W100B/T",
+      "description": "The washing machine offers 15 wash programs designed for different fabric types. \n\nWash programs - Quick 45'/15' • Cotton • Delicates • Synthetics • 20°C • ECO 40–60 • Bulky • Mix • Health Guard (hygiene wash) • Jeans • Anti-allergy (Allergy Care) • Hand wash / Wool • Rinse and spin • Spin only • Drum clean\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "10 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 535 × 850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "61 kg/64 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 175,
+      "name": "Midea Washing Machine MF110W70B/W",
+      "label": "MF110W70B/W",
+      "subtitle": "Midea Washing Machine MF110W70B/W",
+      "description": "The washing machine offers 14 wash programs designed for different fabric types.\n\n Wash programs - Quick 45'/15' • Synthetics • Cotton • 20°C • ECO 40–60 • Mixed • Spin only • Jeans • Bulky items • Delicates • Allergy Care • Wool • Rinse and spin • Health Guard\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Energy efficiency class",
+          "value": "A+"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "7 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1200"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "79 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "660 × 505 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "57 kg/60 kg"
+        },
+        {
+          "label": "Voltage",
+          "value": "220-240V ~,50Hz"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 176,
+      "name": "Midea Washing Machine MF205W100WB/T",
+      "label": "MF205W100WB/T",
+      "subtitle": "Midea Washing Machine MF205W100WB/T",
+      "description": "The washing machine offers 14 wash programs designed for different fabric types. \n\nWash programs - Quick 45'/15' • Cotton • Synthetics • Delicates • Mixed • Wool • Jeans • 20°C • HealthGuard • ECO 40–60 • Drum clean • Rinse and spin • Spin only • Download • Silk • Sportswear • Turbo\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter BLDC motor"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "10 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 555 × 850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "66 kg/71 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 177,
+      "name": "Midea Washing Machine MF110W70B/T",
+      "label": "MF110W70B/T",
+      "subtitle": "Midea Washing Machine MF110W70B/T",
+      "description": "The washing machine offers 14 wash programs designed for different fabric types. \n\nWash programs - Quick 45'/15' • Synthetics • Cotton • 20°C • ECO 40–60 • Mixed • Spin only • Jeans • Bulky items • Delicates • Allergy Care • Wool • Rinse and spin • Health Guard\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "7 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1200"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "79 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595 × 475 × 885"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "57 kg/60 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 178,
+      "name": "Midea Washer Dryer MF205D80WB/T",
+      "label": "MF205D80WB/T",
+      "subtitle": "Midea Washing Machine MF205D80WB/T",
+      "description": "The Midea MF205D80WB/T washer dryer washes up to 8 kg and dries up to 6 kg of laundry.\n Wash functions are controlled via a digital display\n \nThe machine offers 16 wash modes suited to every fabric type, plus a steam wash mode,\nand lets you select and save your favorite program.\n\nWash programs - Quick 15'/45' • ECO 40–60 • 20°C • Wash and dry • Spin and rinse • Dry • Sportswear • Delicates • Jeans • HealthGuard • Cotton • Mix • Synthetics • Wool • Bedding • Silk\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter BLDC motor"
+        },
+        {
+          "label": "Number of programs",
+          "value": "16"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Drying",
+          "value": "6"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595*490*850 mm"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "64 kg/67 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 179,
+      "name": "Midea Washing Machine MF205W80WB/T",
+      "label": "MF205W80WB/T",
+      "subtitle": "Midea Washing Machine MF205W80WB/T",
+      "description": "The washing machine offers 14 wash modes suited to every fabric type, plus a steam wash mode,\nand lets you select and save your favorite program.\n\nWash programs - HealthGuard (hygiene protection) • Cotton • Mixed • Synthetics • Wool • Bedding • Drum clean • Quick 45'/15' • ECO 40–60 • 20°C • Down jackets • Rinse and spin • Spin only • Cycle download\n\nExtra functions - Power Guard (energy saving) • Turbo • Steam • Pre-wash • Perfume+ (fragrance) • Temperature adjustment • Spin adjustment • Extra rinse • Delay end • Remote control • On/Off • Start/Pause • Sound off • Child lock • Wi-Fi • Add garment (Reload)\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter BLDC motor"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Max spin speed",
+          "value": "1400"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "72 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595*490*850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "64 kg/67 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 180,
+      "name": "Midea Dryer MD1180BH60/T",
+      "label": "MD1180BH60/T",
+      "subtitle": "Midea Dryer MD1180BH60/T",
+      "description": "The Midea MD1180BH60/T tumble dryer dries up to 8 kg of laundry\n\nThe dryer offers 15 programs suited to every fabric type\nIt also has interior lighting for added convenience\nPrograms - ECO • Cotton • Jeans • Delicates • Towels • Mixed • Wool refresh • Shirts • Synthetics • Bedding • Sportswear • Quick 35' • Health Guard (hygiene protection) • Airfresh • Timed drying\n\nExtra functions - Start/Pause • Delay End • Signal • Anti-crease • Dryness level • Time + • Time - • Light • Child lock\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Energy efficiency class",
+          "value": "A+"
+        },
+        {
+          "label": "Number of programs",
+          "value": "15"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "66 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595*600*850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "42 kg/44 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 181,
+      "name": "Midea Dryer MD205W80WB/T",
+      "label": "MD205W80WB/T",
+      "subtitle": "Midea Dryer MD1180BH60/T",
+      "description": "The Midea MD205W80WB/T tumble dryer dries up to 8 kg of laundry\n\nThe dryer offers 14 programs suited to every fabric type\nIt also has interior lighting for added convenience\nDrying programs - Health Guard • Cotton • Mix • Synthetics • Wool • Bedding • Night dry • Quick dry • Eco • Shirts • Down jackets • Timed drying • Refresh • Download\n\nExtra functions - Fabric care • UV light • Anti-crease • Signal • Drum light • Intensity adjustment • Time - • Time + • Delay end • Remote control • Child lock • Wi-Fi\n Voltage 220-240V ~50Hz\n Warranty 3 years",
+      "specs": [
+        {
+          "label": "Motor type",
+          "value": "Inverter BLDC motor"
+        },
+        {
+          "label": "Number of programs",
+          "value": "14"
+        },
+        {
+          "label": "Max load",
+          "value": "8 kg"
+        },
+        {
+          "label": "Spin noise level",
+          "value": "64 db"
+        },
+        {
+          "label": "Product dimensions (W × D × H), mm",
+          "value": "595*520*850"
+        },
+        {
+          "label": "Product weight / packed weight",
+          "value": "46 kg/47 kg"
+        }
+      ],
+      "colorName": "Titanium"
+    },
+    {
+      "id": 182,
+      "name": "Midea Built-in Dishwasher MID45S060",
+      "label": "",
+      "subtitle": "Built-in dishwasher",
+      "description": "• Type: Dishwasher\n• Model:  MID45S060\n• Installation type: Built-in\n• Energy efficiency class: A\n• Capacity: 9 place settings\n• Number of programs: 5\n• Noise level: 49 dB \n• Mechanical control\n• Dish racks: 2\n• Spray arms: 2\n• Automatic door opening: Yes\n• Product dimensions (H*W*D) mm: 815*448*550 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "9"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5"
+        },
+        {
+          "label": "Number of racks",
+          "value": "2"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 183,
+      "name": "Midea Built-in Dishwasher MID60S060",
+      "label": "",
+      "subtitle": "Built-in dishwasher",
+      "description": "• Type: Dishwasher\n• Model:  MID60S060\n• Installation type: Built-in\n• Energy class: A\n• Place settings: 12 \n• Number of programs: 5 \n• Noise level: 49 dB \n• Mechanical controls\n• Number of spray arms: 2\n• Number of baskets: 2\n• Product dimensions (H*W*D) mm: 815*598*550 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "12"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5"
+        },
+        {
+          "label": "Number of racks",
+          "value": "2"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 184,
+      "name": "Midea Dishwasher MFD60S510Bi",
+      "label": "",
+      "subtitle": "Freestanding dishwasher",
+      "description": "• Type: Dishwasher\n• Model:  MFD60S510Bi\n• Installation type: Freestanding\n• Energy class: A\n• Place settings: 14 \n• Number of programs: 5 + 4 (via app)\n• Noise level: 44 dB \n• Auto mode\n• Wi-Fi control\n• Number of spray arms: 2\n• Number of baskets: 2 + 1 (additional)\n• Product dimensions (H*W*D) mm: 845*598*600 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "14"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5+4"
+        },
+        {
+          "label": "Number of racks",
+          "value": "2+1"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "2"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 185,
+      "name": "Midea Built-in Dishwasher MID45S340i",
+      "label": "",
+      "subtitle": "Built-in dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MID45S340i\n• Installation type: Built-in\n• Energy class: A\n• Place settings:  10 \n• Number of programs: 5 + 4 (via app) \n• Noise level: 47 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Auto mode\n• Product dimensions (H*W*D) mm: 815*448*550 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "10"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5+4"
+        },
+        {
+          "label": "Number of racks",
+          "value": "3"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 186,
+      "name": "Midea Built-in Dishwasher MID60S160i",
+      "label": "",
+      "subtitle": "Built-in dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MID60S160i\n• Installation type: Built-in\n• Energy class: A\n• Place settings:  14 \n• Number of programs: 4 + 4 (via app) \n• Noise level: 49 dB \n• Wi-Fi app control\n• Mechanical controls\n• LED display\n• Ion wash\n• Product dimensions (H*D*W) mm: 815*550*598 mm",
+      "specs": [],
+      "colorName": ""
+    },
+    {
+      "id": 187,
+      "name": "Midea Built-in Dishwasher MID60S350i",
+      "label": "",
+      "subtitle": "Built-in dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MID60S350i\n• Installation type: Built-in\n• Energy class: A\n• Place settings:  14 \n• Number of programs: 5 + 4 (via app) \n• Noise level: 47 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Auto mode\n• Product dimensions (H*W*D) mm: 815*598*550 mm",
+      "specs": [],
+      "colorName": ""
+    },
+    {
+      "id": 188,
+      "name": "Midea Built-in Dishwasher MDWB-4529TQ",
+      "label": "",
+      "subtitle": "Built-in dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MDWB-4529TQ\n• Installation type: Built-in\n• Energy class: A\n• Place settings:  14 \n• Number of programs: 5 + 3 (via app) \n• Noise level: 42 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Orbital wash\n• Auto mode\n• Number of spray arms: 3\n• Number of baskets: 3\n• Product dimensions (H*W*D) mm: 815 × 550 × 448 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "14"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5+3"
+        },
+        {
+          "label": "Number of racks",
+          "value": "3"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "3"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 189,
+      "name": "Midea Built-in Dishwasher MDWB-6029TQ",
+      "label": "Built-in Dishwasher",
+      "subtitle": "Built-in dishwasher",
+      "description": "• Type: Built-in dishwasher\n• Model: MDWB-6029TQ\n• Installation type: Built-in\n• Energy class: A\n• Place settings:  14 \n• Number of programs: 6 + 3 (via app) \n• Noise level: 42 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Orbital wash\n• Auto mode\n• Number of spray arms: 3\n• Number of baskets: 3\n• Product dimensions (H*W*D) mm: 815*598*550 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "14"
+        },
+        {
+          "label": "Number of programs",
+          "value": "6+3"
+        },
+        {
+          "label": "Number of racks",
+          "value": "3"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "3"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 190,
+      "name": "Midea Dishwasher MFD60S050S",
+      "label": "Dishwasher",
+      "subtitle": "Freestanding dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MFD60S050S\n• Installation type: Freestanding\n• Energy class: A\n• Place settings:  12\n• Number of programs: 5 + 3 (via app) \n• Noise level: 49 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Auto mode\n• Number of spray arms: 2\n• Number of baskets: 2\n• Product dimensions (H*W*D) mm: 845 × 600× 598 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "12"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5+3"
+        },
+        {
+          "label": "Number of racks",
+          "value": "2"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "2"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 191,
+      "name": "Midea Dishwasher MCFD55S460Si",
+      "label": "Dishwasher",
+      "subtitle": "Freestanding dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MCFD55S460Si\n• Installation type: Freestanding \n• Energy efficiency - A\n• Noise level - 49 db\n• Place settings - 6\n• Number of programs - 6\n• Auto mode: Yes\n• Wi-Fi app control\n• LED display\n• Product dimensions (H*D*W) mm -438*500*550 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "6"
+        },
+        {
+          "label": "Number of programs",
+          "value": "6"
+        },
+        {
+          "label": "Number of racks",
+          "value": "1"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "1"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 192,
+      "name": "Midea Dishwasher MFD45S160Si",
+      "label": "",
+      "subtitle": "Freestanding dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MFD45S160Si\n• Installation type: Freestanding\n• Energy class: A\n• Place settings:  10 \n• Number of programs: 5 + 3 (via app) \n• Noise level: 49 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Auto mode\n• Number of spray arms: 3\n• Number of baskets: 2+ 1 (additional)\n• Product dimensions (H*W*D) mm: 845*448*600 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "10"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5+3"
+        },
+        {
+          "label": "Number of racks",
+          "value": "2+1"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "3"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 193,
+      "name": "Midea Dishwasher MFD60S160Si",
+      "label": "Freestanding Dishwasher",
+      "subtitle": "Freestanding dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MFD60S160Si\n• Installation type: Freestanding\n• Energy class: A\n• Place settings:  14 \n• Number of programs: 6 + 3 (via app) \n• Noise level: 49 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Auto mode\n• Number of spray arms: 2\n• Number of baskets: 2+ 1 (additional)\n• Product dimensions (H*W*D) mm: 845*598*600 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "14"
+        },
+        {
+          "label": "Number of programs",
+          "value": "6+3"
+        },
+        {
+          "label": "Number of racks",
+          "value": "2+1"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "2"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 194,
+      "name": "Midea Dishwasher MFD45S050S",
+      "label": "",
+      "subtitle": "Freestanding dishwasher",
+      "description": "• Type: Dishwasher\n• Model: MFD45S160Si\n• Installation type: Freestanding\n• Energy class: A\n• Place settings:  10 \n• Number of programs: 5 + 3 (via app) \n• Noise level: 49 dB \n• Wi-Fi app control\n• LED display\n• Ion wash\n• Auto mode\n• Number of spray arms: 3\n• Number of baskets: 2+ 1 (additional)\n• Product dimensions (H*W*D) mm: 845*448*600 mm",
+      "specs": [
+        {
+          "label": "Place settings",
+          "value": "10"
+        },
+        {
+          "label": "Number of programs",
+          "value": "5+3"
+        },
+        {
+          "label": "Number of racks",
+          "value": "2+1"
+        },
+        {
+          "label": "Number of spray arms",
+          "value": "3"
+        },
+        {
+          "label": "Warranty",
+          "value": "3 years"
+        }
+      ],
+      "colorName": ""
+    },
+    {
+      "id": 195,
+      "name": "Franko Side-by-Side Refrigerator FM-482NFDWDIS",
+      "label": "Side-by-Side Refrigerator",
+      "subtitle": "Side-by-side refrigerator",
+      "description": "• Total capacity:          482 L\n• Fridge compartment:           321 L\n• Freezer compartment:         161 L\n• Control panel:          Electronic\n• Defrost system:         Automatic\n• Climate class:           ST/T\n• Energy efficiency class:        A+ + Europe F\n• Annual energy consumption (kWh/year):     297\n• Noise level:                        42 dB\n• Freezer star rating:     4****  -18℃\n• Freezing capacity (kg/24 h) :         12\n• Cold retention time during power outage (hours):       12\n• Door:             Reversible\n• Interior lighting:          LED\n• Crisper cover:         Glass\n• Adjustable shelves:         Glass with metal trim\n• Ice tray:         1 pc\n• Egg tray:         2 pcs\n• Dimensions (W × D × H), mm :    833*654*1820\n• Package dimensions (W × D × H), mm:    908*712*1925\n• Weight (net/gross, kg):           105/115",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Bottom freezer"
+        },
+        {
+          "label": "Total capacity",
+          "value": "482 L"
+        },
+        {
+          "label": "Fridge compartment",
+          "value": "321 L"
+        },
+        {
+          "label": "Freezer compartment",
+          "value": "161 L"
+        },
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Cooling system",
+          "value": "No Frost"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Dark silver"
+    },
+    {
+      "id": 196,
+      "name": "Franko Side-by-Side Refrigerator FS-529NFDIB",
+      "label": "Side-by-Side Refrigerator",
+      "subtitle": "Side-by-side refrigerator",
+      "description": "• Total capacity:         529 L\n• Fridge compartment:          337 L\n• Freezer compartment:        192 L\n• Control panel:         Electronic\n• Defrost system:        Automatic\n• Climate class:          ST/T\n• Energy efficiency class:       A++  Europe F\n• Noise level:        42 dB\n• Freezer star rating:    4****  -18℃\n• Freezing capacity (kg/24 h) :      10\n• Cold retention time during power outage (hours):    10 \n• Door:            Reversible\n• Interior lighting:         LED\n• Crisper cover:        Glass\n• Adjustable shelves:          Glass\n• Ice tray:        1 pc\n• Egg tray:        2 pcs\n• Dimensions (W × D × H), mm :   905*628*1778\n• Package dimensions (W × D × H), mm:  974*731*1875\n• Weight (net/gross, kg):          90/95",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "SIDE BY SIDE"
+        },
+        {
+          "label": "Total capacity",
+          "value": "529"
+        },
+        {
+          "label": "Fridge compartment",
+          "value": "337"
+        },
+        {
+          "label": "Freezer compartment",
+          "value": "192"
+        },
+        {
+          "label": "Cooling system",
+          "value": "No Frost"
+        },
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 197,
+      "name": "Franko Side-by-Side Refrigerator FM-595NFDIS",
+      "label": "Side-by-Side Refrigerator",
+      "subtitle": "No Frost side-by-side refrigerator",
+      "description": "• Total capacity:                  595 L\n• Fridge compartment:          385 L\n• Freezer compartment:        105 L\n• Convertible compartment         105 L\n• Control panel:         Electronic\n• Defrost system:        Automatic\n• Climate class:          ST/T\n• Energy efficiency class:       A++  Europe F\n• Noise level:        42 dB\n• Freezer star rating:    4****  -18℃\n• Freezing capacity (kg/24 h) :      10\n• Cold retention time during power outage (hours):    10 \n• Door:            Reversible\n• Interior lighting:         LED\n• Crisper cover:        Glass\n• Adjustable shelves:          Glass\n• Ice tray:        1 pc\n• Egg tray:        2 pcs\n• Dimensions (W × D × H), mm :   905*720*1820\n• Package dimensions (W × D × H), mm:  970*780*1920\n• Weight (net/gross, kg):          105/115",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Bottom freezer"
+        },
+        {
+          "label": "Cooling system",
+          "value": "No Frost"
+        },
+        {
+          "label": "Total capacity",
+          "value": "595 L"
+        },
+        {
+          "label": "Fridge compartment",
+          "value": "385 L"
+        },
+        {
+          "label": "Freezer compartment",
+          "value": "105 L"
+        },
+        {
+          "label": "Motor type",
+          "value": "Inverter"
+        },
+        {
+          "label": "Warranty",
+          "value": "24 months for individual customers"
+        }
+      ],
+      "colorName": "Dark gray"
+    },
+    {
+      "id": 198,
+      "name": "Franko Mini Bar Fridge FMB-48DFS",
+      "label": "Mini Bar Fridge",
+      "subtitle": "",
+      "description": "• Total capacity:                      48 L\n• Fridge compartment:             46 L\n• Control panel:                        Mechanical\n• Defrost system:        Manual\n• Climate class:                            ST/T\n• Energy efficiency class:       A+ Europe E\n• Noise level:        42 dB\n• Door:            Reversible\n• Dimensions (W × D × H), mm :   445*470*501\n• Package dimensions (W × D × H), mm:  460*500*530\n• Weight (net/gross, kg):          17/21",
+      "specs": [],
+      "colorName": "Silver"
+    },
+    {
+      "id": 199,
+      "name": "Franko Chest Freezer FCF-142DW",
+      "label": "",
+      "subtitle": "Chest freezer with lock",
+      "description": "• Type: Chest freezer \n• Capacity (L/ft³): 139/4.9\n• LED lighting – Yes\n• Refrigerant R600a\n• Key lock – Yes\n• Temp. control/display – Mechanical\n• Condenser – Enclosed\n• Freezing – Mechanical\n• Power supply (V~/Hz)- 220V-240/50Hz           • Product dimensions (W*D*H)(mm)- 635*554*848\n• Package (W*D*H)(mm) - 663*570*890\n• Weight (net / gross) (kg) - 24/26",
+      "specs": [],
+      "colorName": "White"
+    },
+    {
+      "id": 200,
+      "name": "Franko Chest Freezer FCF-198DW",
+      "label": "",
+      "subtitle": "Chest freezer with lock",
+      "description": "• Type: Chest freezer \n• Capacity (L/ft³): 198/7,0\n• LED lighting – Yes\n• Refrigerant R600a\n• Key lock – Yes\n• Temp. control/display – Mechanical\n• Condenser – Enclosed\n• Freezing – Mechanical\n• Power supply (V~/Hz)- 220V-240/50Hz\n• Product dimensions (W*D*H)(mm)- 828*554*848\n• Package (W*D*H)(mm) - 856*570*890\n• Weight (net / gross) (kg) - 26/28",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chest freezer / fridge"
+        },
+        {
+          "label": "Capacity",
+          "value": "198 L"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 201,
+      "name": "Franko Chest Freezer FCF-249DW",
+      "label": "",
+      "subtitle": "Chest freezer with lock",
+      "description": "• Type: Chest freezer \n• Capacity (L/ft³): 245/8,6\n• LED lighting – Yes\n• Refrigerant R600a\n• Key lock – Yes\n• Temp. control/display – Mechanical\n• Condenser – Enclosed\n• Freezing – Mechanical\n• Power supply (V~/Hz)- 220V-240/50Hz\n• Product dimensions (W*D*H)(mm)- 960*635*848\n• Package (W*D*H)(mm) - 998*658*890\n• Weight (net / gross) (kg) - 31/35",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chest freezer / fridge"
+        },
+        {
+          "label": "Capacity",
+          "value": "245 L"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 202,
+      "name": "Franko Chest Freezer FCF-350DW",
+      "label": "",
+      "subtitle": "Chest freezer with lock",
+      "description": "• Type: Chest freezer \n• Capacity (L/ft³): 347/12,3\n• LED lighting – Yes\n• Refrigerant R600a\n• Key lock – Yes\n• Temp. control/display – Mechanical\n• Condenser – Enclosed\n• Freezing – Mechanical\n• Power supply (V~/Hz)- 220V-240/50Hz\n• Product dimensions (W*D*H)(mm)- 1246*716*848\n• Package (W*D*H)(mm) - 1284*740*882\n• Weight (net / gross) (kg) -44/49",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chest freezer / fridge"
+        },
+        {
+          "label": "Capacity",
+          "value": "347 L"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 203,
+      "name": "Franko Chest Freezer FCF-400DW",
+      "label": "",
+      "subtitle": "Chest freezer with lock",
+      "description": "• Type: Chest freezer \n• Capacity (L/ft³): 397/14,0\n• LED lighting – Yes\n• Refrigerant R600a\n• Key lock – Yes\n• Temp. control/display – Mechanical\n• Condenser – Enclosed\n• Freezing – Mechanical\n• Power supply (V~/Hz)- 220V-240/50Hz\n Product dimensions (W*D*H)(mm)- 1386*716*848\n• Package (W*D*H)(mm) - 1424*740*882\n• Weight (net / gross) (kg) - 49/55",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chest freezer / fridge"
+        },
+        {
+          "label": "Capacity",
+          "value": "397 L"
+        }
+      ],
+      "colorName": "White"
+    },
+    {
+      "id": 204,
+      "name": "Franko Chest Freezer FCF-142DSG",
+      "label": "FCF-142DSG",
+      "subtitle": "Chest freezer with glass lid",
+      "description": "• Type: Chest freezer \n• Capacity (L/ft³):137/4,8\n• LED lighting – Yes\n• Refrigerant R600a\n• Temp. control/display – Mechanical\n• Condenser – Enclosed\n• Freezing – Mechanical\n• Power supply (V~/Hz)- 220V-240/50Hz\n Product dimensions (W*D*H)(mm)- 635*575*848\n• Package (W*D*H)(mm) - 663*590*890\n• Weight (net / gross) (kg) - 28/30",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chest freezer / fridge"
+        },
+        {
+          "label": "Capacity",
+          "value": "138 L"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 205,
+      "name": "Franko Chest Freezer FCF-208DSG",
+      "label": "",
+      "subtitle": "Chest freezer with glass lid",
+      "description": "• Type: Chest freezer / fridge\n• Capacity (L/ft³):206/7,2\n• LED lighting – Yes\n• Refrigerant R600a\n• Temp. control/display – Mechanical\n• Condenser – Enclosed\n• Freezing – Mechanical\n• Power supply (V~/Hz)- 220V-240/50Hz\n Product dimensions (W*D*H)(mm)- 889*575*848\n• Package (W*D*H)(mm) - 918*590*890\n• Weight (net / gross) (kg) - 35/38",
+      "specs": [
+        {
+          "label": "Type",
+          "value": "Chest freezer / fridge"
+        },
+        {
+          "label": "Capacity",
+          "value": "206 L"
+        }
+      ],
+      "colorName": "Silver"
+    },
+    {
+      "id": 206,
+      "name": "Franko Ice Maker FIC-9067",
+      "label": "",
+      "subtitle": "Ice maker",
+      "description": "•\tType:  Ice maker\n•\tInstallation type: Freestanding, non-slip feet + handle\n•\tIncluded: ice basket, ice scoop and AC power cord\n•\tWater tank capacity:  1 L, ice bin capacity: 1 L\n•\tHousing material: ABS\n•\tBowl material: Plastic\n•\tDoor position: Horizontal\n•\tDisplay: Yes\n•\tControl type: Automatic\n•\tOutput: 8 cubes per cycle (in 9 minutes), up to 12 kg of ice per day\n•\tIce shape: Cylindrical\n•\tNumber of programs: 1\n•\tSelf-cleaning function: Yes, manual (manually started)\n•\tProtection class: I\n•\tRefrigerant: R600a\n•\tProduct dimensions (H x W x D): 290*268*218 mm\n•\tWeight: 6 kg (boxed: 6.500)\n•\tPower cord length: 1 m\n•\tPower: 120 W\n•\tFrequency: 220 – 240 V/50Hz\n•\tColor: Gray\n•\tWarranty: 2 years",
+      "specs": [],
+      "colorName": "Silver"
+    },
+    {
+      "id": 207,
+      "name": "Franko Ice Maker FIC-9068",
+      "label": "",
+      "subtitle": "Ice maker",
+      "description": "•\tType:  Ice maker\n•\tInstallation type: Freestanding, non-slip feet + handle\n•\tIncluded: ice basket, ice scoop and AC power cord\n•\tWater tank capacity: 1.5 L, ice bin capacity: 1.5 L\n•\tHousing material: ABS\n•\tBowl material: Plastic\n•\tDoor position: Horizontal\n•\tDisplay: Yes\n•\tControl type: Automatic\n•\tOutput: 9 cubes per cycle (in 9 minutes), up to 12 kg of ice per day\n•\tIce shape: Cylindrical\n•\tNumber of programs: 1\n•\tSelf-cleaning function: Yes, manual (manually started)\n•\tProtection class: I\n•\tRefrigerant: R600a\n•\tProduct dimensions (H x W x D): 297*228*320 mm\n•\tWeight: 6.500 kg (boxed: 7)\n•\tPower cord length: 1.25\n•\tPower: 120 W\n•\tFrequency: 220 – 240 V/50Hz\n•\tColor: Gray\n•\tWarranty: 2 years",
+      "specs": [],
+      "colorName": "Silver"
+    },
+    {
+      "id": 208,
+      "name": "Franko Speaker FSK-9025",
+      "label": "",
+      "subtitle": "Portable speaker with microphone",
+      "description": "• Type: Portable Bluetooth 5.0 speaker\n• Output power: 50 W\n• Frequency: 100 Hz---20 kHz\n• Drivers: 6.5''*2\n• Rechargeable battery 7.4V - 4000 mah\n• Accessories: 9V 1.5 power adapter, wireless UHF microphone\n• Product dimensions: 268*294*612 mm\n• Distortion: ≤10%\n• JBL-style lighting, TWS pairing, recording function, remote control\n• Color: Black",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 209,
+      "name": "Franko Speaker FSK-9026",
+      "label": "",
+      "subtitle": "Portable speaker with microphone",
+      "description": "• Type: Portable Bluetooth 5.2 speaker\n• Output power: 100 W\n• Frequency: 100Hz---20kHz\n• Drivers: 10\"*2+2\"*2\n• Battery: 11.1V 6000 mah\n• Distortion: ≤10%\n• Accessories: 13.5V 2A adapter, 1 UHF wireless microphone, remote control, wheels\n• Product dimensions: 310*340*780 mm\n• Recording function, karaoke, microphone, TWS function, moving lights",
+      "specs": [],
+      "colorName": "Black"
+    },
+    {
+      "id": 210,
+      "name": "Franko TV FTV-32N4000",
+      "label": "",
+      "subtitle": "LED TV",
+      "description": "• Type: Frameless LED TV\n• Screen size: 32’’ (81 cm)\n• Resolution: 1366 x 768  HD\n• Panel: A+ 100%\n• System: ATV/DVB-C/DVB-T2/DVB-S2\n• Viewing angle: 178 / 178\n• Static contrast ratio: 3000:1",
+      "specs": [
+        {
+          "label": "Screen size",
+          "value": "32\" (81 cm)"
+        },
+        {
+          "label": "Resolution",
+          "value": "HD"
+        },
+        {
+          "label": "Smart system",
+          "value": "❌"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 211,
+      "name": "Franko TV FTV-32SH1400",
+      "label": "",
+      "subtitle": "Smart TV",
+      "description": "• Type: Frameless LED smart TV\n• Android 14\n• Screen size: 32’’ (81 cm)\n• Resolution: 1366 x 768  HD\n• Panel: A+ 100%\n• System: ATV/DVB-C/DVB-T2/DVB-S2\n• Sound system: Dolby digital\n• Viewing angle: 178 / 178\n• Static contrast ratio: 3000:1\n• Apps: Nettflix, Youtube, Facebook, Twitter, Media center, miracast\n• Memory: 1G+8G",
+      "specs": [
+        {
+          "label": "Screen size",
+          "value": "32\" (81 cm)"
+        },
+        {
+          "label": "Resolution",
+          "value": "HD"
+        },
+        {
+          "label": "System",
+          "value": "SMART"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 212,
+      "name": "Franko TV FTV-43WHF1300",
+      "label": "",
+      "subtitle": "Smart TV",
+      "description": "• Type: Frameless LED smart TV\n• Android 13 with updatable Whale OS \n• Screen size: 43’’ (109 cm)\n• Resolution: 1920 x 1080 (2K FHD)\n• Panel: A+ 100%\n• System: ATV/DVB-C/DVB-T2/DVB-S2\n• Sound system: Dolby digital\n• Viewing angle: 178 / 178\n• Bluetooth\n• Voice control\n• Memory: 1G+8G",
+      "specs": [
+        {
+          "label": "Screen size",
+          "value": "43\" (109 cm)"
+        },
+        {
+          "label": "Resolution",
+          "value": "Full HD"
+        },
+        {
+          "label": "System",
+          "value": "SMART"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 213,
+      "name": "Franko TV FTV-50SU1400",
+      "label": "",
+      "subtitle": "Smart TV",
+      "description": "• Type: Frameless LED smart TV\n• Android 14\n• Screen size: 50’’ (128 cm)\n• Resolution: 3840 x 2160 (4K UHD)\n• Panel: A+ 100%\n• System: ATV/DVB-C/DVB-T2/DVB-S2\n• Sound system: Dolby digital\n• Viewing angle: 178 / 178\n• Static contrast ratio: 5000:1\n• Apps: Nettflix, Youtube, Facebook, Twitter, Media center, miracast\n• Memory: 1.5G+8G",
+      "specs": [
+        {
+          "label": "Screen size",
+          "value": "50\" (128 cm)"
+        },
+        {
+          "label": "Resolution",
+          "value": "4K"
+        },
+        {
+          "label": "System",
+          "value": "SMART"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 214,
+      "name": "Franko TV FTV-55SU1400",
+      "label": "",
+      "subtitle": "Smart TV",
+      "description": "• Type: Frameless LED smart TV\n• Android 14\n• Screen size: 55’’ (140 cm)\n• Resolution: 3840 x 2160 (4K UHD)\n• Panel: A+ 100%\n• System: ATV/DVB-C/DVB-T2/DVB-S2\n• Sound system: Dolby digital\n• Viewing angle: 178 / 178\n• Static contrast ratio: 5000:1\n• Apps: Nettflix, Youtube, Facebook, Twitter, Media center, miracast\n• Memory: 1.5G+8G",
+      "specs": [
+        {
+          "label": "Screen size",
+          "value": "55 ( 140 )"
+        },
+        {
+          "label": "Resolution",
+          "value": "4K"
+        },
+        {
+          "label": "System",
+          "value": "SMART"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 215,
+      "name": "Franko TV FTV-65WHU1400",
+      "label": "",
+      "subtitle": "Smart TV",
+      "description": "• Type: Frameless LED smart TV\n• Android 13 with updatable Whale OS \n• Screen size: 65’’ (165 cm)\n• Resolution: 3840 x 2160 (4K UHD)\n• Panel: A+ 100%\n• System: ATV/DVB-C/DVB-T2/DVB-S2\n• Sound system: Dolby digital\n• Viewing angle: 178 / 178\n• Bluetooth\n• Voice control\n• Memory: 1.5G+8G",
+      "specs": [
+        {
+          "label": "Screen size",
+          "value": "65\" (165 cm)"
+        },
+        {
+          "label": "Resolution",
+          "value": "4K"
+        },
+        {
+          "label": "System",
+          "value": "SMART"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 216,
+      "name": "Franko TV FTV-75WHU1400",
+      "label": "",
+      "subtitle": "Smart TV",
+      "description": "• Type: Frameless LED smart TV\n• Android 13 with updatable Whale OS \n• Screen size: 75’’ (190 cm)\n• Resolution: 3840 x 2160 (4K UHD) 120Hz\n• Panel: A+ 100%\n• System: ATV/DVB-C/DVB-T2/DVB-S2\n• Sound system: Dolby digital\n• Viewing angle: 178 / 178\n• Bluetooth\n• Voice control\n• Memory: 1.5G+8G",
+      "specs": [
+        {
+          "label": "Screen size",
+          "value": "75\" (190 cm)"
+        },
+        {
+          "label": "Resolution",
+          "value": "4K"
+        },
+        {
+          "label": "System",
+          "value": "SMART"
+        }
+      ],
+      "colorName": "Black"
+    },
+    {
+      "id": 217,
+      "name": "DeLonghi Coffee Machine ECAM470.85.MB",
+      "label": "DeLonghi Coffee Machine ECAM470.85.MB",
+      "subtitle": "DeLonghi Coffee Machine ECAM470.85.MB",
+      "description": "Specifications \n    -Drink programs\n Cold coffee drinks - Cold Brew to carafe • Cold Brew • Cold Brew for mixing • Iced coffee • Iced espresso • Iced americano\n\n    -Cold milk drinks - Cold Brew cappuccino • Cold Brew latte • Iced coffee with milk • Iced cappuccino • Iced cappuccino mix • Iced flat white • Iced latte macchiato • Cold milk\n\n    -Hot coffee drinks - Americano • Coffee • Coffee to carafe • Double+ • Double espresso • Espresso • Espresso lungo • Filter-style coffee • Extended • Black Eye • Intense espresso • Mild filter coffee • Red Eye • Italian ristretto\n\n    -Hot milk drinks - Babyccino • Café au lait • Café con leche • Caffelatte • Cappuccino • Cappuccino mix • Cappuccino+ • Cortado • Espresso macchiato • Flat white • Galão • Hot milk • Latte macchiato • Milchkaffee • Koffie verkeerd\n  -Other drinks - Hot water • Tea\n\nSpecifications - Dimensions: 235 × 455 × 380 mm • Weight: 10.95 kg • Color: Titanium • Water tank capacity: 1.8 L • Coffee grounds container capacity: 14 servings • Pump pressure: 19 bar • Voltage: 220–240 V • Power: 1450 W\n\nAdditional features - Adjustable drink volume • Pre-ground coffee option • Brews two cups at once • Water filter compatible • Water hardness adjustment • Mobile app control",
+      "specs": [
+        {
+          "label": "Number of programs",
+          "value": "51 automatic brewing programs"
+        },
+        {
+          "label": "Cold brew",
+          "value": "Cold Brew ✅"
+        },
+        {
+          "label": "Quiet operation technology",
+          "value": "Silent Technology ✅"
+        },
+        {
+          "label": "Pump pressure",
+          "value": "19 bar"
+        },
+        {
+          "label": "Mobile app control",
+          "value": "✅"
+        },
+        {
+          "label": "Warranty",
+          "value": "2 years"
+        }
+      ],
+      "colorName": "Titanium silver"
+    },
+    {
+      "id": 218,
+      "name": "DeLonghi Coffee Machine EXAM440.55.W",
+      "label": "DeLonghi Coffee Machine EXAM440.55.W",
+      "subtitle": "DeLonghi Coffee Machine EXAM440.55.W",
+      "description": "Specifications \n⁕ Cold coffee drinks - Iced coffee • Iced espresso • Iced americano\n\n⁕ Hot coffee drinks - Americano • Coffee • Espresso • Espresso lungo • Long coffee (Long)\n⁕ Hot milk drinks - Caffelatte • Cappuccino • Cappuccino mix • Cortado • Espresso macchiato • Flat white • Hot milk • Latte macchiato\n\nOther drinks -Hot water\n\n⁕ Specifications - Dimensions: 245 × 430 × 385 mm • Weight: 9.7 kg • Color: White • Finish: Matte • Water tank capacity: 1.4 L • Coffee grounds container capacity: 10 servings • Pump pressure: 19 bar • Max cup height: 140 mm • Control type: Touch • Voltage: 220–240 V • Power: 1450 W\n\n⁕ Additional features - Aroma adjustment • Adjustable drink volume • 4 user profiles • Pre-ground coffee option • Brews two cups at once • Water filter compatible • Water hardness adjustment",
+      "specs": [
+        {
+          "label": "Number of programs",
+          "value": "16 automatic brewing programs"
+        },
+        {
+          "label": "Cold brew",
+          "value": "Cold Brew ✅"
+        },
+        {
+          "label": "2 independent bean containers",
+          "value": "Bean Switch System ✅"
+        },
+        {
+          "label": "Pump pressure",
+          "value": "19 bar"
+        },
+        {
+          "label": "Warranty",
+          "value": "2 years"
+        }
+      ],
+      "colorName": "Arctic White"
+    },
+    {
+      "id": 219,
+      "name": "DeLonghi Coffee Machine ECAM220.60.B Maginifica start",
+      "label": "DeLonghi Coffee Machine ECAM220.60.B Maginifica start",
+      "subtitle": "DeLonghi Coffee Machine ECAM220.60.B Maginifica start",
+      "description": "Specifications \nEspresso, Coffee, Cappuccino, Hot Water – for tea and other hot drinks.\n⁕ Specifications - Dimensions: 240 × 440 × 350 mm • Weight: 9.2 kg • Color: Black • Coffee grounds container capacity: 14 servings • Pump pressure: 15 bar • Voltage: 220–240 V • Power: 1450 W\n\n⁕  Additional features - Adjustable drink volume • Pre-ground coffee option • Brews two cups at once • Water filter compatible • Water hardness adjustment",
+      "specs": [
+        {
+          "label": "Number of programs",
+          "value": "4 automatic brewing programs"
+        },
+        {
+          "label": "Pump pressure",
+          "value": "15 bar"
+        },
+        {
+          "label": "Warranty",
+          "value": "2 years"
+        }
+      ],
+      "colorName": "Black"
+    }
+  ],
+  "variants": [],
+  "pages": [
+    {
+      "id": 2,
+      "title": "Privacy Policy",
+      "eyebrow": "Legal information",
+      "subtitle": "How we collect, use and protect your personal data.",
+      "body": "Last updated: October 22, 2026\n\n## 1. General information\n\nExpress Mix respects the privacy of its customers' personal information and takes care to protect their personal data.\n\nThis Privacy Policy sets out what types of information we collect when you use the website, for what purposes we process it, how we protect the data, and what rights customers have regarding their own personal data.\n\nOur activities are carried out in accordance with the applicable legislation of Georgia, including the Law of Georgia \"On Personal Data Protection\".\n\n## 2. What information we collect\n\nWhen you use the website, place an order or contact us, the following information may be processed:\n\n- Contact information: first name, last name, phone number and email address;\n- Delivery information: the address needed to deliver the products and additional details related to the order;\n- Order information: purchased products, order number, value and order status;\n- Communication information: messages, questions and service-related correspondence sent by the customer;\n- Technical information: data related to the use of the website, such as IP address, device and browser type, if such data is technically collected.\n\nWe process only the data that is necessary to provide the relevant service or to achieve another lawfully defined purpose.\n\n## 3. How we use the data\n\nCustomers' personal data may be processed for the following purposes:\n\n- receiving, processing and fulfilling orders;\n- arranging product delivery;\n- contacting the customer and providing order-related information;\n- recording payments and orders;\n- providing warranty and after-sales service;\n- answering customer questions and improving service quality;\n- fulfilling obligations required by law;\n- sending advertising and informational messages, in compliance with the legal grounds and rules established by law.\n\n## 4. Transfer of data to third parties\n\nExpress Mix does not transfer customer data to third parties for their unrestricted use.\n\nData may be transferred to the relevant recipients only to the extent necessary, for example:\n\n- courier or transport service providers, for delivering products;\n- banking or payment service providers, for processing payments or installments;\n- technology service providers, for operating the website and the ordering system;\n- government authorities, in cases provided for by law.\n\nData is transferred only where an appropriate legal basis exists and only to the extent necessary.\n\n## 5. Payments and banking data\n\nIf online payment or bank installment services are available on the website, payments may be processed through the system of the relevant bank or payment service provider.\n\nHow bank card data is processed depends on the payment system used. Express Mix should not store bank card data unless it has the appropriate technical and legal basis to do so.\n\n## 6. Data storage and protection\n\nExpress Mix takes appropriate technical and organizational measures to protect personal data from loss, unauthorized access, alteration, disclosure and unlawful use.\n\nData is stored only for as long as necessary to achieve the purpose of its processing or to fulfill obligations required by law.\n\nWhen the storage period expires or there is no longer a need to keep the data, it is deleted or destroyed in the manner established by law, unless another lawful basis for keeping it exists.\n\n## 7. Cookies\n\nThe website may use cookies and similar technologies to ensure the site works properly, to remember user preferences and to analyze how the website is used.\n\nThe use of cookies depends on the features and technologies actually enabled on the website. If analytics or advertising cookies are used, their use and the management of user choices will be carried out in accordance with applicable law.\n\n## 8. Customer rights\n\nWithin the conditions established by the legislation of Georgia, the customer has the right to:\n\n- receive information about the processing of their personal data;\n- request access to their data and a copy of it;\n- request the correction of inaccurate or incomplete data;\n- in cases provided for by law, request the deletion or destruction of data or the termination of its processing;\n- in cases defined by law, restrict or object to the processing of data;\n- withdraw consent at any time where data processing is based on consent;\n- appeal against the processing of data in the manner established by law.\n\nTo exercise these rights, the customer can contact us through the contact channels listed below.\n\n## 9. Direct marketing\n\nExpress Mix will send advertising or marketing messages to customers only where an appropriate legal basis exists and in compliance with the requirements established by the legislation of Georgia.\n\nCustomers will be able to object to the processing of their data for direct marketing purposes or stop receiving marketing messages in the manner established by law.\n\nOpting out of marketing messages does not affect the processing of data necessary for fulfilling orders or for other purposes required by law.\n\n## 10. Third-party websites\n\nOur website may contain links to third-party websites, including links to banking or payment services.\n\nData processing on third-party websites is governed by the privacy policy of the relevant service provider. We recommend that you review their terms before using these services.\n\n## 11. Changes to this policy\n\nExpress Mix reserves the right to update this Privacy Policy in line with changes to the website's functionality, its services or applicable law.\n\nThe updated version will be published on the website with the date of the update.\n\n## 12. Contact information\n\nFor questions, requests and the exercise of rights related to the processing of personal data, please contact us:\n\nCompany: Express Mix\nWebsite: https://expressmix.ge\nEmail: info@expressmix.ge\nPhone: 510 00 08 56\nAddress: 46 Mirian Mepe St, Tbilisi\n\nWe review customer requests and act in accordance with the applicable legislation of Georgia.",
+      "buttonText": "",
+      "metaDescription": "Express Mix: privacy policy and personal data protection."
+    },
+    {
+      "id": 3,
+      "title": "Delivery Terms",
+      "eyebrow": "Legal information",
+      "subtitle": "Fast, reliable and convenient delivery across Georgia.",
+      "body": "Express Mix makes sure that purchased products reach the customer quickly, safely and within the agreed time frame.\n\n## 1. Express delivery: Tbilisi\n\nExpress delivery is available throughout Tbilisi and is carried out within 4–5 hours of order confirmation.\n\nExpress delivery is available only on business days and during business hours, and only within Tbilisi.\n\n## 2. Standard delivery\n\nStandard delivery times are:\n\n- Tbilisi: 1–2 business days;\n- Regions of Georgia: 3–4 business days.\n\n## 3. How delivery times are calculated\n\nOnly business days are counted when calculating delivery times. Official public holidays established by the legislation of Georgia are not counted.\n\nOrders received on non-business days or outside business hours will be processed on the next business day or during business hours.\n\nExpress Mix coordinates the order process and provides the customer with the necessary delivery information.\n\nExpress Mix: fast, reliable and convenient service for your home.",
+      "buttonText": "",
+      "metaDescription": "Express Mix delivery terms: express delivery in Tbilisi within 4–5 hours, standard delivery within 1–4 business days."
+    },
+    {
+      "id": 4,
+      "title": "Returns and Refunds Policy",
+      "eyebrow": "Legal information",
+      "subtitle": "Terms for returning goods, withdrawing from a contract and receiving a refund.",
+      "body": "Last updated: October 22, 2026\n\n## 1. General terms\n\nThis policy sets out the terms for returning goods sold by Express Mix LLC, withdrawing from a contract and receiving a refund.\n\nExpress Mix asks customers to carefully review the product description, technical specifications, dimensions, compatibility, package contents and conditions of use before purchasing. If more information is needed, customers can consult our sales advisor before making a purchase.\n\nReturns are considered in accordance with the requirements established by law and the terms described below. This policy does not limit any customer rights that cannot be restricted by law.\n\n## 2. Returning goods purchased at a distance\n\nIn cases provided for by the legislation of Georgia, the customer has the right to withdraw from a distance contract within 14 calendar days of receiving the goods, without giving any reason, subject to the exceptions provided for by law.\n\nThe customer must notify Express Mix of their decision to withdraw from the contract within this period, in writing or in another clear form, using the company's contact channels.\n\nThe notice should preferably include the order or proof of purchase details and the product name. This information is used to identify and process the request and does not limit the rights granted by law.\n\n## 3. Condition of goods and diminished value\n\nThe customer must keep the goods in proper condition and take care of them until the return is resolved.\n\nAfter receiving the goods, the customer may inspect their nature, characteristics and functioning to the extent necessary to evaluate the product. Use, damage or any other action beyond that extent which reduces the value of the goods may make the customer liable for the diminished value of the goods, to the extent permitted by law.\n\nWhen returned, the goods should, where possible, be accompanied by:\n\n- the original packaging and protective materials;\n- all accessories, cables, parts and items included in the package;\n- the enclosed documentation and instructions;\n- proof of purchase or the order number.\n\nThe absence of the above items does not in itself mean that the statutory right of return is automatically cancelled. However, if a missing item or damage reduces the value of the goods, the matter will be assessed according to the specific circumstances and the law.\n\nExpress Mix is entitled to inspect returned goods, record their condition and, if necessary, draw up an inspection report.\n\n## 4. Goods not covered by the statutory right of withdrawal\n\nIn cases defined by law, the customer does not have the right to withdraw from a distance contract. Where the relevant conditions apply, these exceptions include:\n\n- goods made to the customer's specifications or clearly personalized;\n- goods that are perishable or expire quickly;\n- sealed goods that were unsealed after delivery and are not suitable for return for health protection or hygiene reasons;\n- goods that, by their nature, have been inseparably mixed with other items after delivery;\n- sealed audio or video recordings and computer software, if unsealed after delivery;\n- other cases expressly provided for by law.\n\nAn exception applies only when the specific goods and circumstances meet the relevant legal grounds. Opening the packaging or using the product does not in itself mean that the right of return is cancelled for all categories of goods.\n\n## 5. Defective goods or goods not matching the description\n\nIf the customer believes that the goods have a defect, do not match the agreed specifications or do not work properly, they should contact Express Mix and describe the problem.\n\nTo assess the issue promptly and correctly, the company may request information about the product, its serial number, proof of purchase and the problem identified. If necessary, the goods will be inspected by the company or an authorized service center.\n\nIf the inspection establishes that the problem was caused by improper use by the customer, mechanical damage, unauthorized tampering or other circumstances for which the seller is not liable by law, the claim will be assessed taking these circumstances into account.\n\nIf a non-conformity provided for by law is confirmed, the customer's claim will be satisfied in the manner established by law. This may include repair or replacement of the goods, a price reduction or termination of the contract, where the relevant legal conditions are met.\n\n## 6. Goods purchased in store\n\nFor contracts concluded directly in a physical store, there is no automatic 14-day right to return a non-defective product simply because the customer has changed their mind or no longer needs the goods.\n\nThis rule does not limit the customer's statutory rights in the case of defective, non-conforming goods or goods that otherwise fail to meet legal requirements.\n\nIf Express Mix voluntarily agrees in a specific case to the return or exchange of non-defective goods, the terms will be agreed in advance, individually and in writing.\n\n## 7. Return costs\n\nIn the case of a statutory withdrawal from a distance contract, the direct cost of returning the goods to Express Mix is borne by the customer, unless otherwise provided by law or agreed by the parties.\n\nIf the customer chose a delivery service more expensive than the standard one, the additional cost will be reimbursed in the manner established by law.\n\nTransport and other costs for defective or non-conforming goods are determined according to the specific circumstances and applicable law.\n\n## 8. Refunds\n\nIn the case of a statutory withdrawal from the contract, Express Mix refunds the payment within the period and in the manner established by law. When goods are returned, to the extent permitted by law, the company may withhold the refund until it receives the goods back or until the customer provides proof of having sent them, whichever comes first, except for exceptions provided for by law.\n\nAs a rule, the refund is made using the same payment method the customer used, unless the customer agrees to another method and no additional cost arises.\n\nWhen a refund is made, the standard delivery cost is reimbursed in the manner established by law. The additional cost of delivery more expensive than the standard option is not reimbursable in cases provided for by law.\n\n## 9. Return procedure\n\nTo submit a return or defect-related claim, the customer can contact us:\n\nEmail: info@expressmix.ge\nPhone: 510 00 08 56\nAddress: 46 Mirian Mepe St, Tbilisi\n\nThe customer should provide the order or purchase details and a brief description of the request.\n\nIn the case of a statutory withdrawal from a distance contract, the customer must return the goods no later than 7 calendar days after sending the withdrawal notice, unless otherwise provided by law or Express Mix has undertaken to collect the goods itself.\n\nThe company reviews each request based on the specific facts and in accordance with the applicable legislation of Georgia.\n\n## 10. Final provisions\n\nExpress Mix reserves the right to update this policy. The updated version will be published on the company's website.\n\nIf any provision of this policy conflicts with the law, the applicable legislation prevails.\n\nExpress Mix LLC, Home & Kitchen",
+      "buttonText": "",
+      "metaDescription": "Express Mix: returns and refunds policy."
+    }
+  ]
+}

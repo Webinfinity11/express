@@ -27,6 +27,7 @@ export function CategoryForm({
   const [pending, start] = useTransition();
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [name, setName] = useState(category?.name ?? "");
+  const [nameEn, setNameEn] = useState(category?.en?.name ?? "");
   const [slug, setSlug] = useState(category?.slug ?? "");
   const [parentId, setParentId] = useState<number | null>(category?.parentId ?? defaultParent);
   const [image, setImage] = useState(category?.image ?? "");
@@ -58,7 +59,7 @@ export function CategoryForm({
   const save = () =>
     start(async () => {
       setMessage(null);
-      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, showInMenu, shippingClassId, sortOrder });
+      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, showInMenu, shippingClassId, sortOrder, en: { name: nameEn } });
       if (!res.ok) return setMessage({ ok: false, text: res.error });
       setMessage({ ok: true, text: "შენახულია ✓" });
       if (!category) router.replace(`/admin/categories/${res.id}`);
@@ -94,6 +95,9 @@ export function CategoryForm({
               }}
               className={inputCls}
             />
+          </Field>
+          <Field label="დასახელება (English)" hint="ინგლისურ ვერსიაზე; ცარიელი = ქართული ჩანს">
+            <input value={nameEn} onChange={(e) => setNameEn(e.target.value)} className={inputCls} lang="en" />
           </Field>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="ბმული (slug)" hint="მისამართში: /products?category=…">

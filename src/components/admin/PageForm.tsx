@@ -27,11 +27,21 @@ export function PageForm({ page, links }: { page: PageRow | null; links: LinkOpt
     published: page?.published ?? true,
   });
   const set = <K extends keyof typeof v>(k: K, val: (typeof v)[K]) => setV((cur) => ({ ...cur, [k]: val }));
+  // ინგლისური ვერსია (ცარიელი = ქართული ჩანს)
+  const [en, setEn] = useState({
+    title: page?.en?.title ?? "",
+    eyebrow: page?.en?.eyebrow ?? "",
+    subtitle: page?.en?.subtitle ?? "",
+    body: page?.en?.body ?? "",
+    buttonText: page?.en?.buttonText ?? "",
+    metaDescription: page?.en?.metaDescription ?? "",
+  });
+  const setE = (k: keyof typeof en, val: string) => setEn((cur) => ({ ...cur, [k]: val }));
 
   const save = () =>
     start(async () => {
       setMessage(null);
-      const res = await savePage(page?.id ?? null, v);
+      const res = await savePage(page?.id ?? null, { ...v, en });
       if (!res.ok) return setMessage({ ok: false, text: res.error });
       setMessage({ ok: true, text: "შენახულია ✓ საიტზე უკვე ჩანს." });
       if (!page) router.replace(`/admin/pages/${res.id}`);
@@ -106,6 +116,33 @@ export function PageForm({ page, links }: { page: PageRow | null; links: LinkOpt
           <Field label="მოკლე აღწერა" hint="ჩანს ძიების შედეგებში (150–160 სიმბოლო)">
             <textarea value={v.metaDescription} onChange={(e) => set("metaDescription", e.target.value)} rows={2} className={inputCls} />
           </Field>
+        </Card>
+        <Card title="English — ინგლისური ვერსია">
+          <p className="text-xs text-slate-500 mb-3">ჩანს საიტის ინგლისურ ვერსიაზე (/en). ცარიელი ველის ნაცვლად ქართული ტექსტი გამოჩნდება.</p>
+          <div className="grid gap-4" lang="en">
+            <Field label="Title">
+              <input value={en.title} onChange={(e) => setE("title", e.target.value)} className={inputCls} />
+            </Field>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Eyebrow">
+                <input value={en.eyebrow} onChange={(e) => setE("eyebrow", e.target.value)} className={inputCls} />
+              </Field>
+              <Field label="Subtitle">
+                <input value={en.subtitle} onChange={(e) => setE("subtitle", e.target.value)} className={inputCls} />
+              </Field>
+            </div>
+            <Field label="Text">
+              <textarea value={en.body} onChange={(e) => setE("body", e.target.value)} rows={12} className={`${inputCls} font-mono text-sm`} />
+            </Field>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Button text">
+                <input value={en.buttonText} onChange={(e) => setE("buttonText", e.target.value)} className={inputCls} />
+              </Field>
+              <Field label="Google description">
+                <input value={en.metaDescription} onChange={(e) => setE("metaDescription", e.target.value)} className={inputCls} />
+              </Field>
+            </div>
+          </div>
         </Card>
       </div>
       <div className="lg:sticky lg:top-6">

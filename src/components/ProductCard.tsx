@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useStore } from "@/context/StoreContext";
 import { discountPercent, money, productHref, type Product } from "@/lib/data";
+import { Link, useT } from "@/i18n/client";
 import { Icon } from "./Icon";
 
 export function Prices({ p }: { p: Product }) {
@@ -20,6 +20,7 @@ export function Prices({ p }: { p: Product }) {
 export function ProductCard({ p }: { p: Product }) {
   const { addToCart, isFavorite, toggleFavorite } = useStore();
   const [added, setAdded] = useState(false);
+  const t = useT();
   const favorite = isFavorite(p.id);
   const discount = discountPercent(p);
   const href = productHref(p);
@@ -29,13 +30,13 @@ export function ProductCard({ p }: { p: Product }) {
       {discount > 0 && <span className="discount-badge">-{discount}%</span>}
       <button
         className={`favorite-toggle${favorite ? " selected" : ""}`}
-        aria-label={`${p.name} — ფავორიტი`}
+        aria-label={t("{name} — ფავორიტი", { name: p.name })}
         aria-pressed={favorite}
         onClick={() => toggleFavorite(p.id)}
       >
         <Icon name="heart" />
       </button>
-      <Link className="product-image-button" href={href} aria-label={`${p.name} — დეტალურად`}>
+      <Link className="product-image-button" href={href} aria-label={t("{name} — დეტალურად", { name: p.name })}>
         <img data-kind={p.id} src={p.image} alt={p.name} loading="lazy" width={180} height={178} />
       </Link>
       <div className="product-info">
@@ -46,8 +47,8 @@ export function ProductCard({ p }: { p: Product }) {
           <Prices p={p} />
           <button
             className={`add-cart${added ? " added" : ""}`}
-            aria-label={`${p.name} — კალათაში დამატება`}
-            title="კალათაში დამატება"
+            aria-label={t("{name} — კალათაში დამატება", { name: p.name })}
+            title={t("კალათაში დამატება")}
             onClick={() => {
               if (!addToCart(p.id)) return;
               setAdded(true);

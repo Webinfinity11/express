@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
@@ -8,10 +7,12 @@ import { QtyInput } from "@/components/QtyInput";
 import { useStore } from "@/context/StoreContext";
 import { useCatalog } from "@/context/CatalogContext";
 import { gel } from "@/lib/data";
+import { Link, useT } from "@/i18n/client";
 
 export function CartView() {
   const store = useStore();
-  const { cart, cartCount, totals: t, coupon } = store;
+  const t = useT();
+  const { cart, cartCount, totals: tot, coupon } = store;
   const { line, products: PRODUCTS } = useCatalog();
   const entries = Object.entries(cart).flatMap(([id, q]) => {
     const l = line(id);
@@ -30,21 +31,21 @@ export function CartView() {
         <div>
           <span className="eyebrow small-eyebrow">YOUR NEXT EVERYDAY ESSENTIALS</span>
           <h1>
-            თქვენი კალათა <span>({cartCount})</span>
+            {t("თქვენი კალათა")} <span>({cartCount})</span>
           </h1>
-          <p>თქვენი სახლისთვის შერჩეული ტექნიკა.</p>
+          <p>{t("თქვენი სახლისთვის შერჩეული ტექნიკა.")}</p>
         </div>
-        <div className="checkout-steps" aria-label="შეკვეთის ეტაპები">
+        <div className="checkout-steps" aria-label={t("შეკვეთის ეტაპები")}>
           <span className="current">
-            <b>01</b> კალათა
+            <b>01</b> {t("კალათა")}
           </span>
           <i></i>
           <span>
-            <b>02</b> გაფორმება
+            <b>02</b> {t("გაფორმება")}
           </span>
           <i></i>
           <span>
-            <b>03</b> დასრულება
+            <b>03</b> {t("დასრულება")}
           </span>
         </div>
       </div>
@@ -54,22 +55,22 @@ export function CartView() {
           <div className="empty-cart-art">
             <Icon name="cart" />
           </div>
-          <h2>კალათა ჯერ ცარიელია</h2>
-          <p>შეარჩიეთ სასურველი ტექნიკა და დაამატეთ კალათაში. თქვენი ახალი კომფორტი აქ იწყება.</p>
+          <h2>{t("კალათა ჯერ ცარიელია")}</h2>
+          <p>{t("შეარჩიეთ სასურველი ტექნიკა და დაამატეთ კალათაში. თქვენი ახალი კომფორტი აქ იწყება.")}</p>
           <div className="empty-buttons">
             <Link className="button primary" href="/products">
-              მაღაზიაში გადასვლა <Icon name="arrow" />
+              {t("მაღაზიაში გადასვლა")} <Icon name="arrow" />
             </Link>
           </div>
         </div>
       ) : (
         <div className="cart-layout">
           <div className="cart-main-column">
-            <section className="cart-products-box" aria-label="კალათის პროდუქტები">
+            <section className="cart-products-box" aria-label={t("კალათის პროდუქტები")}>
               <div className="cart-table-head">
-                <span>პროდუქტი</span>
-                <span>რაოდენობა</span>
-                <span>ჯამი</span>
+                <span>{t("პროდუქტი")}</span>
+                <span>{t("რაოდენობა")}</span>
+                <span>{t("ჯამი")}</span>
                 <span></span>
               </div>
               {entries.map(([id, q, p]) => {
@@ -91,18 +92,18 @@ export function CartView() {
                           {p.oldPrice > p.price && <del>{gel(p.oldPrice * 100)}</del>}
                         </div>
                         <button className="text-action" aria-pressed={on} onClick={() => store.toggleFavorite(p.product.id)}>
-                          <Icon name="heart" /> {on ? "ფავორიტებშია" : "ფავორიტებში"}
+                          <Icon name="heart" /> {on ? t("ფავორიტებშია") : t("ფავორიტებში")}
                         </button>
                       </div>
                     </div>
-                    <QtyInput value={q} onChange={(n) => store.setQuantity(id, n)} label={`${p.name} რაოდენობა`} />
+                    <QtyInput value={q} onChange={(n) => store.setQuantity(id, n)} label={t("{name} რაოდენობა", { name: p.name })} />
                     <div className="cart-row-total">
                       {gel(p.price * q * 100)}
                       <small>
                         {q} × {gel(p.price * 100)}
                       </small>
                     </div>
-                    <button className="cart-remove" aria-label={`${p.name} — კალათიდან წაშლა`} onClick={() => store.removeFromCart(id)}>
+                    <button className="cart-remove" aria-label={t("{name} — კალათიდან წაშლა", { name: p.name })} onClick={() => store.removeFromCart(id)}>
                       <Icon name="trash" />
                     </button>
                   </article>
@@ -112,10 +113,10 @@ export function CartView() {
 
             <div className="cart-bottom-actions">
               <Link className="continue-link" href="/products">
-                <Icon name="arrow" /> შოპინგის გაგრძელება
+                <Icon name="arrow" /> {t("შოპინგის გაგრძელება")}
               </Link>
               <button className="text-action" onClick={() => store.openModal("clear-cart")}>
-                <Icon name="trash" /> გასუფთავება
+                <Icon name="trash" /> {t("გასუფთავება")}
               </button>
             </div>
 
@@ -124,32 +125,32 @@ export function CartView() {
           <aside className="cart-summary-column">
             <section className="order-summary" aria-labelledby="summaryTitle">
               <div className="summary-title">
-                <h2 id="summaryTitle">შეკვეთის შეჯამება</h2>
+                <h2 id="summaryTitle">{t("შეკვეთის შეჯამება")}</h2>
                 <Icon name="box" />
               </div>
               <div className="summary-line">
-                <span>პროდუქტები ({cartCount})</span>
-                <strong>{gel(t.list)}</strong>
+                <span>{t("პროდუქტები ({n})", { n: cartCount })}</span>
+                <strong>{gel(tot.list)}</strong>
               </div>
-              {t.sale > 0 && (
+              {tot.sale > 0 && (
                 <div className="summary-line discount">
-                  <span>ფასდაკლება</span>
-                  <strong>−{gel(t.sale)}</strong>
+                  <span>{t("ფასდაკლება")}</span>
+                  <strong>−{gel(tot.sale)}</strong>
                 </div>
               )}
               <div className="summary-line subtotal">
-                <span>ქვეჯამი</span>
-                <strong>{gel(t.sub)}</strong>
+                <span>{t("ქვეჯამი")}</span>
+                <strong>{gel(tot.sub)}</strong>
               </div>
-              {t.coupon > 0 && (
+              {tot.coupon > 0 && (
                 <div className="summary-line discount">
-                  <span>პრომოკოდი {coupon}</span>
-                  <strong>−{gel(t.coupon)}</strong>
+                  <span>{t("პრომოკოდი {code}", { code: coupon })}</span>
+                  <strong>−{gel(tot.coupon)}</strong>
                 </div>
               )}
               <div className="summary-line">
-                <span>მიწოდება</span>
-                <strong>გაფორმებისას</strong>
+                <span>{t("მიწოდება")}</span>
+                <strong>{t("გაფორმებისას")}</strong>
               </div>
               <form
                 className="coupon-form"
@@ -162,57 +163,57 @@ export function CartView() {
                 }}
               >
                 <label className="sr-only" htmlFor="couponInput">
-                  პრომოკოდი
+                  {t("პრომოკოდი")}
                 </label>
                 <input
                   id="couponInput"
                   type="text"
                   maxLength={24}
                   autoComplete="off"
-                  placeholder="პრომოკოდი"
+                  placeholder={t("პრომოკოდი")}
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value)}
                   aria-describedby="couponFeedback"
                 />
-                <button type="submit">გამოყენება</button>
+                <button type="submit">{t("გამოყენება")}</button>
               </form>
               <div className={`coupon-feedback${couponError ? " error" : ""}`} id="couponFeedback" role="status">
-                {couponError ||
+                {(couponError && t(couponError)) ||
                   (coupon && (
                     <>
-                      <span>კოდი გამოყენებულია</span>
+                      <span>{t("კოდი გამოყენებულია")}</span>
                       <button
                         onClick={() => {
                           store.removeCoupon();
                           setCouponInput("");
                         }}
                       >
-                        წაშლა
+                        {t("წაშლა")}
                       </button>
                     </>
                   ))}
               </div>
               <div className="summary-total" aria-live="polite">
-                <span>ჯამი</span>
-                <strong>{gel(t.after)}</strong>
+                <span>{t("ჯამი")}</span>
+                <strong>{gel(tot.after)}</strong>
               </div>
               <Link className="button primary full-width checkout-cta" href="/checkout">
-                გაფორმებაზე გადასვლა <Icon name="arrow" />
+                {t("გაფორმებაზე გადასვლა")} <Icon name="arrow" />
               </Link>
               <div className="secure-note">
-                <Icon name="lock" /> უსაფრთხო შეკვეთა
+                <Icon name="lock" /> {t("უსაფრთხო შეკვეთა")}
               </div>
               <div className="payment-options">
                 <span>
-                  <Icon name="card" /> ბარათით გადახდა
+                  <Icon name="card" /> {t("ბარათით გადახდა")}
                 </span>
                 <span>Visa</span>
                 <span>Mastercard</span>
               </div>
             </section>
-            {t.saved > 0 && (
+            {tot.saved > 0 && (
               <div className="cart-savings-note">
-                თქვენი დანაზოგი ამ კალათაში: <strong>{gel(t.saved)}</strong>
+                {t("თქვენი დანაზოგი ამ კალათაში:")} <strong>{gel(tot.saved)}</strong>
               </div>
             )}
           </aside>
@@ -221,9 +222,9 @@ export function CartView() {
 
       <section className="related-section cart-related" aria-labelledby="cartRelatedTitle">
         <div className="section-heading">
-          <h2 id="cartRelatedTitle">კიდევ უფრო მეტი კომფორტი</h2>
+          <h2 id="cartRelatedTitle">{t("კიდევ უფრო მეტი კომფორტი")}</h2>
           <Link className="text-link" href="/products">
-            ყველა პროდუქტი <Icon name="arrow" />
+            {t("ყველა პროდუქტი")} <Icon name="arrow" />
           </Link>
         </div>
         <div className="related-grid">

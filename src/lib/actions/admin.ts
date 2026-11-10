@@ -10,7 +10,7 @@ import { brands, categories, db, orders, pages, productVariants, products, promo
 import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { BOG_SETTINGS_KEY, getBogConfig, token as bogToken } from "@/lib/bog";
-import { sanitizeSection } from "@/lib/content";
+import { enKey, sanitizeSection } from "@/lib/content";
 import { contentDefaults, type ContentKey } from "@/lib/content-schema";
 import { RESERVED_SLUGS } from "@/lib/site-links";
 
@@ -90,9 +90,29 @@ const variantSchema = z.object({
   image: z.union([z.literal(""), z.null(), imageUrl]).optional(),
   inStock: z.boolean(),
   stockQty: optInt,
+  en: z.object({ name: z.string().trim().max(80) }).partial().optional(),
 });
 
+// ინგლისური ვერსია (ცარიელი ველი = საიტზე ქართული ჩანს)
+const enText = (max: number) => z.string().trim().max(max).optional();
+const enSpecs = z.array(z.object({ label: z.string().trim().max(80), value: z.string().trim().max(200) })).max(40).optional();
+/** ცარიელ ველებს ვშლით, რომ jsonb სუფთა დარჩეს */
+function cleanEn<T extends Record<string, unknown>>(en: T | undefined): Partial<T> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(en ?? {})) {
+    if (typeof v === "string" && v.trim()) out[k] = v.trim();
+    else if (Array.isArray(v)) {
+      const list = v.filter((s: { label?: string; value?: string }) => s?.label && s?.value);
+      if (list.length) out[k] = list;
+    }
+  }
+  return out as Partial<T>;
+}
+
 const productSchema = z.object({
+  en: z
+    .object({ name: enText(200), label: enText(120), subtitle: enText(300), description: enText(20000), specs: enSpecs, colorName: enText(80) })
+    .optional(),
   name: z.string().trim().min(2, "მიუთითეთ დასახელება").max(200),
   slug: z.string().trim().max(100).optional(),
   sku: z.string().trim().max(60),
@@ -150,6 +170,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
     published: d.published,
     inStock: d.inStock,
     stockQty: num(d.stockQty),
+    ...(d.en && { en: cleanEn(d.en) }),
     updatedAt: new Date(),
   };
 
@@ -172,6 +193,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
       image: v.image || null,
       inStock: v.inStock,
       stockQty: num(v.stockQty),
+      ...(v.en && { en: cleanEn(v.en) }),
       sortOrder: i,
     };
     if (v.id && existing.some((e) => e.id === v.id)) await db.update(productVariants).set(row).where(eq(productVariants.id, v.id));
@@ -228,6 +250,7 @@ const categorySchema = z.object({
   showInMenu: z.boolean().optional(),
   shippingClassId: z.number().int().nullable().optional(),
   sortOrder: z.coerce.number().int().min(-1000).max(1000),
+  en: z.object({ name: enText(120) }).optional(),
 });
 export type CategoryInput = z.input<typeof categorySchema>;
 
@@ -253,6 +276,7 @@ export async function saveCategory(id: number | null, input: CategoryInput): Pro
     ...(d.showInMenu !== undefined && { showInMenu: d.showInMenu }),
     ...(d.shippingClassId !== undefined && { shippingClassId: d.shippingClassId }),
     sortOrder: d.sortOrder,
+    ...(d.en && { en: cleanEn(d.en) }),
   };
   let categoryId = id;
   if (id) await db.update(categories).set(values).where(eq(categories.id, id));
@@ -439,22 +463,24 @@ export async function deleteOrder(id: number): Promise<ActionResult> {
 
 // ───────── საიტის ტექსტები ─────────
 
-export async function saveContent(key: string, value: unknown): Promise<ActionResult> {
+/** lang "en" — ინგლისური ვერსია ინახება გასაღებით "en:<key>" */
+export async function saveContent(key: string, value: unknown, lang: "ka" | "en" = "ka"): Promise<ActionResult> {
   await requireAdmin();
   if (!(key in contentDefaults)) return fail("უცნობი სექცია");
   const clean = sanitizeSection(key as ContentKey, value);
+  const storeKey = lang === "en" ? enKey(key) : key;
   await db
     .insert(settings)
-    .values({ key, value: clean })
+    .values({ key: storeKey, value: clean })
     .onConflictDoUpdate({ target: settings.key, set: { value: clean, updatedAt: new Date() } });
   updateTag("content");
   return { ok: true };
 }
 
-export async function resetContent(key: string): Promise<ActionResult> {
+export async function resetContent(key: string, lang: "ka" | "en" = "ka"): Promise<ActionResult> {
   await requireAdmin();
   if (!(key in contentDefaults)) return fail("უცნობი სექცია");
-  await db.delete(settings).where(eq(settings.key, key));
+  await db.delete(settings).where(eq(settings.key, lang === "en" ? enKey(key) : key));
   updateTag("content");
   return { ok: true };
 }
@@ -472,6 +498,9 @@ const pageSchema = z.object({
   buttonHref: z.union([z.literal(""), z.string().trim().regex(/^(\/(?!\/)|https?:\/\/|tel:|mailto:|#)/i, "ღილაკის ბმული არასწორია")]),
   metaDescription: z.string().trim().max(300),
   published: z.boolean(),
+  en: z
+    .object({ title: enText(160), eyebrow: enText(120), subtitle: enText(400), body: enText(50_000), buttonText: enText(80), metaDescription: enText(300) })
+    .optional(),
 });
 export type PageInput = z.input<typeof pageSchema>;
 
@@ -490,7 +519,8 @@ export async function savePage(id: number | null, input: PageInput): Promise<Act
     if (!hit) break;
     slug = `${slug.replace(/-\d+$/, "")}-${n}`;
   }
-  const values = { ...d, slug, image: d.image || null, updatedAt: new Date() };
+  const { en, ...rest } = d;
+  const values = { ...rest, ...(en && { en: cleanEn(en) }), slug, image: d.image || null, updatedAt: new Date() };
   let pageId = id;
   if (id) await db.update(pages).set(values).where(eq(pages.id, id));
   else [{ id: pageId }] = await db.insert(pages).values(values).returning({ id: pages.id });

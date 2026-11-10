@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter, useT } from "@/i18n/client";
 import { useEffect, useRef, useState } from "react";
 import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
@@ -11,18 +10,20 @@ import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { CITIES, discountPercent, gel, lineKey, money, type Product } from "@/lib/data";
 
-const TABS = [
-  ["description", "აღწერა"],
-  ["specifications", "მახასიათებლები"],
-  ["delivery", "მიწოდება"],
-  ["reviews", "მიმოხილვები (0)"],
-] as const;
-type Tab = (typeof TABS)[number][0];
+const TABS = ["description", "specifications", "delivery", "reviews"] as const;
+type Tab = (typeof TABS)[number];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export function ProductView({ p }: { p: Product }) {
   const router = useRouter();
+  const t = useT();
+  const tabNames: Record<Tab, string> = {
+    description: t("აღწერა"),
+    specifications: t("მახასიათებლები"),
+    delivery: t("მიწოდება"),
+    reviews: t("მიმოხილვები ({n})", { n: 0 }),
+  };
   const { addToCart, isFavorite, toggleFavorite, city, openModal, showToast } = useStore();
   const { products, categoryName, content } = useCatalog();
   const ship = content.shipping;
@@ -62,24 +63,24 @@ export function ProductView({ p }: { p: Product }) {
     e.preventDefault();
     const n =
       e.key === "Home" ? 0 : e.key === "End" ? TABS.length - 1 : (i + (e.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length;
-    setTab(TABS[n][0]);
+    setTab(TABS[n]);
     tabRefs.current[n]?.focus();
   };
 
   const share = () => {
     const url = window.location.href;
     navigator.clipboard?.writeText(url).then(
-      () => showToast("ბმული დაკოპირებულია."),
+      () => showToast(t("ბმული დაკოპირებულია.")),
       () => showToast(url),
     );
   };
 
   return (
     <main id="main" className="wrap internal-main product-page">
-      <section className="p-layout" aria-label="პროდუქტის დეტალები">
+      <section className="p-layout" aria-label={t("პროდუქტის დეტალები")}>
         <div className="p-gallery">
           <div className="p-stage">
-            <button className={`p-stage-main${index > 0 ? " scene-stage" : ""}`} aria-label="ფოტოს გადიდება" onClick={() => setZoom(true)}>
+            <button className={`p-stage-main${index > 0 ? " scene-stage" : ""}`} aria-label={t("ფოტოს გადიდება")} onClick={() => setZoom(true)}>
               <img
                 src={gallery[index]}
                 alt={p.name}
@@ -89,7 +90,7 @@ export function ProductView({ p }: { p: Product }) {
               />
             </button>
             {off > 0 && <span className="discount-badge">−{off}%</span>}
-            <button className="icon-button p-zoom" aria-label="ფოტოს გადიდება" onClick={() => setZoom(true)}>
+            <button className="icon-button p-zoom" aria-label={t("ფოტოს გადიდება")} onClick={() => setZoom(true)}>
               <Icon name="zoom" />
             </button>
             <span className="gallery-wordmark">{p.brand.toUpperCase()}</span>
@@ -103,14 +104,14 @@ export function ProductView({ p }: { p: Product }) {
                 key={g}
                 className={`p-thumb${i ? " scene-thumb" : ""}${i === index ? " active" : ""}`}
                 aria-pressed={i === index}
-                aria-label={`პროდუქტის ფოტო ${i + 1}`}
+                aria-label={t("პროდუქტის ფოტო {n}", { n: i + 1 })}
                 onClick={() => setIndex(i)}
               >
-                <img src={g} alt={`${p.name} — ფოტო ${i + 1}`} />
+                <img src={g} alt={t("{name} — ფოტო {n}", { name: p.name, n: i + 1 })} />
               </button>
             ))}
             <span className="gallery-hint">
-              <Icon name="zoom" /> დააჭირეთ გასადიდებლად
+              <Icon name="zoom" /> {t("დააჭირეთ გასადიდებლად")}
             </span>
           </div>
         </div>
@@ -126,7 +127,7 @@ export function ProductView({ p }: { p: Product }) {
           </div>
           <h1>{p.name}</h1>
           <div className="p-status">
-            <span className={inStock ? "inline-green" : "inline-out"}>{inStock ? "მარაგშია" : "არ არის მარაგში"}</span>
+            <span className={inStock ? "inline-green" : "inline-out"}>{inStock ? t("მარაგშია") : t("არ არის მარაგში")}</span>
             <i className="status-divider"></i>
             <button
               onClick={() => {
@@ -134,7 +135,7 @@ export function ProductView({ p }: { p: Product }) {
                 contentRef.current?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              მიმოხილვები (0)
+              {t("მიმოხილვები ({n})", { n: 0 })}
             </button>
           </div>
           <div className="p-pricebox">
@@ -143,11 +144,11 @@ export function ProductView({ p }: { p: Product }) {
                 <strong>{gel(cur.price * 100)}</strong>
                 {cur.oldPrice > cur.price && <del>{gel(cur.oldPrice * 100)}</del>}
               </div>
-              <span className="demo-caption">სპეციალური ფასი</span>
+              <span className="demo-caption">{t("სპეციალური ფასი")}</span>
             </div>
             {cur.oldPrice > cur.price && (
               <span className="saving-label">
-                თქვენ ზოგავთ<strong>{gel((cur.oldPrice - cur.price) * 100)}</strong>
+                {t("თქვენ ზოგავთ")}<strong>{gel((cur.oldPrice - cur.price) * 100)}</strong>
               </span>
             )}
           </div>
@@ -162,9 +163,9 @@ export function ProductView({ p }: { p: Product }) {
           {p.variants.length > 0 ? (
             <div className="p-variants">
               <span className="p-variants-label">
-                ვარიაცია: <strong>{variant?.name}</strong>
+                {t("ვარიაცია:")} <strong>{variant?.name}</strong>
               </span>
-              <div className="p-variant-list" role="radiogroup" aria-label="ვარიაციის არჩევა">
+              <div className="p-variant-list" role="radiogroup" aria-label={t("ვარიაციის არჩევა")}>
                 {p.variants.map((v) => {
                   const pick = () => {
                     setVid(v.id);
@@ -201,7 +202,7 @@ export function ProductView({ p }: { p: Product }) {
           ) : (
             p.color && (
               <div className="p-color">
-                <span>ფერი:</span>
+                <span>{t("ფერი:")}</span>
                 <span className="color-swatch" style={{ "--product-color": p.tone } as React.CSSProperties}>
                   <Icon name="check" />
                 </span>
@@ -210,9 +211,9 @@ export function ProductView({ p }: { p: Product }) {
             )
           )}
           <div className="p-buy-row">
-            <QtyInput value={qty} onChange={setQty} label="პროდუქტის რაოდენობა" />
+            <QtyInput value={qty} onChange={setQty} label={t("პროდუქტის რაოდენობა")} />
             <button className="button primary" disabled={!inStock} onClick={() => addToCart(key, qty)}>
-              <Icon name="cart" /> {inStock ? "კალათაში დამატება" : "არ არის მარაგში"}
+              <Icon name="cart" /> {inStock ? t("კალათაში დამატება") : t("არ არის მარაგში")}
             </button>
           </div>
           <button
@@ -222,29 +223,31 @@ export function ProductView({ p }: { p: Product }) {
               if (addToCart(key, qty, false)) router.push("/cart");
             }}
           >
-            შეიძინე ახლა <Icon name="arrow" />
+            {t("შეიძინე ახლა")} <Icon name="arrow" />
           </button>
           <div className="p-secondary-actions">
             <button className="text-action" aria-pressed={favorite} onClick={() => toggleFavorite(p.id)}>
-              <Icon name="heart" /> {favorite ? "ფავორიტებშია" : "ფავორიტებში დამატება"}
+              <Icon name="heart" /> {favorite ? t("ფავორიტებშია") : t("ფავორიტებში დამატება")}
             </button>
             <button className="text-action" onClick={share}>
-              <Icon name="send" /> გაზიარება
+              <Icon name="send" /> {t("გაზიარება")}
             </button>
           </div>
           <div className="p-service-rows">
             <button onClick={() => openModal("city")}>
               <Icon name="truck" />
               <span>
-                <strong>მიწოდების პირობები</strong>
-                <small>{CITIES[city]} · შეცვლა</small>
+                <strong>{t("მიწოდების პირობები")}</strong>
+                <small>
+                  {t(CITIES[city])} · {t("შეცვლა")}
+                </small>
               </span>
             </button>
             <button onClick={() => openModal("info:warranty")}>
               <Icon name="shield" />
               <span>
-                <strong>პროდუქტის გარანტია</strong>
-                <small>პირობების ნახვა</small>
+                <strong>{t("პროდუქტის გარანტია")}</strong>
+                <small>{t("პირობების ნახვა")}</small>
               </span>
             </button>
           </div>
@@ -252,8 +255,8 @@ export function ProductView({ p }: { p: Product }) {
       </section>
 
       <section className="p-content" ref={contentRef}>
-        <div className="p-tabs" role="tablist" aria-label="პროდუქტის ინფორმაცია">
-          {TABS.map(([id, name], i) => (
+        <div className="p-tabs" role="tablist" aria-label={t("პროდუქტის ინფორმაცია")}>
+          {TABS.map((id, i) => (
             <button
               key={id}
               ref={(el) => {
@@ -267,7 +270,7 @@ export function ProductView({ p }: { p: Product }) {
               onClick={() => setTab(id)}
               onKeyDown={(e) => onTabKey(e, i)}
             >
-              {name}
+              {tabNames[id]}
             </button>
           ))}
         </div>
@@ -290,7 +293,7 @@ export function ProductView({ p }: { p: Product }) {
                 <p style={{ whiteSpace: "pre-line" }}>{p.desc}</p>
               </div>
               <div className="p-story-image">
-                <img src={p.scene} alt={`${p.name} — ინტერიერის ფოტო`} loading="lazy" />
+                <img src={p.scene} alt={t("{name} — ინტერიერის ფოტო", { name: p.name })} loading="lazy" />
               </div>
             </article>
           )}
@@ -298,12 +301,12 @@ export function ProductView({ p }: { p: Product }) {
             <div className="spec-table">
               {(
                 [
-                  ["ბრენდი", p.brand],
-                  ["დასახელება", p.name],
-                  ["პროდუქტის კოდი", variant?.sku || p.sku],
-                  ["კატეგორია", categoryName(p.category)],
+                  [t("ბრენდი"), p.brand],
+                  [t("დასახელება"), p.name],
+                  [t("პროდუქტის კოდი"), variant?.sku || p.sku],
+                  [t("კატეგორია"), categoryName(p.category)],
                   ...p.specs,
-                  ["ფერი", variant?.name || p.color],
+                  [t("ფერი"), variant?.name || p.color],
                 ] as [string, string][]
               )
                 .filter(([, v]) => v)
@@ -320,22 +323,22 @@ export function ProductView({ p }: { p: Product }) {
               {p.ship && (
                 <article className="delivery-info-card">
                   <Icon name="truck" />
-                  <h3>კურიერით მიწოდება</h3>
+                  <h3>{t("კურიერით მიწოდება")}</h3>
                   <p>
-                    თბილისი: {money(p.ship.tbilisi)} ₾
+                    {t("თბილისი: {price} ₾", { price: money(p.ship.tbilisi) })}
                     <br />
-                    რეგიონები: {money(p.ship.regions)} ₾
+                    {t("რეგიონები: {price} ₾", { price: money(p.ship.regions) })}
                   </p>
                 </article>
               )}
               <article className="delivery-info-card">
                 <Icon name="store" />
-                <h3>თვითგატანა</h3>
+                <h3>{t("თვითგატანა")}</h3>
                 <p>{ship.pickupText}</p>
               </article>
               <article className="delivery-info-card">
                 <Icon name="shield" />
-                <h3>გარანტია და პირობები</h3>
+                <h3>{t("გარანტია და პირობები")}</h3>
                 <p>{ship.warrantyText}</p>
               </article>
             </div>
@@ -344,8 +347,8 @@ export function ProductView({ p }: { p: Product }) {
             <div className="reviews-empty">
               <Icon name="heart" />
               <div>
-                <h3>ჯერ არ არის მიმოხილვა</h3>
-                <p>იყავით პირველი, ვინც ამ პროდუქტს შეაფასებს.</p>
+                <h3>{t("ჯერ არ არის მიმოხილვა")}</h3>
+                <p>{t("იყავით პირველი, ვინც ამ პროდუქტს შეაფასებს.")}</p>
               </div>
             </div>
           )}
@@ -354,9 +357,9 @@ export function ProductView({ p }: { p: Product }) {
 
       <section className="related-section">
         <div className="section-heading">
-          <h2>შეიძლება მოგეწონოთ</h2>
+          <h2>{t("შეიძლება მოგეწონოთ")}</h2>
           <Link className="text-link" href="/products">
-            ყველა პროდუქტი <Icon name="arrow" />
+            {t("ყველა პროდუქტი")} <Icon name="arrow" />
           </Link>
         </div>
         <div className="related-grid">
@@ -374,25 +377,25 @@ export function ProductView({ p }: { p: Product }) {
       <div className="mobile-buy-bar">
         <div>
           <strong>{gel(cur.price * 100)}</strong>
-          {cur.oldPrice > cur.price && <small>{gel(cur.oldPrice * 100)}-ის ნაცვლად</small>}
+          {cur.oldPrice > cur.price && <small>{t("{price}-ის ნაცვლად", { price: gel(cur.oldPrice * 100) })}</small>}
         </div>
         <button className="button primary" disabled={!inStock} onClick={() => addToCart(key, qty)}>
-          <Icon name="cart" /> კალათაში დამატება
+          <Icon name="cart" /> {t("კალათაში დამატება")}
         </button>
       </div>
 
-      <Dialog open={zoom} onClose={() => setZoom(false)} className="lightbox" label="პროდუქტის ფოტო">
-        <button className="icon-button lightbox-close" aria-label="დახურვა" onClick={() => setZoom(false)}>
+      <Dialog open={zoom} onClose={() => setZoom(false)} className="lightbox" label={t("პროდუქტის ფოტო")}>
+        <button className="icon-button lightbox-close" aria-label={t("დახურვა")} onClick={() => setZoom(false)}>
           <Icon name="close" />
         </button>
         {gallery.length > 1 && (
-          <button className="icon-button lightbox-prev" aria-label="წინა ფოტო" onClick={() => go(index - 1)}>
+          <button className="icon-button lightbox-prev" aria-label={t("წინა ფოტო")} onClick={() => go(index - 1)}>
             <Icon name="chevron" />
           </button>
         )}
-        <img src={gallery[index]} alt={`${p.name} — ფოტო ${index + 1}`} />
+        <img src={gallery[index]} alt={t("{name} — ფოტო {n}", { name: p.name, n: index + 1 })} />
         {gallery.length > 1 && (
-          <button className="icon-button lightbox-next" aria-label="შემდეგი ფოტო" onClick={() => go(index + 1)}>
+          <button className="icon-button lightbox-next" aria-label={t("შემდეგი ფოტო")} onClick={() => go(index + 1)}>
             <Icon name="chevron" />
           </button>
         )}

@@ -2,6 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useCatalog } from "@/context/CatalogContext";
+import { stripLang } from "@/i18n";
+import { useT } from "@/i18n/client";
 import { CITIES, promoDiscount, shippingCost, type City, type Promo } from "@/lib/data";
 
 export type InfoKey = "account" | "about" | "delivery" | "warranty" | "payment" | "contact" | "social" | "brands";
@@ -55,6 +57,7 @@ const clampQty = (n: number) => Math.max(1, Math.min(MAX_QTY, Number.isFinite(n)
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const { line, byId, defaultKey } = useCatalog();
+  const t = useT();
   const [cart, setCart] = useState<Record<string, number>>({});
   const [favorites, setFavorites] = useState<string[]>([]);
   const [city, setCity] = useState<City>("tbilisi");
@@ -111,24 +114,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       const l = line(id);
       if (!l) return false;
       if (!l.inStock) {
-        showToast("პროდუქტი ამჟამად არ არის მარაგში.");
+        showToast(t("პროდუქტი ამჟამად არ არის მარაგში."));
         return false;
       }
       const before = cart[id] || 0;
       if (before >= MAX_QTY) {
-        showToast("მაქსიმალური რაოდენობაა 99.");
+        showToast(t("მაქსიმალური რაოდენობაა 99."));
         return false;
       }
       setCart((c) => ({ ...c, [id]: Math.min(MAX_QTY, (c[id] || 0) + clampQty(qty)) }));
       if (notify) {
         // კალათის გვერდის გარეთ მარჯვნიდან იხსნება გვერდითა კალათა
-        if (before + qty > MAX_QTY) showToast("რაოდენობა შეიზღუდა 99 ერთეულამდე.");
-        else if (window.location.pathname === "/cart") showToast("პროდუქტი დაემატა კალათაში");
+        if (before + qty > MAX_QTY) showToast(t("რაოდენობა შეიზღუდა 99 ერთეულამდე."));
+        else if (stripLang(window.location.pathname) === "/cart") showToast(t("პროდუქტი დაემატა კალათაში"));
         else setModal("cart");
       }
       return true;
     },
-    [cart, showToast, line, byId, defaultKey],
+    [cart, showToast, line, byId, defaultKey, t],
   );
 
   const setQuantity = useCallback((id: string, qty: number) => {
@@ -144,9 +147,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         delete copy[id];
         return copy;
       });
-      showToast("პროდუქტი ამოღებულია კალათიდან", "undo");
+      showToast(t("პროდუქტი ამოღებულია კალათიდან"), "undo");
     },
-    [cart, showToast],
+    [cart, showToast, t],
   );
 
   const undoRemove = useCallback(() => {
@@ -161,28 +164,28 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     (id: string) => {
       const had = favorites.includes(id);
       setFavorites((f) => (had ? f.filter((x) => x !== id) : [...f, id]));
-      showToast(had ? "პროდუქტი ამოღებულია ფავორიტებიდან" : "პროდუქტი დაემატა ფავორიტებში");
+      showToast(had ? t("პროდუქტი ამოღებულია ფავორიტებიდან") : t("პროდუქტი დაემატა ფავორიტებში"));
     },
-    [favorites, showToast],
+    [favorites, showToast, t],
   );
 
   /** აბრუნებს შეცდომის ტექსტს ან null-ს წარმატებისას */
   const applyCoupon = useCallback(
     async (code: string) => {
       const c = code.trim().toUpperCase();
-      if (!c) return "შეიყვანეთ პრომოკოდი.";
+      if (!c) return t("შეიყვანეთ პრომოკოდი.");
       try {
         const res = await fetch("/api/promo?code=" + encodeURIComponent(c));
         const data = await res.json();
-        if (!res.ok) return (data.error as string) || "პრომოკოდი არ მოიძებნა.";
+        if (!res.ok) return data.error ? t(data.error as string) : t("პრომოკოდი არ მოიძებნა.");
         setPromo(data as Promo);
-        showToast(`პრომოკოდი ${c} გამოყენებულია.`);
+        showToast(t("პრომოკოდი {code} გამოყენებულია.", { code: c }));
         return null;
       } catch {
-        return "კავშირის შეცდომა. სცადეთ ხელახლა.";
+        return t("კავშირის შეცდომა. სცადეთ ხელახლა.");
       }
     },
-    [showToast],
+    [showToast, t],
   );
 
   const cartCount = Object.values(cart).reduce((s, n) => s + n, 0);

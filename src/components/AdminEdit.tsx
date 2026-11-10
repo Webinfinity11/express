@@ -4,10 +4,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCatalog } from "@/context/CatalogContext";
 import { BUILTIN_PAGES } from "@/lib/site-links";
+import { stripLang } from "@/i18n";
+import { useT } from "@/i18n/client";
 
 /** შესულ ადმინს საიტზე უჩანს ღილაკი, რომელიც მიმდინარე გვერდის რედაქტორს ხსნის. */
 export function AdminEdit() {
-  const pathname = usePathname();
+  const pathname = stripLang(usePathname());
+  const t = useT();
   const { bySlug } = useCatalog();
   const [href, setHref] = useState<string | null>(null);
 
@@ -30,8 +33,8 @@ export function AdminEdit() {
   if (!href) return null;
   return (
     <div className="admin-edit">
-      <a href={href}>✎ რედაქტირება</a>
-      <a href="/admin">ადმინი</a>
+      <a href={href}>✎ {t("რედაქტირება")}</a>
+      <a href="/admin">{t("ადმინი")}</a>
     </div>
   );
 }

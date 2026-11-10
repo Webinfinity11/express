@@ -21,6 +21,7 @@ type VariantDraft = {
   image: string;
   inStock: boolean;
   stockQty: string;
+  nameEn: string;
 };
 
 const str = (v: number | null | undefined) => (v == null ? "" : String(v));
@@ -34,6 +35,7 @@ const toDraft = (v: VariantRow): VariantDraft => ({
   image: v.image ?? "",
   inStock: v.inStock,
   stockQty: str(v.stockQty),
+  nameEn: v.en?.name ?? "",
 });
 
 export function ProductForm({
@@ -85,6 +87,16 @@ export function ProductForm({
     next.splice(to, 0, next.splice(from, 1)[0]);
     setSpecs(next);
   };
+  // ინგლისური ვერსია (ცარიელი ველი = საიტზე ქართული ჩანს)
+  const [en, setEn] = useState({
+    name: product?.en?.name ?? "",
+    label: product?.en?.label ?? "",
+    subtitle: product?.en?.subtitle ?? "",
+    description: product?.en?.description ?? "",
+    colorName: product?.en?.colorName ?? "",
+  });
+  const setE = (k: keyof typeof en, val: string) => setEn((cur) => ({ ...cur, [k]: val }));
+  const [specsEn, setSpecsEn] = useState<Spec[]>(product?.en?.specs ?? []);
   const [keywords, setKeywords] = useState(product?.keywords ?? "");
   const [colorName, setColorName] = useState(product?.colorName ?? "");
   const [colorHex, setColorHex] = useState(product?.colorHex ?? "");
@@ -98,7 +110,7 @@ export function ProductForm({
 
   const setVariant = (i: number, patch: Partial<VariantDraft>) => setVariants((vs) => vs.map((v, j) => (j === i ? { ...v, ...patch } : v)));
   const addVariant = () =>
-    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", image: "", inStock: true, stockQty: "" }]);
+    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", image: "", inStock: true, stockQty: "", nameEn: "" }]);
 
   const submit = () =>
     start(async () => {
@@ -136,7 +148,9 @@ export function ProductForm({
           image: v.image || null,
           inStock: v.inStock,
           stockQty: v.stockQty.trim() ? v.stockQty : null,
+          en: { name: v.nameEn },
         })),
+        en: { ...en, specs: specsEn },
       });
       if (!res.ok) return setMessage({ ok: false, text: res.error });
       setMessage({ ok: true, text: "შენახულია ✓ საიტზე უკვე ჩანს." });
@@ -244,6 +258,13 @@ export function ProductForm({
                         list="color-list"
                         required
                         className={inputCls}
+                      />
+                      <input
+                        value={v.nameEn}
+                        onChange={(e) => setVariant(i, { nameEn: e.target.value })}
+                        placeholder="English"
+                        lang="en"
+                        className={`${inputCls} mt-1.5`}
                       />
                     </Field>
                     <Field label="ფერი">
@@ -410,6 +431,69 @@ export function ProductForm({
                 </Button>
               </div>
             ))}
+          </div>
+        </Card>
+
+        <Card title="English — ინგლისური ვერსია">
+          <p className="text-xs text-slate-500 mb-3">ჩანს საიტის ინგლისურ ვერსიაზე (/en). ცარიელი ველის ნაცვლად ქართული ტექსტი გამოჩნდება.</p>
+          <div className="grid gap-4" lang="en">
+            <Field label="Name">
+              <input value={en.name} onChange={(e) => setE("name", e.target.value)} placeholder={name} className={inputCls} />
+            </Field>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Label (badge)">
+                <input value={en.label} onChange={(e) => setE("label", e.target.value)} placeholder={label} className={inputCls} />
+              </Field>
+              <Field label="Color name">
+                <input value={en.colorName} onChange={(e) => setE("colorName", e.target.value)} placeholder={colorName} className={inputCls} />
+              </Field>
+            </div>
+            <Field label="Subtitle">
+              <input value={en.subtitle} onChange={(e) => setE("subtitle", e.target.value)} placeholder={subtitle} className={inputCls} />
+            </Field>
+            <Field label="Description">
+              <textarea value={en.description} onChange={(e) => setE("description", e.target.value)} rows={6} className={inputCls} />
+            </Field>
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-1.5">
+                <span className="text-sm font-semibold">Specifications</span>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() =>
+                    // ქართული მახასიათებლების რაოდენობა და რიგი, უკვე ნათარგმნი ველები რჩება
+                    setSpecsEn(specs.filter((s) => s.label.trim()).map((s, i) => specsEn[i] ?? { label: "", value: s.value }))
+                  }
+                >
+                  ქართულის მიხედვით შევსება
+                </Button>
+              </div>
+              {specsEn.length === 0 && <p className="text-slate-500 text-xs">ცარიელი = ქართული მახასიათებლები ჩანს.</p>}
+              <div className="grid gap-2">
+                {specsEn.map((s, i) => (
+                  <div key={i} className="grid grid-cols-[1fr_1fr_auto] gap-2 items-center">
+                    <input
+                      value={s.label}
+                      placeholder={specs[i]?.label ?? "Label"}
+                      onChange={(e) => setSpecsEn(specsEn.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))}
+                      className={inputCls}
+                    />
+                    <input
+                      value={s.value}
+                      placeholder={specs[i]?.value ?? "Value"}
+                      onChange={(e) => setSpecsEn(specsEn.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)))}
+                      className={inputCls}
+                    />
+                    <Button type="button" variant="danger" onClick={() => setSpecsEn(specsEn.filter((_, j) => j !== i))} aria-label="წაშლა">
+                      ✕
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              <Button type="button" variant="secondary" onClick={() => setSpecsEn([...specsEn, { label: "", value: "" }])}>
+                + Add
+              </Button>
+            </div>
           </div>
         </Card>
       </div>

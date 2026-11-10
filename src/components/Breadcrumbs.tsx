@@ -1,13 +1,16 @@
-import Link from "next/link";
+"use client";
+
 import { Fragment } from "react";
+import { Link, useT } from "@/i18n/client";
 import { Icon } from "./Icon";
 
 export function Breadcrumbs({ items }: { items: { label: string; href?: string }[] }) {
+  const t = useT();
   return (
-    <nav className="breadcrumbs wrap" aria-label="გვერდის მდებარეობა">
+    <nav className="breadcrumbs wrap" aria-label={t("გვერდის მდებარეობა")}>
       <Link href="/">
         <Icon name="home" />
-        <span>მთავარი</span>
+        <span>{t("მთავარი")}</span>
       </Link>
       {items.map((item, i) => (
         <Fragment key={i}>

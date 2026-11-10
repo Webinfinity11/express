@@ -1,6 +1,13 @@
 import { boolean, index, integer, jsonb, numeric, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export type Spec = { label: string; value: string };
+
+/** ინგლისური თარგმანი (ცარიელი ველი = ქართული ჩანს) */
+export type CategoryEn = { name?: string };
+export type ProductEn = { name?: string; label?: string; subtitle?: string; description?: string; specs?: Spec[]; colorName?: string };
+export type VariantEn = { name?: string };
+export type PageEn = { title?: string; eyebrow?: string; subtitle?: string; body?: string; buttonText?: string; metaDescription?: string };
+const en = <T,>() => jsonb("en").$type<T>().notNull().default({} as T);
 export type OrderLine = {
   key: string;
   productId: number;
@@ -38,6 +45,7 @@ export const categories = pgTable(
     showOnHome: boolean("show_on_home").notNull().default(false),
     // ჰედერის „კატეგორიების“ მენიუში ჩანს
     showInMenu: boolean("show_in_menu").notNull().default(true),
+    en: en<CategoryEn>(),
     // null = მშობელი კატეგორიის ლოჯისტიკური კლასი
     shippingClassId: integer("shipping_class_id").references(() => shippingClasses.id, { onDelete: "set null" }),
     sortOrder: integer("sort_order").notNull().default(0),
@@ -67,6 +75,7 @@ export const products = pgTable(
     keywords: text("keywords").notNull().default(""),
     colorName: text("color_name").notNull().default(""),
     colorHex: text("color_hex"),
+    en: en<ProductEn>(),
     featured: boolean("featured").notNull().default(false),
     isNew: boolean("is_new").notNull().default(false),
     published: boolean("published").notNull().default(true),
@@ -96,6 +105,7 @@ export const productVariants = pgTable(
     image: text("image"),
     inStock: boolean("in_stock").notNull().default(true),
     stockQty: integer("stock_qty"),
+    en: en<VariantEn>(),
     sortOrder: integer("sort_order").notNull().default(0),
   },
   (t) => [index("variants_product_idx").on(t.productId)],
@@ -169,6 +179,7 @@ export const pages = pgTable("pages", {
   buttonText: text("button_text").notNull().default(""),
   buttonHref: text("button_href").notNull().default(""),
   metaDescription: text("meta_description").notNull().default(""),
+  en: en<PageEn>(),
   published: boolean("published").notNull().default(true),
   createdAt: created(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),

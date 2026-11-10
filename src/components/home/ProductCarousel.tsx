@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import type { Product } from "@/lib/data";
+import { Link, useT } from "@/i18n/client";
 import { Icon } from "../Icon";
 
 // kind: მობილურზე რამდენი ბარათი ჩანს (popular — 6, sale — 4)
@@ -11,6 +11,7 @@ type Props = { id: string; kind?: "popular" | "sale"; title: string; href: strin
 
 export function ProductCarousel({ id, kind = "popular", title, href, products }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const t = useT();
   const [edges, setEdges] = useState({ start: true, end: false });
 
   const sync = useCallback(() => {
@@ -40,13 +41,13 @@ export function ProductCarousel({ id, kind = "popular", title, href, products }:
         <h2 id={`${id}-title`}>{title}</h2>
         <div className="carousel-head-actions">
           <Link className="text-link" href={href}>
-            ყველას ნახვა <Icon name="arrow" />
+            {t("ყველას ნახვა")} <Icon name="arrow" />
           </Link>
           <div className="carousel-arrows">
-            <button className="carousel-arrow prev" aria-label="წინა" disabled={edges.start} onClick={() => scroll(-1)}>
+            <button className="carousel-arrow prev" aria-label={t("წინა")} disabled={edges.start} onClick={() => scroll(-1)}>
               <Icon name="chevron" />
             </button>
-            <button className="carousel-arrow" aria-label="შემდეგი" disabled={edges.end} onClick={() => scroll(1)}>
+            <button className="carousel-arrow" aria-label={t("შემდეგი")} disabled={edges.end} onClick={() => scroll(1)}>
               <Icon name="chevron" />
             </button>
           </div>
@@ -59,7 +60,7 @@ export function ProductCarousel({ id, kind = "popular", title, href, products }:
       </div>
       {/* მობილურზე ბადის ქვეშ */}
       <Link className="button secondary carousel-more" href={href}>
-        ყველას ნახვა <Icon name="arrow" />
+        {t("ყველას ნახვა")} <Icon name="arrow" />
       </Link>
     </section>
   );

@@ -1,31 +1,33 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useStore, type InfoKey } from "@/context/StoreContext";
 import { useCatalog } from "@/context/CatalogContext";
 import { CITIES, gel, productHref, type City } from "@/lib/data";
+import { Link, useT } from "@/i18n/client";
+import type { T } from "@/i18n";
 import { Dialog } from "./Dialog";
 import { Icon } from "./Icon";
 
-const INFO_TITLES: Record<InfoKey, string> = {
-  account: "თქვენი ანგარიში",
-  about: "ტექნიკა თქვენი სახლისთვის",
-  delivery: "მიწოდების პირობები",
-  warranty: "პროდუქტის გარანტია",
-  payment: "გადახდის მეთოდები",
-  contact: "დაგვიკავშირდით",
-  social: "Express Mix სოციალურ ქსელებში",
-  brands: "ბრენდები",
-};
+const infoTitles = (t: T): Record<InfoKey, string> => ({
+  account: t("თქვენი ანგარიში"),
+  about: t("ტექნიკა თქვენი სახლისთვის"),
+  delivery: t("მიწოდების პირობები"),
+  warranty: t("პროდუქტის გარანტია"),
+  payment: t("გადახდის მეთოდები"),
+  contact: t("დაგვიკავშირდით"),
+  social: t("Express Mix სოციალურ ქსელებში"),
+  brands: t("ბრენდები"),
+});
 
 export function ModalHost() {
   const { modal, openModal } = useStore();
+  const t = useT();
   const close = () => openModal(null);
 
   return (
     <Dialog open={modal !== null && modal !== "cart"} onClose={close} className="content-dialog em-dialog" labelledBy="infoTitle">
-      <button className="icon-button modal-close" aria-label="დახურვა" onClick={close}>
+      <button className="icon-button modal-close" aria-label={t("დახურვა")} onClick={close}>
         <Icon name="close" />
       </button>
       <div className="modal-content">
@@ -42,17 +44,18 @@ export function ModalHost() {
 function Info({ k, close }: { k: InfoKey; close: () => void }) {
   const { content } = useCatalog();
   const { site, info } = content;
-  const title = INFO_TITLES[k];
+  const t = useT();
+  const title = infoTitles(t)[k];
   const body =
     k === "contact"
-      ? `ტელეფონი: ${site.phone}. მისამართი: ${site.address}. დაგვიკავშირდით და ერთად შევარჩევთ თქვენთვის საუკეთესო ტექნიკას.`
+      ? t("ტელეფონი: {phone}. მისამართი: {address}. დაგვიკავშირდით და ერთად შევარჩევთ თქვენთვის საუკეთესო ტექნიკას.", { phone: site.phone, address: site.address })
       : info[k];
   return (
     <>
       <h2 id="infoTitle">{title}</h2>
       <p>{body}</p>
       <button className="button primary compact" onClick={close}>
-        გასაგებია <Icon name="check" />
+        {t("გასაგებია")} <Icon name="check" />
       </button>
     </>
   );
@@ -61,10 +64,11 @@ function Info({ k, close }: { k: InfoKey; close: () => void }) {
 function Favorites({ close }: { close: () => void }) {
   const { favorites, addToCart, toggleFavorite } = useStore();
   const { products } = useCatalog();
+  const t = useT();
   const items = products.filter((p) => favorites.includes(p.id));
   return (
     <>
-      <h2 id="infoTitle">თქვენი ფავორიტები</h2>
+      <h2 id="infoTitle">{t("თქვენი ფავორიტები")}</h2>
       {items.length ? (
         <div className="favorite-list">
           {items.map((p) => (
@@ -81,10 +85,10 @@ function Favorites({ close }: { close: () => void }) {
                 <span className="price">{gel(p.price * 100)}</span>
               </div>
               <div className="favorite-row-actions">
-                <button className="add-cart" aria-label="კალათაში დამატება" onClick={() => addToCart(p.id)}>
+                <button className="add-cart" aria-label={t("კალათაში დამატება")} onClick={() => addToCart(p.id)}>
                   <Icon name="cart" />
                 </button>
-                <button className="icon-button" aria-label="ფავორიტიდან წაშლა" onClick={() => toggleFavorite(p.id)}>
+                <button className="icon-button" aria-label={t("ფავორიტიდან წაშლა")} onClick={() => toggleFavorite(p.id)}>
                   <Icon name="close" />
                 </button>
               </div>
@@ -94,10 +98,10 @@ function Favorites({ close }: { close: () => void }) {
       ) : (
         <div className="empty-state">
           <Icon name="heart" />
-          <h3>შეინახეთ სასურველი ნივთები</h3>
-          <p>პროდუქტის ბარათზე დააჭირეთ გულის ნიშანს.</p>
+          <h3>{t("შეინახეთ სასურველი ნივთები")}</h3>
+          <p>{t("პროდუქტის ბარათზე დააჭირეთ გულის ნიშანს.")}</p>
           <Link className="button primary compact" href="/products" onClick={close}>
-            მაღაზიაში გადასვლა <Icon name="arrow" />
+            {t("მაღაზიაში გადასვლა")} <Icon name="arrow" />
           </Link>
         </div>
       )}
@@ -108,17 +112,18 @@ function Favorites({ close }: { close: () => void }) {
 function CityPicker({ close }: { close: () => void }) {
   const { city, setCity } = useStore();
   const [value, setValue] = useState<City>(city);
+  const t = useT();
   return (
     <>
-      <h2 id="infoTitle">მიწოდების ადგილმდებარეობა</h2>
-      <p>აირჩიეთ ქალაქი მიწოდების ღირებულების სანახავად.</p>
+      <h2 id="infoTitle">{t("მიწოდების ადგილმდებარეობა")}</h2>
+      <p>{t("აირჩიეთ ქალაქი მიწოდების ღირებულების სანახავად.")}</p>
       <label className="field-label" htmlFor="dialogCity">
-        ქალაქი / რეგიონი
+        {t("ქალაქი / რეგიონი")}
       </label>
       <select id="dialogCity" value={value} onChange={(e) => setValue(e.target.value as City)}>
         {Object.entries(CITIES).map(([k, name]) => (
           <option key={k} value={k}>
-            {name}
+            {t(name)}
           </option>
         ))}
       </select>
@@ -129,7 +134,7 @@ function CityPicker({ close }: { close: () => void }) {
           close();
         }}
       >
-        არჩევანის შენახვა <Icon name="check" />
+        {t("არჩევანის შენახვა")} <Icon name="check" />
       </button>
     </>
   );
@@ -137,13 +142,14 @@ function CityPicker({ close }: { close: () => void }) {
 
 function ClearCart({ close }: { close: () => void }) {
   const { clearCart } = useStore();
+  const t = useT();
   return (
     <>
-      <h2 id="infoTitle">კალათის გასუფთავება</h2>
-      <p>წაიშალოს კალათაში დამატებული ყველა პროდუქტი?</p>
+      <h2 id="infoTitle">{t("კალათის გასუფთავება")}</h2>
+      <p>{t("წაიშალოს კალათაში დამატებული ყველა პროდუქტი?")}</p>
       <div className="dialog-confirm-buttons">
         <button className="button secondary" onClick={close}>
-          გაუქმება
+          {t("გაუქმება")}
         </button>
         <button
           className="button primary"
@@ -152,7 +158,7 @@ function ClearCart({ close }: { close: () => void }) {
             close();
           }}
         >
-          გასუფთავება <Icon name="trash" />
+          {t("გასუფთავება")} <Icon name="trash" />
         </button>
       </div>
     </>

@@ -19,7 +19,8 @@ export function ContentForm({
   initial,
   links,
   categories,
-}: { sectionKey: string; fields: FieldSpec[]; initial: Value } & Choices) {
+  lang = "ka",
+}: { sectionKey: string; fields: FieldSpec[]; initial: Value; lang?: "ka" | "en" } & Choices) {
   const router = useRouter();
   const [value, setValue] = useState<Value>(initial);
   const [pending, start] = useTransition();
@@ -29,7 +30,7 @@ export function ContentForm({
   const save = () =>
     start(async () => {
       setMessage(null);
-      const res = await saveContent(sectionKey, value);
+      const res = await saveContent(sectionKey, value, lang);
       setMessage(res.ok ? { ok: true, text: "შენახულია ✓ საიტზე უკვე ჩანს." } : { ok: false, text: res.error });
       if (res.ok) router.refresh();
     });
@@ -37,7 +38,7 @@ export function ContentForm({
   const reset = () => {
     if (!confirm("დაბრუნდეს საწყისი ტექსტები? ამ სექციის ცვლილებები წაიშლება.")) return;
     start(async () => {
-      await resetContent(sectionKey);
+      await resetContent(sectionKey, lang);
       router.refresh();
       setMessage({ ok: true, text: "საწყისი ტექსტები დაბრუნდა." });
       window.location.reload();

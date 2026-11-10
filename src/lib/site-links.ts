@@ -14,7 +14,7 @@ export const BUILTIN_PAGES: { label: string; href: string; edit: string; note: s
 ];
 
 // /{slug} მისამართები, რომლებიც საიტს უკვე უკავია
-export const RESERVED_SLUGS = ["about", "contact", "products", "product", "cart", "checkout", "admin", "api", "images", "fonts", "icon.svg"];
+export const RESERVED_SLUGS = ["about", "contact", "products", "product", "cart", "checkout", "admin", "api", "images", "fonts", "icon.svg", "en", "ka"];
 
 /** ბმულიდან ადმინის რედაქტორის მისამართი (თუ ცნობილია) */
 export function editUrlFor(href: string, options: LinkOption[]) {

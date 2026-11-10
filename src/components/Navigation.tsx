@@ -1,13 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useCatalog } from "@/context/CatalogContext";
+import { stripLang } from "@/i18n";
+import { Link, useT } from "@/i18n/client";
 import { Icon } from "./Icon";
 
 export function Navigation() {
-  const pathname = usePathname();
+  const pathname = stripLang(usePathname());
+  const t = useT();
   const { menu: MENU, content } = useCatalog();
   const CONTACT = content.site;
   // აქციების ბმულს ნარინჯისფერი წერტილი აქვს
@@ -36,8 +38,8 @@ export function Navigation() {
   useEffect(() => {
     if (!open) return;
     const onClick = (e: MouseEvent) => {
-      const t = e.target as Node;
-      if (!menuRef.current?.contains(t) && !toggleRef.current?.contains(t)) setOpen(false);
+      const el = e.target as Node;
+      if (!menuRef.current?.contains(el) && !toggleRef.current?.contains(el)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -57,8 +59,8 @@ export function Navigation() {
   useEffect(() => {
     if (!mobileOpen) return;
     const onClick = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      if (!t.closest(".mobile-nav, .nav-burger")) setMobileOpen(false);
+      const el = e.target as HTMLElement;
+      if (!el.closest(".mobile-nav, .nav-burger")) setMobileOpen(false);
     };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileOpen(false);
     document.addEventListener("click", onClick);
@@ -72,7 +74,7 @@ export function Navigation() {
   const close = () => setOpen(false);
 
   return (
-    <nav className="navigation" aria-label="მთავარი ნავიგაცია">
+    <nav className="navigation" aria-label={t("მთავარი ნავიგაცია")}>
       <div className="nav-inner wrap">
         <button
           ref={toggleRef}
@@ -87,7 +89,7 @@ export function Navigation() {
           onMouseLeave={hoverClose}
         >
           <Icon name="menu" />
-          <span>კატეგორიები</span>
+          <span>{t("კატეგორიები")}</span>
           <Icon name="chevron" className="small down" />
         </button>
         <div className="nav-links">
@@ -105,14 +107,14 @@ export function Navigation() {
           className="nav-burger"
           aria-expanded={mobileOpen}
           aria-controls="mobileNav"
-          aria-label="მენიუ"
+          aria-label={t("მენიუ")}
           onClick={() => {
             setOpen(false);
             setMobileOpen((o) => !o);
           }}
         >
           <Icon name={mobileOpen ? "close" : "menu"} />
-          <span>მენიუ</span>
+          <span>{t("მენიუ")}</span>
         </button>
         <div className="mobile-nav" id="mobileNav" hidden={!mobileOpen}>
           {NAV_LINKS.map((l) => (
@@ -159,7 +161,7 @@ export function Navigation() {
               <div className="mega-panel-head">
                 <h3>{section.name}</h3>
                 <Link className="text-link" href={section.href} onClick={close}>
-                  ყველას ნახვა <Icon name="arrow" />
+                  {t("ყველას ნახვა")} <Icon name="arrow" />
                 </Link>
               </div>
               <div className="mega-groups">
@@ -191,7 +193,7 @@ export function Navigation() {
                             </Link>
                           ))}
                           <Link className="mega-item mega-item-all" href={g.href} onClick={close}>
-                            ყველა: {g.title} <Icon name="arrow" />
+                            {t("ყველა: {name}", { name: g.title })} <Icon name="arrow" />
                           </Link>
                         </div>
                       )}

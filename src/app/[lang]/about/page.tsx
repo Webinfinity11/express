@@ -1,23 +1,30 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContactCards } from "@/components/ContactCards";
 import { Icon } from "@/components/Icon";
 import { InnerFooterBlocks } from "@/components/InnerFooterBlocks";
 import { getContent } from "@/lib/content";
+import { getT, toLang } from "@/i18n";
+import { Link } from "@/i18n/client";
 
-export const metadata: Metadata = {
-  title: "ჩვენ შესახებ | Express Mix",
-  description: "Express Mix: სახლისა და სამზარეულოს ტექნიკის მაღაზია. ხარისხიანი ბრენდები, საუკეთესო ფასები, კომფორტული შოპინგი.",
-};
+export async function generateMetadata({ params }: PageProps<"/[lang]/about">): Promise<Metadata> {
+  const t = getT(toLang((await params).lang));
+  return {
+    title: t("ჩვენ შესახებ | Express Mix"),
+    description: t("Express Mix: სახლისა და სამზარეულოს ტექნიკის მაღაზია. ხარისხიანი ბრენდები, საუკეთესო ფასები, კომფორტული შოპინგი."),
+    alternates: { languages: { ka: "/about", en: "/en/about" } },
+  };
+}
 
 const VALUE_ICONS = ["shield", "tag", "truck"];
 
-export default async function AboutPage() {
-  const { about, site, contact } = await getContent();
+export default async function AboutPage({ params }: PageProps<"/[lang]/about">) {
+  const lang = toLang((await params).lang);
+  const t = getT(lang);
+  const { about, site, contact } = await getContent(lang);
   return (
     <>
-      <Breadcrumbs items={[{ label: "ჩვენ შესახებ" }]} />
+      <Breadcrumbs items={[{ label: t("ჩვენ შესახებ") }]} />
       <main id="main" className="wrap internal-main">
         <section className="shop-hero">
           <div className="shop-hero-copy">
@@ -48,7 +55,7 @@ export default async function AboutPage() {
               <p key={i}>{text}</p>
             ))}
             <Link className="button primary" href="/products">
-              მაღაზიაში გადასვლა <Icon name="arrow" />
+              {t("მაღაზიაში გადასვლა")} <Icon name="arrow" />
             </Link>
           </div>
           {about.introImage && (
@@ -58,7 +65,7 @@ export default async function AboutPage() {
           )}
         </section>
 
-        <section className="perks about-values" aria-label="ჩვენი ღირებულებები">
+        <section className="perks about-values" aria-label={t("ჩვენი ღირებულებები")}>
           {about.values.slice(0, 3).map((v, i) => (
             <div className="perk" key={i}>
               <span className="perk-icon">

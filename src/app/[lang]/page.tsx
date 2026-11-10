@@ -1,4 +1,4 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 import { Icon } from "@/components/Icon";
 import { InfoButton } from "@/components/InfoButton";
 import type { InfoKey } from "@/context/StoreContext";
@@ -9,6 +9,8 @@ import { Newsletter } from "@/components/home/Newsletter";
 import { getCatalog } from "@/lib/catalog";
 import { getContent } from "@/lib/content";
 import { categoryHref, discountPercent, indexCatalog } from "@/lib/data";
+import { getT, toLang } from "@/i18n";
+import { Link } from "@/i18n/client";
 
 // ბარათების ხატულები და საინფორმაციო ფანჯრები — ტექსტები ადმინიდან
 const PERK_META: { info: InfoKey; icon: string }[] = [
@@ -19,8 +21,14 @@ const PERK_META: { info: InfoKey; icon: string }[] = [
 
 const BLOCK_HREF: Record<string, string> = { sale: "sale=1", new: "new=1" };
 
-export default async function Home() {
-  const [catalog, { home }] = await Promise.all([getCatalog(), getContent()]);
+export const metadata: Metadata = {
+  alternates: { languages: { ka: "/", en: "/en" } },
+};
+
+export default async function Home({ params }: PageProps<"/[lang]">) {
+  const lang = toLang((await params).lang);
+  const t = getT(lang);
+  const [catalog, { home }] = await Promise.all([getCatalog(lang), getContent(lang)]);
   const { products, categories, brands } = catalog;
   const { subtree } = indexCatalog(catalog);
   const homeCategories = categories.filter((c) => c.showOnHome);
@@ -53,7 +61,7 @@ export default async function Home() {
       <div className="wrap content-wrap">
         {home.showCategories && (
           <section className="categories-section" id="categories">
-            <h2 className="sr-only">კატეგორიები</h2>
+            <h2 className="sr-only">{t("კატეგორიები")}</h2>
             <div className="categories-grid">
               {homeCategories.map((c) => (
                 <Link key={c.id} className="category-card" href={categoryHref(c.id)}>
@@ -63,14 +71,14 @@ export default async function Home() {
               ))}
               <Link className="category-card sale-card" href="/products?sale=1">
                 <b className="sale-badge">%</b>
-                <span>აქციები</span>
+                <span>{t("აქციები")}</span>
               </Link>
             </div>
           </section>
         )}
 
         {home.showPerks && (
-          <section className="perks" aria-label="ჩვენი უპირატესობები">
+          <section className="perks" aria-label={t("ჩვენი უპირატესობები")}>
             {home.perks.slice(0, 3).map((p, i) => (
               <InfoButton key={i} info={PERK_META[i].info} className="perk">
                 <span className="perk-icon">
@@ -90,7 +98,7 @@ export default async function Home() {
         {blocks.map((b) => b.products.length > 0 && <ProductCarousel key={b.id} {...b} />)}
 
         {home.showPromos && (
-          <section className="promo-grid" aria-label="სპეციალური შეთავაზებები">
+          <section className="promo-grid" aria-label={t("სპეციალური შეთავაზებები")}>
             {home.promos.slice(0, 2).map((p, i) => (
               <article key={i} className={`promo ${i === 0 ? "promo-kitchen" : "promo-iron"}`}>
                 {p.image && <img src={p.image} alt="" loading="lazy" />}

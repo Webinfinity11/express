@@ -1,14 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { MAX_QTY, useStore } from "@/context/StoreContext";
 import { useCatalog } from "@/context/CatalogContext";
 import { gel } from "@/lib/data";
+import { Link, useT } from "@/i18n/client";
 import { Dialog } from "./Dialog";
 import { Icon } from "./Icon";
 
 export function CartDrawer() {
   const { cart, cartCount, totals, setQuantity, removeFromCart, modal, openModal } = useStore();
+  const t = useT();
   const close = () => openModal(null);
   const { line } = useCatalog();
   const entries = Object.entries(cart).flatMap(([id, qty]) => {
@@ -22,10 +23,10 @@ export function CartDrawer() {
         <div>
           <span className="eyebrow">EXPRESS MIX</span>
           <h2 id="cartTitle">
-            თქვენი კალათა <span>({cartCount})</span>
+            {t("თქვენი კალათა")} <span>({cartCount})</span>
           </h2>
         </div>
-        <button className="icon-button" aria-label="კალათის დახურვა" onClick={close}>
+        <button className="icon-button" aria-label={t("კალათის დახურვა")} onClick={close}>
           <Icon name="close" />
         </button>
       </div>
@@ -34,7 +35,7 @@ export function CartDrawer() {
           entries.map(([id, qty, p]) => {
             return (
               <article className="cart-item" key={id}>
-                <Link className="cart-item-image" href={p.href} onClick={close} aria-label={`${p.name} — დეტალურად`}>
+                <Link className="cart-item-image" href={p.href} onClick={close} aria-label={t("{name} — დეტალურად", { name: p.name })}>
                   <img src={p.image} alt={p.name} />
                 </Link>
                 <div>
@@ -43,7 +44,7 @@ export function CartDrawer() {
                       {p.name}
                       {p.variantName && <small className="cart-item-variant">{p.variantName}</small>}
                     </h3>
-                    <button className="cart-item-remove" aria-label={`${p.name} — წაშლა`} onClick={() => removeFromCart(id)}>
+                    <button className="cart-item-remove" aria-label={t("{name} — წაშლა", { name: p.name })} onClick={() => removeFromCart(id)}>
                       <Icon name="trash" />
                     </button>
                   </div>
@@ -51,13 +52,13 @@ export function CartDrawer() {
                   <div className="quantity-row">
                     <div className="quantity-control">
                       <button
-                        aria-label="რაოდენობის შემცირება"
+                        aria-label={t("რაოდენობის შემცირება")}
                         onClick={() => (qty <= 1 ? removeFromCart(id) : setQuantity(id, qty - 1))}
                       >
                         <Icon name="minus" />
                       </button>
                       <span aria-live="polite">{qty}</span>
-                      <button aria-label="რაოდენობის გაზრდა" disabled={qty >= MAX_QTY} onClick={() => setQuantity(id, qty + 1)}>
+                      <button aria-label={t("რაოდენობის გაზრდა")} disabled={qty >= MAX_QTY} onClick={() => setQuantity(id, qty + 1)}>
                         <Icon name="plus" />
                       </button>
                     </div>
@@ -70,10 +71,10 @@ export function CartDrawer() {
         ) : (
           <div className="empty-state">
             <Icon name="cart" />
-            <h3>კალათა ჯერ ცარიელია</h3>
-            <p>აირჩიეთ თქვენთვის სასურველი ტექნიკა და დაამატეთ კალათაში.</p>
+            <h3>{t("კალათა ჯერ ცარიელია")}</h3>
+            <p>{t("აირჩიეთ თქვენთვის სასურველი ტექნიკა და დაამატეთ კალათაში.")}</p>
             <Link className="button primary" href="/products" onClick={close}>
-              პროდუქტების ნახვა <Icon name="arrow" />
+              {t("პროდუქტების ნახვა")} <Icon name="arrow" />
             </Link>
           </div>
         )}
@@ -81,15 +82,15 @@ export function CartDrawer() {
       {entries.length > 0 && (
         <div className="cart-footer">
           <div className="cart-total">
-            <span>ჯამი</span>
+            <span>{t("ჯამი")}</span>
             <strong>{gel(totals.sub)}</strong>
           </div>
-          <p>მიწოდების ღირებულება გამოითვლება კალათის გვერდზე.</p>
+          <p>{t("მიწოდების ღირებულება გამოითვლება კალათის გვერდზე.")}</p>
           <Link className="button primary full-width" href="/cart" onClick={close}>
-            კალათაში გადასვლა <Icon name="arrow" />
+            {t("კალათაში გადასვლა")} <Icon name="arrow" />
           </Link>
           <button className="button secondary full-width drawer-continue" onClick={close}>
-            შოპინგის გაგრძელება
+            {t("შოპინგის გაგრძელება")}
           </button>
         </div>
       )}

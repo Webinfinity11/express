@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useRef } from "react";
 import type { Brand } from "@/lib/data";
+import { Link, useT } from "@/i18n/client";
 import { Icon } from "../Icon";
 
 const brandHref = (b: string) => `/products?brand=${encodeURIComponent(b)}`;
@@ -10,12 +10,13 @@ const brandHref = (b: string) => `/products?brand=${encodeURIComponent(b)}`;
 /** ბრენდების ზოლი — ლოგო ადმინიდან; ლოგოს გარეშე ბრენდი ტექსტად ჩანს */
 export function Brands({ brands }: { brands: Brand[] }) {
   const listRef = useRef<HTMLDivElement>(null);
+  const t = useT();
   const scroll = (left: number) => listRef.current?.scrollBy({ left, behavior: "smooth" });
   if (!brands.length) return null;
 
   return (
-    <section className="brands" id="brands" aria-label="ბრენდები">
-      <button className="brand-arrow" aria-label="წინა ბრენდები" onClick={() => scroll(-250)}>
+    <section className="brands" id="brands" aria-label={t("ბრენდები")}>
+      <button className="brand-arrow" aria-label={t("წინა ბრენდები")} onClick={() => scroll(-250)}>
         <Icon name="chevron" />
       </button>
       <div className="brand-list" ref={listRef}>
@@ -31,7 +32,7 @@ export function Brands({ brands }: { brands: Brand[] }) {
           ),
         )}
       </div>
-      <button className="brand-arrow" aria-label="შემდეგი ბრენდები" onClick={() => scroll(250)}>
+      <button className="brand-arrow" aria-label={t("შემდეგი ბრენდები")} onClick={() => scroll(250)}>
         <Icon name="chevron" />
       </button>
     </section>

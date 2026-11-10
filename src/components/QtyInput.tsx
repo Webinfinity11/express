@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { MAX_QTY } from "@/context/StoreContext";
+import { useT } from "@/i18n/client";
 import { Icon } from "./Icon";
 
 export function QtyInput({ value, onChange, label }: { value: number; onChange: (n: number) => void; label: string }) {
   // ტექსტური ველი იცვლება თავისუფლად, მნიშვნელობა მტკიცდება blur/Enter-ზე
   const [draft, setDraft] = useState<string | null>(null);
+  const t = useT();
   const commit = () => {
     if (draft === null) return;
     const n = Math.trunc(Number(draft));
@@ -16,7 +18,7 @@ export function QtyInput({ value, onChange, label }: { value: number; onChange: 
 
   return (
     <div className="quantity-input">
-      <button aria-label="რაოდენობის შემცირება" disabled={value <= 1} onClick={() => onChange(value - 1)}>
+      <button aria-label={t("რაოდენობის შემცირება")} disabled={value <= 1} onClick={() => onChange(value - 1)}>
         <Icon name="minus" />
       </button>
       <input
@@ -31,7 +33,7 @@ export function QtyInput({ value, onChange, label }: { value: number; onChange: 
         onBlur={commit}
         onKeyDown={(e) => e.key === "Enter" && commit()}
       />
-      <button aria-label="რაოდენობის გაზრდა" disabled={value >= MAX_QTY} onClick={() => onChange(value + 1)}>
+      <button aria-label={t("რაოდენობის გაზრდა")} disabled={value >= MAX_QTY} onClick={() => onChange(value + 1)}>
         <Icon name="plus" />
       </button>
     </div>

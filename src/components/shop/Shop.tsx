@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog } from "@/components/Dialog";
@@ -9,6 +8,7 @@ import { ItemCard } from "@/components/ItemCard";
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { categoryHref, money } from "@/lib/data";
+import { Link, useLang, useT } from "@/i18n/client";
 
 const SORTS = ["featured", "price-asc", "price-desc", "new", "name"] as const;
 type Sort = (typeof SORTS)[number];
@@ -63,6 +63,8 @@ function serialize(f: Filters, PRICE_MAX: number) {
 
 export function Shop() {
   const router = useRouter();
+  const t = useT();
+  const lang = useLang();
   const pathname = usePathname();
   const sp = useSearchParams();
   const { favorites, openModal } = useStore();
@@ -127,34 +129,44 @@ export function Shop() {
     if (f.sort === "price-asc") out.sort((a, b) => a.price - b.price);
     if (f.sort === "price-desc") out.sort((a, b) => b.price - a.price);
     if (f.sort === "new") out.sort((a, b) => Number(b.isNew) - Number(a.isNew));
-    if (f.sort === "name") out.sort((a, b) => a.name.localeCompare(b.name, "ka"));
+    if (f.sort === "name") out.sort((a, b) => a.name.localeCompare(b.name, lang));
     return out;
-  }, [f, favorites, PRODUCTS, categoryName, subtree]);
+  }, [f, favorites, PRODUCTS, categoryName, subtree, lang]);
 
-  const title = f.q ? "ძიების შედეგები" : f.favorites ? "ფავორიტები" : f.sale ? "აქციები" : f.new ? "ახალი პროდუქტები" : categoryName(f.category);
+  const title = f.q
+    ? t("ძიების შედეგები")
+    : f.favorites
+      ? t("ფავორიტები")
+      : f.sale
+        ? t("აქციები")
+        : f.new
+          ? t("ახალი პროდუქტები")
+          : f.category === "all"
+            ? t("ყველა პროდუქტი")
+            : categoryName(f.category);
 
   const chips: [string, string, () => void][] = [];
   if (f.category !== "all") chips.push(["category", categoryName(f.category), () => update({ category: "all" })]);
-  if (f.q) chips.push(["q", "ძიება: " + f.q, () => update({ q: "" })]);
+  if (f.q) chips.push(["q", t("ძიება: {q}", { q: f.q }), () => update({ q: "" })]);
   for (const b of f.brands) chips.push(["brand:" + b, b, () => update({ brands: f.brands.filter((x) => x !== b) })]);
   if (f.min || f.max !== PRICE_MAX) chips.push(["price", `${money(f.min)}–${money(f.max)} ₾`, () => update({ min: 0, max: PRICE_MAX })]);
-  for (const [k, l] of [["sale", "ფასდაკლებით"], ["new", "ახალი"], ["favorites", "ფავორიტები"]] as [Flag, string][])
+  for (const [k, l] of [["sale", t("ფასდაკლებით")], ["new", t("ახალი")], ["favorites", t("ფავორიტები")]] as [Flag, string][])
     if (f[k]) chips.push([k, l, () => update({ [k]: false })]);
 
   const sidebar = (
-    <aside className="shop-sidebar" aria-label="კატალოგის ფილტრები">
+    <aside className="shop-sidebar" aria-label={t("კატალოგის ფილტრები")}>
       <div className="sidebar-title">
-        <h2>ფილტრები</h2>
-        <button onClick={reset}>გასუფთავება</button>
+        <h2>{t("ფილტრები")}</h2>
+        <button onClick={reset}>{t("გასუფთავება")}</button>
       </div>
       <details className="filter-section" open>
         <summary>
-          კატეგორიები <Icon name="chevron" />
+          {t("კატეგორიები")} <Icon name="chevron" />
         </summary>
         <div className="filter-section-body">
           <label className="filter-check">
             <input type="radio" name="category" checked={f.category === "all"} onChange={() => update({ category: "all" })} />
-            <span>ყველა პროდუქტი</span>
+            <span>{t("ყველა პროდუქტი")}</span>
             <span className="filter-n">{PRODUCTS.length}</span>
           </label>
           {CATEGORIES.filter((c) => !c.parent).map((top) => {
@@ -186,7 +198,7 @@ export function Shop() {
       </details>
       <details className="filter-section" open>
         <summary>
-          ფასი <Icon name="chevron" />
+          {t("ფასი")} <Icon name="chevron" />
         </summary>
         <div className="filter-section-body">
           <div className="price-fields">
@@ -197,7 +209,7 @@ export function Shop() {
                 max={PRICE_MAX}
                 defaultValue={f.min}
                 key={"min" + f.min}
-                aria-label="მინიმალური ფასი"
+                aria-label={t("მინიმალური ფასი")}
                 onBlur={(e) => {
                   const min = clampPrice(e.target.value, 0, PRICE_MAX);
                   update({ min, max: Math.max(min, f.max) });
@@ -212,7 +224,7 @@ export function Shop() {
                 max={PRICE_MAX}
                 defaultValue={f.max}
                 key={"max" + f.max}
-                aria-label="მაქსიმალური ფასი"
+                aria-label={t("მაქსიმალური ფასი")}
                 onBlur={(e) => {
                   const max = clampPrice(e.target.value, PRICE_MAX, PRICE_MAX);
                   update({ max, min: Math.min(max, f.min) });
@@ -228,7 +240,7 @@ export function Shop() {
             max={PRICE_MAX}
             step={10}
             value={f.max}
-            aria-label="ფასის ზედა ზღვარი"
+            aria-label={t("ფასის ზედა ზღვარი")}
             onChange={(e) => {
               const max = Number(e.target.value);
               update({ max, min: Math.min(max, f.min) });
@@ -242,7 +254,7 @@ export function Shop() {
       </details>
       <details className="filter-section" id="brandFilters" open>
         <summary>
-          ბრენდი <Icon name="chevron" />
+          {t("ბრენდი")} <Icon name="chevron" />
         </summary>
         <div className="filter-section-body">
           {BRANDS.map((b) => (
@@ -260,14 +272,14 @@ export function Shop() {
       </details>
       <details className="filter-section" open>
         <summary>
-          შეთავაზებები <Icon name="chevron" />
+          {t("შეთავაზებები")} <Icon name="chevron" />
         </summary>
         <div className="filter-section-body">
           {(
             [
-              ["sale", "ფასდაკლებით"],
-              ["new", "ახალი პროდუქტები"],
-              ["favorites", "მხოლოდ ფავორიტები"],
+              ["sale", t("ფასდაკლებით")],
+              ["new", t("ახალი პროდუქტები")],
+              ["favorites", t("მხოლოდ ფავორიტები")],
             ] as [Flag, string][]
           ).map(([k, l]) => (
             <label className="filter-check" key={k}>
@@ -279,10 +291,10 @@ export function Shop() {
       </details>
       <div className="filter-help">
         <Icon name="headphones" />
-        <strong>გჭირდებათ დახმარება?</strong>
-        <p>ერთად შევარჩიოთ თქვენი ტექნიკა.</p>
+        <strong>{t("გჭირდებათ დახმარება?")}</strong>
+        <p>{t("ერთად შევარჩიოთ თქვენი ტექნიკა.")}</p>
         <button className="button secondary" onClick={() => openModal("info:contact")}>
-          დაგვიკავშირდით <Icon name="arrow" />
+          {t("დაგვიკავშირდით")} <Icon name="arrow" />
         </button>
       </div>
     </aside>
@@ -294,17 +306,17 @@ export function Shop() {
         <div className="shop-hero-copy">
           <span className="eyebrow">HOME &amp; KITCHEN / THE COLLECTION</span>
           <h1>
-            ტექნიკა თქვენი
+            {t("ტექნიკა თქვენი")}
             <br />
-            <span>ყოველდღიურობისთვის.</span>
+            <span>{t("ყოველდღიურობისთვის.")}</span>
           </h1>
-          <p>თქვენი სახლი. თქვენი არჩევანი. Express Mix.</p>
+          <p>{t("თქვენი სახლი. თქვენი არჩევანი. Express Mix.")}</p>
           <span className="collection-caption">
-            {PRODUCTS.length} პროდუქტი <i></i> {STRIP.length} კატეგორია
+            {t("{n} პროდუქტი", { n: PRODUCTS.length })} <i></i> {t("{n} კატეგორია", { n: STRIP.length })}
           </span>
         </div>
         <div className="shop-hero-photo">
-          <img src="/images/hero-washer.webp" alt="სარეცხი მანქანა სახლის ინტერიერში" fetchPriority="high" />
+          <img src="/images/hero-washer.webp" alt={t("სარეცხი მანქანა სახლის ინტერიერში")} fetchPriority="high" />
         </div>
       </section>
 
@@ -320,23 +332,23 @@ export function Shop() {
             </div>
             <div className="sort-tools">
               <button className="button secondary mobile-filter-button" onClick={() => setFiltersOpen(true)}>
-                <Icon name="filter" /> ფილტრი
+                <Icon name="filter" /> {t("ფილტრი")}
               </button>
               <label className="sort-label">
-                <span className="sr-only">დალაგება</span>
+                <span className="sr-only">{t("დალაგება")}</span>
                 <select value={f.sort} onChange={(e) => update({ sort: e.target.value as Sort })}>
-                  <option value="featured">რეკომენდებული</option>
-                  <option value="price-asc">ფასი: ზრდადობით</option>
-                  <option value="price-desc">ფასი: კლებადობით</option>
-                  <option value="new">ჯერ ახალი</option>
-                  <option value="name">დასახელებით</option>
+                  <option value="featured">{t("რეკომენდებული")}</option>
+                  <option value="price-asc">{t("ფასი: ზრდადობით")}</option>
+                  <option value="price-desc">{t("ფასი: კლებადობით")}</option>
+                  <option value="new">{t("ჯერ ახალი")}</option>
+                  <option value="name">{t("დასახელებით")}</option>
                 </select>
               </label>
-              <div className="view-switch" role="group" aria-label="კატალოგის ხედი">
+              <div className="view-switch" role="group" aria-label={t("კატალოგის ხედი")}>
                 {(
                   [
-                    ["grid", "grid", "ბადის ხედი"],
-                    ["list", "list", "სიის ხედი"],
+                    ["grid", "grid", t("ბადის ხედი")],
+                    ["list", "list", t("სიის ხედი")],
                   ] as const
                 ).map(([v, icon, label]) => (
                   <button
@@ -367,10 +379,10 @@ export function Shop() {
             ) : (
               <div className="empty-state">
                 <Icon name="search" />
-                <h3>პროდუქტი ვერ მოიძებნა</h3>
-                <p>შეცვალეთ საძიებო სიტყვა ან გაასუფთავეთ ფილტრები.</p>
+                <h3>{t("პროდუქტი ვერ მოიძებნა")}</h3>
+                <p>{t("შეცვალეთ საძიებო სიტყვა ან გაასუფთავეთ ფილტრები.")}</p>
                 <button className="button primary compact" onClick={reset}>
-                  ყველა პროდუქტი <Icon name="arrow" />
+                  {t("ყველა პროდუქტი")} <Icon name="arrow" />
                 </button>
               </div>
             )}
@@ -378,7 +390,7 @@ export function Shop() {
           {list.length > 0 && (
             <div className="catalog-end">
               <span>
-                ნაჩვენებია {list.length} / {list.length} პროდუქტი
+                {t("ნაჩვენებია {n} / {total} პროდუქტი", { n: list.length, total: list.length })}
               </span>
               <span className="end-line">
                 <i></i>
@@ -392,27 +404,27 @@ export function Shop() {
         <div>
           <span className="eyebrow">LESS HOUSEWORK. MORE LIFE.</span>
           <h2>
-            კომფორტი იწყება
+            {t("კომფორტი იწყება")}
             <br />
-            <span>სწორი არჩევანით.</span>
+            <span>{t("სწორი არჩევანით.")}</span>
           </h2>
         </div>
-        <img src="/images/juicer.webp" alt="ციტრუსის საწური" loading="lazy" />
+        <img src="/images/juicer.webp" alt={t("ციტრუსის საწური")} loading="lazy" />
         <Link className="button primary" href={categoryHref("kitchen")}>
-          სამზარეულოს ტექნიკა <Icon name="arrow" />
+          {t("სამზარეულოს ტექნიკა")} <Icon name="arrow" />
         </Link>
       </div>
 
       <Dialog open={filtersOpen} onClose={() => setFiltersOpen(false)} className="filter-dialog" labelledBy="mobileFilterTitle">
         <div className="filter-dialog-heading">
-          <h2 id="mobileFilterTitle">ფილტრები</h2>
-          <button className="icon-button" aria-label="დახურვა" onClick={() => setFiltersOpen(false)}>
+          <h2 id="mobileFilterTitle">{t("ფილტრები")}</h2>
+          <button className="icon-button" aria-label={t("დახურვა")} onClick={() => setFiltersOpen(false)}>
             <Icon name="close" />
           </button>
         </div>
         {filtersOpen && sidebar}
         <button className="button primary full-width" onClick={() => setFiltersOpen(false)}>
-          შედეგების ნახვა <Icon name="arrow" />
+          {t("შედეგების ნახვა")} <Icon name="arrow" />
         </button>
       </Dialog>
     </main>

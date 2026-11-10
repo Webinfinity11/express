@@ -89,6 +89,7 @@ export async function POST(request: Request) {
         name: order.name.trim(),
         // ბანკი callback-ს მხოლოდ https-ზე აგზავნის; ლოკალურად ტესტისას სტატუსს redirect-ის გვერდი ამოწმებს
         origin,
+        lang: body.lang === "en" ? "en" : "ka",
       });
       await db.update(orders).set({ bogOrderId: bog.id }).where(eq(orders.id, saved.id));
       // მაღაზიას შეტყობინება მაშინვე (გადახდის მოლოდინში); გადახდის შემდეგ — მეორე მეილი (src/lib/bog.ts)

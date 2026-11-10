@@ -4,6 +4,7 @@ import { and, eq, isNotNull, sql } from "drizzle-orm";
 import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { after } from "next/server";
 import { sendOrderEmails } from "@/lib/mail";
+import { ensureSchema } from "@/db/ensure";
 import { db, orders, productVariants, products, promoCodes, settings, type OrderLine } from "@/db";
 
 /** საქართველოს ბანკის ონლაინ გადახდა — https://api.bog.ge/docs/en/payments/introduction */
@@ -25,16 +26,7 @@ PwIDAQAB
  * ონლაინ გადახდის ველები orders ცხრილში — თუ ჯერ არ არსებობს, ერთხელ ემატება (ცარიელი ველები,
  * არსებულ მონაცემებს არ ეხება). drizzle-kit push-ის ნაცვლად, რომ ადმინიდან/საიტიდან თავად მოეწყოს.
  */
-let schemaReady: Promise<unknown> | null = null;
-export function ensurePaymentSchema() {
-  schemaReady ??= db
-    .execute(sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status text, ADD COLUMN IF NOT EXISTS bog_order_id text`)
-    .catch((e) => {
-      schemaReady = null;
-      throw e;
-    });
-  return schemaReady;
-}
+export const ensurePaymentSchema = ensureSchema;
 
 /** პარამეტრები ადმინიდან (settings, key "_bog" — საიტის ტექსტებში არ ერევა და კლიენტს არ მიეწოდება) */
 export const BOG_SETTINGS_KEY = "_bog";
@@ -102,7 +94,11 @@ export async function createBogOrder(o: {
   total: number;
   name: string;
   origin: string;
+  /** მომხმარებლის ენა: ბანკის გვერდის ენა და დაბრუნების მისამართი (/en/...) */
+  lang?: "ka" | "en";
 }) {
+  const en = o.lang === "en";
+  const result = `${o.origin}${en ? "/en" : ""}/checkout/result?order=${encodeURIComponent(o.number)}`;
   const body = {
     callback_url: `${o.origin}/api/payments/bog/callback`,
     external_order_id: o.number,
@@ -120,8 +116,8 @@ export async function createBogOrder(o: {
       })),
     },
     redirect_urls: {
-      success: `${o.origin}/checkout/result?order=${encodeURIComponent(o.number)}`,
-      fail: `${o.origin}/checkout/result?order=${encodeURIComponent(o.number)}`,
+      success: result,
+      fail: result,
     },
     ttl: 30,
     // მხოლოდ ბარათით გადახდა (Apple/Google Pay და სხვა მეთოდები არ გამოიყენება)
@@ -131,7 +127,7 @@ export async function createBogOrder(o: {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Accept-Language": "ka",
+      "Accept-Language": en ? "en" : "ka",
       "Idempotency-Key": crypto.randomUUID(),
       Authorization: `Bearer ${await token()}`,
     },

@@ -3,12 +3,18 @@ import { asc, eq } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { brands, categories, db, productVariants, products, shippingClasses } from "@/db";
 import { PLACEHOLDER_IMAGE, type Catalog, type Product, type ShipClass } from "@/lib/data";
+import { ensureSchema } from "@/db/ensure";
+import type { Lang } from "@/i18n";
+
+/** ინგლისური ტექსტი, თუ შევსებულია; თორემ ქართული */
+const pick = (lang: Lang, ka: string, en: string | undefined) => (lang === "en" && en?.trim() ? en.trim() : ka);
 
 /** გამოქვეყნებული კატალოგი კლიენტის ფორმატში; ადმინში შენახვისას updateTag("catalog") ანახლებს. */
-export async function getCatalog(): Promise<Catalog> {
+export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
   "use cache";
   cacheLife("hours");
   cacheTag("catalog");
+  await ensureSchema();
 
   const [cats, rows, variants, brandRows, classRows] = await Promise.all([
     db.select().from(categories).orderBy(asc(categories.sortOrder), asc(categories.id)),
@@ -40,7 +46,7 @@ export async function getCatalog(): Promise<Catalog> {
         const vOld = v.oldPrice && v.oldPrice > vPrice ? v.oldPrice : v.price == null ? oldPrice : vPrice;
         return {
           id: String(v.id),
-          name: v.name,
+          name: pick(lang, v.name, v.en?.name),
           colorHex: v.colorHex,
           sku: v.sku,
           price: vPrice,
@@ -53,8 +59,8 @@ export async function getCatalog(): Promise<Catalog> {
       id: String(p.id),
       slug: p.slug,
       sku: p.sku,
-      name: p.name,
-      label: p.label,
+      name: pick(lang, p.name, p.en?.name),
+      label: pick(lang, p.label, p.en?.label),
       category: (p.categoryId && slugOf.get(p.categoryId)) || "",
       brand: p.brand,
       brandLogo: logoOf.get(p.brand.trim().toLowerCase()) ?? null,
@@ -63,15 +69,16 @@ export async function getCatalog(): Promise<Catalog> {
       image: gallery[0],
       gallery,
       scene: p.sceneImage || gallery[gallery.length - 1],
-      color: p.colorName,
+      color: pick(lang, p.colorName, p.en?.colorName),
       tone: p.colorHex || "#151515",
-      subtitle: p.subtitle,
-      desc: p.description,
-      specs: p.specs.map((s) => [s.label, s.value] as [string, string]),
+      subtitle: pick(lang, p.subtitle, p.en?.subtitle),
+      desc: pick(lang, p.description, p.en?.description),
+      specs: (lang === "en" && p.en?.specs?.length ? p.en.specs : p.specs).map((s) => [s.label, s.value] as [string, string]),
+      // ძიება ორივე ენაზე
+      keywords: lang === "en" ? [p.keywords, p.name].filter(Boolean).join(" ") : p.keywords,
       featured: p.featured,
       isNew: p.isNew,
       inStock: vs.length ? vs.some((v) => v.inStock) : p.stockQty == null ? p.inStock : p.stockQty > 0,
-      keywords: p.keywords,
       variants: vs,
       ship: (p.shippingClassId && classes.get(p.shippingClassId)) || categoryClass(p.categoryId),
     };
@@ -81,7 +88,7 @@ export async function getCatalog(): Promise<Catalog> {
     products: list,
     categories: cats.map((c) => ({
       id: c.slug,
-      name: c.name,
+      name: pick(lang, c.name, c.en?.name),
       image: c.image || "",
       parent: c.parentId ? (slugOf.get(c.parentId) ?? null) : null,
       showOnHome: c.showOnHome,

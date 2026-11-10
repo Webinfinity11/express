@@ -2,11 +2,13 @@
 
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
+import { useT } from "@/i18n/client";
 import { Icon } from "../Icon";
 
 export function Newsletter() {
   const { showToast } = useStore();
   const { home } = useCatalog().content;
+  const t = useT();
 
   return (
     <section className="newsletter-band" id="about">
@@ -32,14 +34,14 @@ export function Newsletter() {
             onSubmit={(e) => {
               e.preventDefault();
               e.currentTarget.reset();
-              showToast("გმადლობთ! გამოწერა მიღებულია.");
+              showToast(t("გმადლობთ! გამოწერა მიღებულია."));
             }}
           >
             <label className="sr-only" htmlFor="newsletterEmail">
-              ელფოსტის მისამართი
+              {t("ელფოსტის მისამართი")}
             </label>
-            <input id="newsletterEmail" type="email" required placeholder="თქვენი ელფოსტა" autoComplete="email" maxLength={180} />
-            <button type="submit" aria-label="გამოწერა">
+            <input id="newsletterEmail" type="email" required placeholder={t("თქვენი ელფოსტა")} autoComplete="email" maxLength={180} />
+            <button type="submit" aria-label={t("გამოწერა")}>
               <Icon name="arrow" />
             </button>
           </form>

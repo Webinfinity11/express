@@ -630,3 +630,10 @@ body .p-details h1{-webkit-text-stroke:.9px currentColor;paint-order:stroke fill
 
 /* BOG Pay — გადახდის მეთოდი ლოგოთი */
 .shipping-methods.payment-methods{grid-template-columns:1fr}.payment-methods .shipping-choice{align-items:center}.payment-logo{margin-left:auto;width:40px;height:auto;flex-shrink:0}
+
+/* ენის გადამრთველი */
+.lang-switch{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:650;color:#8d8d8d;letter-spacing:.5px;white-space:nowrap}
+.lang-switch a,.lang-switch span:not([aria-hidden]){color:#bdbdbd;padding:6px 2px;transition:color .2s}
+.lang-switch a:hover{color:#fff}
+.lang-switch .active{color:var(--orange)!important}
+@media(max-width:700px){.lang-switch{font-size:12px;gap:4px}}

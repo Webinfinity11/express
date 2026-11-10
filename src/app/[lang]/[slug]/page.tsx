@@ -1,26 +1,32 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Icon } from "@/components/Icon";
 import { InnerFooterBlocks } from "@/components/InnerFooterBlocks";
 import { getPages } from "@/lib/pages";
+import { toLang, type Lang } from "@/i18n";
+import { Link } from "@/i18n/client";
 
 export async function generateStaticParams() {
-  const list = await getPages();
+  const list = await getPages("ka");
   // Cache Components-ს ერთი პარამეტრი მაინც სჭირდება; არარსებული → 404
   return list.length ? list.map((p) => ({ slug: p.slug })) : [{ slug: "_" }];
 }
 
-async function find(slug: string) {
-  return (await getPages()).find((p) => p.slug === decodeURIComponent(slug));
+async function find(lang: Lang, slug: string) {
+  return (await getPages(lang)).find((p) => p.slug === decodeURIComponent(slug));
 }
 
-export async function generateMetadata({ params }: PageProps<"/[slug]">): Promise<Metadata> {
-  const page = await find((await params).slug);
+export async function generateMetadata({ params }: PageProps<"/[lang]/[slug]">): Promise<Metadata> {
+  const { lang, slug } = await params;
+  const page = await find(toLang(lang), slug);
   if (!page) return {};
-  return { title: `${page.title} | Express Mix`, description: page.metaDescription || page.subtitle || undefined };
+  return {
+    title: `${page.title} | Express Mix`,
+    description: page.metaDescription || page.subtitle || undefined,
+    alternates: { languages: { ka: `/${page.slug}`, en: `/en/${page.slug}` } },
+  };
 }
 
 /** body: ცარიელი ხაზი = ახალი აბზაცი, „## “ = ქვესათაური, „- “ = სია */
@@ -54,8 +60,9 @@ function Body({ text }: { text: string }) {
   );
 }
 
-export default async function CustomPage({ params }: PageProps<"/[slug]">) {
-  const page = await find((await params).slug);
+export default async function CustomPage({ params }: PageProps<"/[lang]/[slug]">) {
+  const { lang, slug } = await params;
+  const page = await find(toLang(lang), slug);
   if (!page) notFound();
   return (
     <>
