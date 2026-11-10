@@ -30,7 +30,7 @@ export async function getMailConfig(): Promise<MailConfig> {
     port,
     secure: e.SMTP_SECURE ? e.SMTP_SECURE !== "false" : port === 465,
     user: (e.SMTP_USER ?? "").trim(),
-    password: e.SMTP_PASS ?? "",
+    password: (e.SMTP_PASS ?? "").replace(/[\r\n]+$/, ""),
     fromName: e.MAIL_FROM_NAME || "Express Mix",
     notifyTo: e.MAIL_NOTIFY_TO ?? "",
     customerEmails: e.MAIL_CUSTOMER !== "false",
