@@ -26,4 +26,15 @@ export const ORDER_STATUS_LABELS: Record<string, string> = {
 };
 
 export const DELIVERY_LABELS: Record<string, string> = { courier: "კურიერით", pickup: "თვითგატანა" };
-export const PAYMENT_LABELS: Record<string, string> = { "on-delivery": "მიღებისას გადახდა", installment: "განვადება" };
+export const PAYMENT_LABELS: Record<string, string> = {
+  "on-delivery": "მიღებისას გადახდა",
+  installment: "განვადება",
+  card: "ბარათით ონლაინ (BOG)",
+};
+
+export const PAYMENT_STATUS_LABELS: Record<string, string> = {
+  pending: "გადახდა მოლოდინში",
+  paid: "გადახდილია",
+  failed: "გადახდა ვერ შედგა",
+  refunded: "თანხა დაბრუნებულია",
+};

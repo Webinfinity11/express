@@ -1,6 +1,6 @@
-import { and, eq, isNotNull, sql } from "drizzle-orm";
-import { revalidateTag } from "next/cache";
-import { db, orders, productVariants, products, promoCodes } from "@/db";
+import { eq } from "drizzle-orm";
+import { db, orders } from "@/db";
+import { bogEnabled, commitOrderStock, createBogOrder } from "@/lib/bog";
 import { getCatalog } from "@/lib/catalog";
 import { CITIES, indexCatalog } from "@/lib/data";
 import { PAYMENTS, normalizePhone, orderTotals, validateOrder, type OrderInput } from "@/lib/order";
@@ -49,7 +49,12 @@ export async function POST(request: Request) {
   const now = new Date();
   const number = `EM-${now.toISOString().slice(2, 10).replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-  await db.insert(orders).values({
+  const online = order.payment === "card";
+  if (online && !(await bogEnabled()))
+    return Response.json({ error: "ონლაინ გადახდა დროებით მიუწვდომელია. აირჩიეთ სხვა მეთოდი." }, { status: 422 });
+
+  const promoCode = totals.discount && promo ? promo.code : null;
+  const [saved] = await db.insert(orders).values({
     number,
     name: order.name.trim(),
     phone: normalizePhone(order.phone),
@@ -62,27 +67,35 @@ export async function POST(request: Request) {
     items: totals.lines,
     subtotal: totals.sub,
     discount: totals.discount,
-    promoCode: totals.discount && promo ? promo.code : null,
+    promoCode,
     shipping: totals.shipping,
     total: totals.total,
-  });
+    paymentStatus: online ? "pending" : null,
+  }).returning({ id: orders.id });
 
-  // პრომოკოდის გამოყენების მთვლელი და აღრიცხული მარაგი
-  if (totals.discount && promo)
-    await db.update(promoCodes).set({ usedCount: sql`${promoCodes.usedCount} + 1` }).where(eq(promoCodes.code, promo.code));
-  for (const l of totals.lines) {
-    if (l.variantId)
-      await db
-        .update(productVariants)
-        .set({ stockQty: sql`greatest(${productVariants.stockQty} - ${l.qty}, 0)` })
-        .where(and(eq(productVariants.id, l.variantId), isNotNull(productVariants.stockQty)));
-    else
-      await db
-        .update(products)
-        .set({ stockQty: sql`greatest(${products.stockQty} - ${l.qty}, 0)` })
-        .where(and(eq(products.id, l.productId), isNotNull(products.stockQty)));
+  if (online) {
+    // ონლაინ გადახდისას მარაგი და პრომოკოდი ჩამოიჭრება მხოლოდ გადახდის დადასტურების შემდეგ (src/lib/bog.ts)
+    const origin = new URL(request.url).origin;
+    try {
+      const bog = await createBogOrder({
+        number,
+        lines: totals.lines,
+        discount: totals.discount,
+        shipping: totals.shipping,
+        total: totals.total,
+        name: order.name.trim(),
+        // ბანკი callback-ს მხოლოდ https-ზე აგზავნის; ლოკალურად ტესტისას სტატუსს redirect-ის გვერდი ამოწმებს
+        origin,
+      });
+      await db.update(orders).set({ bogOrderId: bog.id }).where(eq(orders.id, saved.id));
+      return Response.json({ id: number, total: totals.total, redirect: bog.redirect });
+    } catch (e) {
+      console.error("[bog] create order failed", e);
+      await db.update(orders).set({ paymentStatus: "failed", status: "cancelled" }).where(eq(orders.id, saved.id));
+      return Response.json({ error: "ბანკთან დაკავშირება ვერ მოხერხდა. სცადეთ თავიდან ან აირჩიეთ სხვა მეთოდი." }, { status: 502 });
+    }
   }
-  revalidateTag("catalog", "max");
 
+  await commitOrderStock(totals.lines, promoCode);
   return Response.json({ id: number, total: totals.total });
 }

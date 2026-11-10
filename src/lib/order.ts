@@ -1,7 +1,7 @@
 import { CITIES, promoDiscount, shippingCost, type CatalogIndex, type City, type Promo } from "./data";
 
 export type Delivery = "courier" | "pickup";
-export type Payment = "installment";
+export type Payment = "card" | "installment";
 
 export type OrderInput = {
   name: string;
@@ -19,6 +19,7 @@ export type OrderInput = {
 export type OrderErrors = Partial<Record<"name" | "phone" | "email" | "address" | "items", string>>;
 
 export const PAYMENTS: Record<Payment, { title: string; text: string }> = {
+  card: { title: "ბარათით ონლაინ", text: "Visa / Mastercard, Apple Pay, Google Pay — საქართველოს ბანკის დაცული გვერდი" },
   installment: { title: "განვადება", text: "ოპერატორი დაგიკავშირდებათ დეტალებისთვის" },
 };
 

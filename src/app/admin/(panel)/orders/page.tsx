@@ -2,7 +2,7 @@ import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 import { db, orders } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { ORDER_STATUSES, ORDER_STATUS_LABELS } from "@/lib/admin-shared";
+import { ORDER_STATUSES, ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/admin-shared";
 import { gel } from "@/lib/data";
 import { PageTitle, StatusBadge } from "@/components/admin/ui";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
@@ -62,7 +62,14 @@ export default async function OrdersAdmin({ searchParams }: PageProps<"/admin/or
                   </Link>
                 </td>
                 <td className="p-3">{o.items.reduce((n, i) => n + i.qty, 0)} ც.</td>
-                <td className="p-3 text-right font-semibold whitespace-nowrap">{gel(o.total)}</td>
+                <td className="p-3 text-right font-semibold whitespace-nowrap">
+                  {gel(o.total)}
+                  {o.paymentStatus && (
+                    <div className={`text-xs font-normal ${o.paymentStatus === "paid" ? "text-green-700" : o.paymentStatus === "pending" ? "text-amber-600" : "text-red-600"}`}>
+                      {PAYMENT_STATUS_LABELS[o.paymentStatus] ?? o.paymentStatus}
+                    </div>
+                  )}
+                </td>
                 <td className="p-3">
                   <StatusBadge status={o.status} label={ORDER_STATUS_LABELS[o.status]} />
                 </td>

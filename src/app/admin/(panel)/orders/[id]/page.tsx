@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db, orders } from "@/db";
 import { requireAdmin } from "@/lib/auth";
-import { DELIVERY_LABELS, PAYMENT_LABELS } from "@/lib/admin-shared";
+import { DELIVERY_LABELS, PAYMENT_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/admin-shared";
 import { CITIES, gel } from "@/lib/data";
 import { Card, PageTitle } from "@/components/admin/ui";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
@@ -24,6 +24,17 @@ export default async function OrderDetail({ params }: PageProps<"/admin/orders/[
     ["მიწოდება", `${DELIVERY_LABELS[order.delivery] ?? order.delivery}${order.delivery === "courier" ? ` · ${CITIES[order.city as keyof typeof CITIES] ?? (order.city === "batumi" ? "ბათუმი" : order.city)}` : ""}`],
     ...(order.address ? ([["მისამართი", order.address]] as [string, string][]) : []),
     ["გადახდა", PAYMENT_LABELS[order.payment] ?? order.payment],
+    ...(order.paymentStatus
+      ? ([
+          [
+            "გადახდის სტატუსი",
+            <b key="ps" className={order.paymentStatus === "paid" ? "text-green-700" : order.paymentStatus === "pending" ? "text-amber-600" : "text-red-600"}>
+              {PAYMENT_STATUS_LABELS[order.paymentStatus] ?? order.paymentStatus}
+            </b>,
+          ],
+        ] as [string, React.ReactNode][])
+      : []),
+    ...(order.bogOrderId ? ([["BOG ID", <span key="bog" className="text-xs break-all">{order.bogOrderId}</span>]] as [string, React.ReactNode][]) : []),
     ...(order.comment ? ([["კომენტარი", order.comment]] as [string, string][]) : []),
     ["თარიღი", order.createdAt.toLocaleString("ka-GE", { timeZone: "Asia/Tbilisi" })],
   ];

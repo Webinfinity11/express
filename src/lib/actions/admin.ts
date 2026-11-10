@@ -9,6 +9,7 @@ import { z } from "zod";
 import { brands, categories, db, orders, pages, productVariants, products, promoCodes, settings, shippingClasses } from "@/db";
 import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
+import { BOG_SETTINGS_KEY, getBogConfig, token as bogToken } from "@/lib/bog";
 import { sanitizeSection } from "@/lib/content";
 import { contentDefaults, type ContentKey } from "@/lib/content-schema";
 import { RESERVED_SLUGS } from "@/lib/site-links";
@@ -509,4 +510,37 @@ export async function setPagePublished(id: number, published: boolean): Promise<
   await db.update(pages).set({ published, updatedAt: new Date() }).where(eq(pages.id, id));
   updateTag("pages");
   return { ok: true };
+}
+
+/* ---------- გადახდები: საქართველოს ბანკი (BOG Pay) ---------- */
+export async function saveBogSettings(form: FormData) {
+  await requireAdmin();
+  const current = await getBogConfig();
+  const [row] = await db.select().from(settings).where(eq(settings.key, BOG_SETTINGS_KEY));
+  const stored = (row?.value ?? {}) as Record<string, unknown>;
+  const clientId = String(form.get("clientId") ?? "").trim().slice(0, 200);
+  const newSecret = String(form.get("clientSecret") ?? "").trim().slice(0, 500);
+  const value = {
+    enabled: form.get("enabled") === "on",
+    clientId,
+    // ცარიელი ველი = ძველი საიდუმლო გასაღები რჩება
+    clientSecret: newSecret || (typeof stored.clientSecret === "string" ? stored.clientSecret : ""),
+  };
+  await db
+    .insert(settings)
+    .values({ key: BOG_SETTINGS_KEY, value })
+    .onConflictDoUpdate({ target: settings.key, set: { value, updatedAt: new Date() } });
+  updateTag("payments");
+
+  let result = "saved";
+  if (value.clientId && (value.clientSecret || current.clientSecret)) {
+    try {
+      await bogToken({ ...value, clientSecret: value.clientSecret || current.clientSecret });
+      result = "connected";
+    } catch (e) {
+      console.error("[bog] test failed", e);
+      result = "auth-failed";
+    }
+  }
+  redirect(`/admin/payments?r=${result}`);
 }

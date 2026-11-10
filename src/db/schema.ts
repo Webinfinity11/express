@@ -135,6 +135,9 @@ export const orders = pgTable("orders", {
   address: text("address").notNull().default(""),
   comment: text("comment").notNull().default(""),
   payment: text("payment").notNull(),
+  // ონლაინ გადახდა (საქართველოს ბანკი): null = არ საჭიროებს; pending → paid | failed
+  paymentStatus: text("payment_status"),
+  bogOrderId: text("bog_order_id"),
   items: jsonb("items").$type<OrderLine[]>().notNull(),
   // თანხები თეთრებში
   subtotal: integer("subtotal").notNull(),

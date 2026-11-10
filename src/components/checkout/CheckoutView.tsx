@@ -31,7 +31,7 @@ function Steps({ step }: { step: 2 | 3 }) {
   );
 }
 
-export function CheckoutView() {
+export function CheckoutView({ cardEnabled = false }: { cardEnabled?: boolean }) {
   const store = useStore();
   const { cart, cartCount, totals: t, delivery, city, coupon } = store;
   const { line, content } = useCatalog();
@@ -42,7 +42,8 @@ export function CheckoutView() {
   });
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", comment: "" });
-  const [payment, setPayment] = useState<Payment>("installment");
+  const methods = (Object.keys(PAYMENTS) as Payment[]).filter((k) => k !== "card" || cardEnabled);
+  const [payment, setPayment] = useState<Payment>(methods[0]);
   const [errors, setErrors] = useState<OrderErrors>({});
   const [sending, setSending] = useState(false);
   const [serverError, setServerError] = useState("");
@@ -74,6 +75,11 @@ export function CheckoutView() {
       if (!res.ok) {
         if (data.errors) setErrors(data.errors);
         setServerError(data.error ?? "შეკვეთა ვერ გაიგზავნა. გადაამოწმეთ მონაცემები.");
+        return;
+      }
+      if (data.redirect) {
+        // ბანკის გადახდის გვერდი — კალათა გადახდის დადასტურების შემდეგ სუფთავდება
+        window.location.href = data.redirect;
         return;
       }
       setDone({ id: data.id, total: data.total, phone: form.phone, delivery });
@@ -229,7 +235,7 @@ export function CheckoutView() {
               <h2>გადახდის მეთოდი</h2>
             </div>
             <div className="shipping-methods">
-              {(Object.keys(PAYMENTS) as Payment[]).map((k) => (
+              {methods.map((k) => (
                 <label key={k} className={`shipping-choice${payment === k ? " selected" : ""}`}>
                   <input type="radio" name="payment" checked={payment === k} onChange={() => setPayment(k)} />
                   <span>
@@ -306,7 +312,7 @@ export function CheckoutView() {
             </div>
             {serverError && <p className="field-error checkout-server-error">{serverError}</p>}
             <button className="button primary full-width checkout-cta" type="submit" disabled={sending}>
-              {sending ? "იგზავნება..." : "შეკვეთის დადასტურება"} <Icon name="check" />
+              {sending ? "იგზავნება..." : payment === "card" ? "გადახდაზე გადასვლა" : "შეკვეთის დადასტურება"} <Icon name="check" />
             </button>
             <div className="secure-note">
               <Icon name="lock" /> თქვენი მონაცემები დაცულია
