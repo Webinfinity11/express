@@ -32,7 +32,7 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
           <form action={saveBogSettings} className="grid gap-4 max-w-xl">
             <label className="flex items-center gap-2 font-semibold">
               <input type="checkbox" name="enabled" defaultChecked={enabled} className="size-4 accent-[#ff5a00]" />
-              ბარათით ონლაინ გადახდა ჩართულია
+              ბარათით გადახდა ჩართულია
             </label>
             <label className="grid gap-1">
               <span className="text-sm text-slate-500">Client ID</span>
@@ -69,7 +69,7 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
               <br />
               <code className="break-all text-xs bg-slate-100 rounded px-1.5 py-1 inline-block mt-1">https://emix.ge/api/payments/bog/callback</code>
             </p>
-            <p>გასაღებების შენახვის შემდეგ გაფორმების გვერდზე გამოჩნდება მეთოდი „ბარათით ონლაინ“. გადახდის სტატუსი ჩანს შეკვეთის გვერდზე.</p>
+            <p>გასაღებების შენახვის შემდეგ გაფორმების გვერდზე გამოჩნდება მეთოდი „ბარათით გადახდა“. გადახდის სტატუსი ჩანს შეკვეთის გვერდზე.</p>
           </div>
         </Card>
       </div>

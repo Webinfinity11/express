@@ -29,7 +29,7 @@ export const DELIVERY_LABELS: Record<string, string> = { courier: "კური�
 export const PAYMENT_LABELS: Record<string, string> = {
   "on-delivery": "მიღებისას გადახდა",
   installment: "განვადება",
-  card: "ბარათით ონლაინ (BOG)",
+  card: "ბარათით გადახდა (BOG)",
   manual: "ოპერატორთან შეთანხმებით",
 };
 
