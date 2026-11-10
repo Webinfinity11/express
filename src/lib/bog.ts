@@ -213,7 +213,7 @@ export async function syncBogOrder(bogOrderId: string) {
   if (next === "paid" && order.paymentStatus !== "paid") {
     await commitOrderStock(order.items, order.discount ? order.promoCode : null);
     // მეილი გადახდილ შეკვეთაზე — პასუხს არ აყოვნებს
-    after(() => sendOrderEmails(updated));
+    after(() => sendOrderEmails(updated, undefined, "paid"));
   }
   return updated;
 }

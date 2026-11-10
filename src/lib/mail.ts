@@ -109,7 +109,7 @@ const wrap = (body: string) =>
  * შეკვეთის შეტყობინებები: მაღაზიას (notifyTo) და მომხმარებელს (თუ ელფოსტა მიუთითა).
  * შეცდომა შეკვეთას არ აფერხებს — მხოლოდ ლოგში იწერება.
  */
-export async function sendOrderEmails(o: Order, origin = "https://emix.ge") {
+export async function sendOrderEmails(o: Order, origin = "https://emix.ge", kind: "new" | "paid" = "new") {
   let c: MailConfig;
   try {
     c = await getMailConfig();
@@ -119,22 +119,31 @@ export async function sendOrderEmails(o: Order, origin = "https://emix.ge") {
   }
   if (!ready(c)) return;
   const paid = o.paymentStatus === "paid";
+  const awaitingPayment = o.paymentStatus === "pending";
   const jobs: Promise<unknown>[] = [];
+  // მაღაზიას: ყოველ გაფორმებულ შეკვეთაზე მაშინვე; ბარათით გადახდისას — კიდევ ერთხელ, როცა გადაიხდება
+  const heading =
+    kind === "paid" ? `შეკვეთა ${esc(o.number)} გადახდილია ✓` : `ახალი შეკვეთა ${esc(o.number)}${awaitingPayment ? " — ელოდება ბარათით გადახდას" : ""}`;
+  const subject =
+    kind === "paid"
+      ? `გადახდილია: შეკვეთა ${o.number} — ${gel(o.total)}`
+      : `ახალი შეკვეთა ${o.number} — ${gel(o.total)}${awaitingPayment ? " (გადახდის მოლოდინში)" : ""}`;
 
   const shopTo = c.notifyTo || c.user;
   jobs.push(
     sendMail(
       c,
       shopTo,
-      `ახალი შეკვეთა ${o.number} — ${gel(o.total)}${paid ? " (გადახდილია)" : ""}`,
+      subject,
       wrap(
-        `<h2 style="margin:0 0 12px">ახალი შეკვეთა ${esc(o.number)}</h2>${details(o)}<div style="height:16px"></div>${orderTable(o)}<p style="margin-top:20px"><a href="${origin}/admin/orders/${o.id}" style="background:#ff5a00;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">ადმინში ნახვა</a></p>`,
+        `<h2 style="margin:0 0 12px">${heading}</h2>${details(o)}<div style="height:16px"></div>${orderTable(o)}<p style="margin-top:20px"><a href="${origin}/admin/orders/${o.id}" style="background:#ff5a00;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">ადმინში ნახვა</a></p>`,
       ),
       o.email || undefined,
     ),
   );
 
-  if (c.customerEmails && o.email) {
+  // მომხმარებელს: დადასტურება ერთხელ — ბარათით გადახდისას მხოლოდ წარმატებული გადახდის შემდეგ
+  if (c.customerEmails && o.email && !awaitingPayment) {
     jobs.push(
       sendMail(
         c,

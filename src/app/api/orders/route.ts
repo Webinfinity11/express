@@ -91,6 +91,8 @@ export async function POST(request: Request) {
         origin,
       });
       await db.update(orders).set({ bogOrderId: bog.id }).where(eq(orders.id, saved.id));
+      // მაღაზიას შეტყობინება მაშინვე (გადახდის მოლოდინში); გადახდის შემდეგ — მეორე მეილი (src/lib/bog.ts)
+      after(() => sendOrderEmails({ ...saved, bogOrderId: bog.id }, origin.startsWith("https") ? origin : undefined));
       return Response.json({ id: number, total: totals.total, redirect: bog.redirect });
     } catch (e) {
       console.error("[bog] create order failed", e);
