@@ -627,3 +627,6 @@ body .p-details h1{-webkit-text-stroke:.9px currentColor;paint-order:stroke fill
 /* Brand logos instead of text */
 .p-brand-logo{height:34px;width:auto;max-width:160px;object-fit:contain;display:block}
 .item-brand-logo{height:20px;width:auto;max-width:90px;object-fit:contain;display:block}
+
+/* BOG Pay — გადახდის მეთოდი ლოგოთი */
+.shipping-methods.payment-methods{grid-template-columns:1fr}.payment-methods .shipping-choice{align-items:center}.payment-logo{margin-left:auto;width:40px;height:auto;flex-shrink:0}

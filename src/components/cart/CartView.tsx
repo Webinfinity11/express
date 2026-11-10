@@ -206,9 +206,8 @@ export function CartView() {
                 <span>
                   <Icon name="card" /> ბარათი
                 </span>
-                <span>
-                  <Icon name="card" /> განვადება
-                </span>
+                <span>Apple Pay</span>
+                <span>Google Pay</span>
               </div>
             </section>
             {t.saved > 0 && (

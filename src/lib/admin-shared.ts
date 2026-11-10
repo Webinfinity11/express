@@ -30,6 +30,7 @@ export const PAYMENT_LABELS: Record<string, string> = {
   "on-delivery": "მიღებისას გადახდა",
   installment: "განვადება",
   card: "ბარათით ონლაინ (BOG)",
+  manual: "ოპერატორთან შეთანხმებით",
 };
 
 export const PAYMENT_STATUS_LABELS: Record<string, string> = {

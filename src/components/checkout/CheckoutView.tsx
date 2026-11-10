@@ -42,7 +42,8 @@ export function CheckoutView({ cardEnabled = false }: { cardEnabled?: boolean })
   });
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", comment: "" });
-  const methods = (Object.keys(PAYMENTS) as Payment[]).filter((k) => k !== "card" || cardEnabled);
+  // განვადება არ გვაქვს: ონლაინ ბარათი, ან (თუ BOG გამორთულია) ოპერატორთან შეთანხმება
+  const methods: Payment[] = cardEnabled ? ["card"] : ["manual"];
   const [payment, setPayment] = useState<Payment>(methods[0]);
   const [errors, setErrors] = useState<OrderErrors>({});
   const [sending, setSending] = useState(false);
@@ -234,7 +235,7 @@ export function CheckoutView({ cardEnabled = false }: { cardEnabled?: boolean })
               <Icon name="card" />
               <h2>გადახდის მეთოდი</h2>
             </div>
-            <div className="shipping-methods">
+            <div className="shipping-methods payment-methods">
               {methods.map((k) => (
                 <label key={k} className={`shipping-choice${payment === k ? " selected" : ""}`}>
                   <input type="radio" name="payment" checked={payment === k} onChange={() => setPayment(k)} />
@@ -242,6 +243,7 @@ export function CheckoutView({ cardEnabled = false }: { cardEnabled?: boolean })
                     <strong>{PAYMENTS[k].title}</strong>
                     <small>{PAYMENTS[k].text}</small>
                   </span>
+                  {PAYMENTS[k].logo && <img className="payment-logo" src={PAYMENTS[k].logo} alt="საქართველოს ბანკი" width={40} height={34} />}
                 </label>
               ))}
             </div>

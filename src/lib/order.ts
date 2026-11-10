@@ -1,7 +1,8 @@
 import { CITIES, promoDiscount, shippingCost, type CatalogIndex, type City, type Promo } from "./data";
 
 export type Delivery = "courier" | "pickup";
-export type Payment = "card" | "installment";
+// manual — ონლაინ გადახდა გამორთულია: ოპერატორი დაუკავშირდება
+export type Payment = "card" | "manual";
 
 export type OrderInput = {
   name: string;
@@ -18,9 +19,13 @@ export type OrderInput = {
 
 export type OrderErrors = Partial<Record<"name" | "phone" | "email" | "address" | "items", string>>;
 
-export const PAYMENTS: Record<Payment, { title: string; text: string }> = {
-  card: { title: "ბარათით ონლაინ", text: "Visa / Mastercard, Apple Pay, Google Pay — საქართველოს ბანკის დაცული გვერდი" },
-  installment: { title: "განვადება", text: "ოპერატორი დაგიკავშირდებათ დეტალებისთვის" },
+export const PAYMENTS: Record<Payment, { title: string; text: string; logo?: string }> = {
+  card: {
+    title: "ბარათით ონლაინ",
+    text: "Visa / Mastercard, Apple Pay, Google Pay — საქართველოს ბანკის დაცული გვერდი",
+    logo: "/images/payments/bog.svg",
+  },
+  manual: { title: "ოპერატორთან შეთანხმებით", text: "ოპერატორი დაგიკავშირდებათ გადახდის დეტალებისთვის" },
 };
 
 const PHONE_RE = /^5\d{8}$/;
