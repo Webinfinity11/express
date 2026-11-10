@@ -122,6 +122,8 @@ export async function createBogOrder(o: {
       fail: `${o.origin}/checkout/result?order=${encodeURIComponent(o.number)}`,
     },
     ttl: 30,
+    // მხოლოდ ბარათით გადახდა (Apple/Google Pay და სხვა მეთოდები არ გამოიყენება)
+    payment_method: ["card"],
   };
   const res = await fetch(`${API}/ecommerce/orders`, {
     method: "POST",

@@ -204,10 +204,10 @@ export function CartView() {
               </div>
               <div className="payment-options">
                 <span>
-                  <Icon name="card" /> ბარათი
+                  <Icon name="card" /> ბარათით გადახდა
                 </span>
-                <span>Apple Pay</span>
-                <span>Google Pay</span>
+                <span>Visa</span>
+                <span>Mastercard</span>
               </div>
             </section>
             {t.saved > 0 && (

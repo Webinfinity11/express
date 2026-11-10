@@ -22,7 +22,7 @@ export type OrderErrors = Partial<Record<"name" | "phone" | "email" | "address" 
 export const PAYMENTS: Record<Payment, { title: string; text: string; logo?: string }> = {
   card: {
     title: "ბარათით ონლაინ",
-    text: "Visa / Mastercard, Apple Pay, Google Pay — საქართველოს ბანკის დაცული გვერდი",
+    text: "Visa და Mastercard ბარათებით — საქართველოს ბანკის დაცულ გვერდზე",
     logo: "/images/payments/bog.svg",
   },
   manual: { title: "ოპერატორთან შეთანხმებით", text: "ოპერატორი დაგიკავშირდებათ გადახდის დეტალებისთვის" },
