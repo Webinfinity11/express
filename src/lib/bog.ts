@@ -2,6 +2,8 @@ import "server-only";
 import { createVerify } from "node:crypto";
 import { and, eq, isNotNull, sql } from "drizzle-orm";
 import { cacheLife, cacheTag, revalidateTag } from "next/cache";
+import { after } from "next/server";
+import { sendOrderEmails } from "@/lib/mail";
 import { db, orders, productVariants, products, promoCodes, settings, type OrderLine } from "@/db";
 
 /** საქართველოს ბანკის ონლაინ გადახდა — https://api.bog.ge/docs/en/payments/introduction */
@@ -208,6 +210,10 @@ export async function syncBogOrder(bogOrderId: string) {
     .where(and(eq(orders.id, order.id), order.paymentStatus ? eq(orders.paymentStatus, order.paymentStatus) : undefined))
     .returning();
   if (!updated) return (await db.select().from(orders).where(eq(orders.id, order.id)))[0];
-  if (next === "paid" && order.paymentStatus !== "paid") await commitOrderStock(order.items, order.discount ? order.promoCode : null);
+  if (next === "paid" && order.paymentStatus !== "paid") {
+    await commitOrderStock(order.items, order.discount ? order.promoCode : null);
+    // მეილი გადახდილ შეკვეთაზე — პასუხს არ აყოვნებს
+    after(() => sendOrderEmails(updated));
+  }
   return updated;
 }

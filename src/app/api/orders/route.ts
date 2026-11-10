@@ -1,5 +1,7 @@
 import { eq } from "drizzle-orm";
+import { after } from "next/server";
 import { db, orders } from "@/db";
+import { sendOrderEmails } from "@/lib/mail";
 import { bogEnabled, commitOrderStock, createBogOrder, ensurePaymentSchema } from "@/lib/bog";
 import { getCatalog } from "@/lib/catalog";
 import { CITIES, indexCatalog } from "@/lib/data";
@@ -72,7 +74,7 @@ export async function POST(request: Request) {
     shipping: totals.shipping,
     total: totals.total,
     paymentStatus: online ? "pending" : null,
-  }).returning({ id: orders.id });
+  }).returning();
 
   if (online) {
     // ონლაინ გადახდისას მარაგი და პრომოკოდი ჩამოიჭრება მხოლოდ გადახდის დადასტურების შემდეგ (src/lib/bog.ts)
@@ -98,5 +100,7 @@ export async function POST(request: Request) {
   }
 
   await commitOrderStock(totals.lines, promoCode);
+  const origin = new URL(request.url).origin;
+  after(() => sendOrderEmails(saved, origin.startsWith("https") ? origin : undefined));
   return Response.json({ id: number, total: totals.total });
 }

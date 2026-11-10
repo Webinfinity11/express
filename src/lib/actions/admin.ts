@@ -10,6 +10,7 @@ import { brands, categories, db, orders, pages, productVariants, products, promo
 import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { BOG_SETTINGS_KEY, getBogConfig, token as bogToken } from "@/lib/bog";
+import { MAIL_SETTINGS_KEY, getMailConfig, sendMail } from "@/lib/mail";
 import { sanitizeSection } from "@/lib/content";
 import { contentDefaults, type ContentKey } from "@/lib/content-schema";
 import { RESERVED_SLUGS } from "@/lib/site-links";
@@ -543,4 +544,49 @@ export async function saveBogSettings(form: FormData) {
     }
   }
   redirect(`/admin/payments?r=${result}`);
+}
+/* ---------- მეილი (SMTP) ---------- */
+export async function saveMailSettings(form: FormData) {
+  await requireAdmin();
+  const old = await getMailConfig();
+  const s = (k: string, max = 300) => String(form.get(k) ?? "").trim().slice(0, max);
+  const security = s("security");
+  const newPassword = String(form.get("password") ?? "").slice(0, 300);
+  const value = {
+    enabled: form.get("enabled") === "on",
+    host: s("host"),
+    port: Number(s("port")) || (security === "ssl" ? 465 : 587),
+    secure: security === "ssl",
+    user: s("user"),
+    // ცარიელი ველი = ძველი პაროლი რჩება
+    password: newPassword || old.password,
+    fromName: s("fromName", 80) || "Express Mix",
+    notifyTo: s("notifyTo", 500),
+    customerEmails: form.get("customerEmails") === "on",
+  };
+  await db
+    .insert(settings)
+    .values({ key: MAIL_SETTINGS_KEY, value })
+    .onConflictDoUpdate({ target: settings.key, set: { value, updatedAt: new Date() } });
+
+  let result = "saved";
+  if (form.get("test") === "1") {
+    if (!value.host || !value.user || !value.password) result = "missing";
+    else {
+      try {
+        await sendMail(
+          value,
+          value.notifyTo || value.user,
+          "Express Mix — სატესტო მეილი",
+          `<p>მეილი წარმატებით არის დაკავშირებული ✓</p><p>ამ მისამართზე მოვა ახალი შეკვეთების შეტყობინებები.</p>`,
+        );
+        result = "sent";
+      } catch (e) {
+        console.error("[mail] test failed", e);
+        const msg = e instanceof Error ? e.message : String(e);
+        redirect(`/admin/email?r=failed&m=${encodeURIComponent(msg.slice(0, 200))}`);
+      }
+    }
+  }
+  redirect(`/admin/email?r=${result}`);
 }
