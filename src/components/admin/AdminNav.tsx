@@ -14,7 +14,6 @@ const links = [
   ["/admin/promos", "პრომოკოდები"],
   ["/admin/shipping", "მიწოდება"],
   ["/admin/payments", "გადახდები"],
-  ["/admin/email", "მეილი"],
   ["/admin/pages", "გვერდები და მენიუ"],
 ] as const;
 

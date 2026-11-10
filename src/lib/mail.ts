@@ -1,12 +1,14 @@
 import "server-only";
 import nodemailer from "nodemailer";
-import { eq } from "drizzle-orm";
-import { db, settings, type orders } from "@/db";
+import type { orders } from "@/db";
 import { CITIES, gel } from "@/lib/data";
 import { DELIVERY_LABELS, PAYMENT_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/admin-shared";
 
-/** მეილის პარამეტრები ადმინიდან (settings, key "_mail" — კლიენტს არ მიეწოდება) */
-export const MAIL_SETTINGS_KEY = "_mail";
+/**
+ * მეილის პარამეტრები — მხოლოდ სერვერის env ცვლადებიდან (Vercel), ადმინში არ ჩანს:
+ * SMTP_HOST, SMTP_PORT (465), SMTP_SECURE ("false" = STARTTLS/587), SMTP_USER, SMTP_PASS,
+ * MAIL_FROM_NAME (Express Mix), MAIL_NOTIFY_TO (ცარიელი = SMTP_USER; რამდენიმე — მძიმით), MAIL_CUSTOMER ("false" = მომხმარებელს არა)
+ */
 export type MailConfig = {
   enabled: boolean;
   host: string;
@@ -20,18 +22,18 @@ export type MailConfig = {
 };
 
 export async function getMailConfig(): Promise<MailConfig> {
-  const [row] = await db.select().from(settings).where(eq(settings.key, MAIL_SETTINGS_KEY));
-  const v = (row?.value ?? {}) as Partial<MailConfig>;
+  const e = process.env;
+  const port = Number(e.SMTP_PORT) || 465;
   return {
-    enabled: v.enabled ?? true,
-    host: v.host ?? "",
-    port: Number(v.port) || 465,
-    secure: v.secure ?? true,
-    user: v.user ?? "",
-    password: v.password ?? "",
-    fromName: v.fromName || "Express Mix",
-    notifyTo: v.notifyTo ?? "",
-    customerEmails: v.customerEmails ?? true,
+    enabled: true,
+    host: (e.SMTP_HOST ?? "").trim(),
+    port,
+    secure: e.SMTP_SECURE ? e.SMTP_SECURE !== "false" : port === 465,
+    user: (e.SMTP_USER ?? "").trim(),
+    password: e.SMTP_PASS ?? "",
+    fromName: e.MAIL_FROM_NAME || "Express Mix",
+    notifyTo: e.MAIL_NOTIFY_TO ?? "",
+    customerEmails: e.MAIL_CUSTOMER !== "false",
   };
 }
 
