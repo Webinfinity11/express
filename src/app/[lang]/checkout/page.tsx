@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CheckoutView } from "@/components/checkout/CheckoutView";
 import { bogEnabledCached } from "@/lib/bog";
-import { keepzEnabledCached } from "@/lib/keepz";
+import { flittEnabledCached } from "@/lib/flitt";
 import { getT, toLang } from "@/i18n";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/checkout">): Promise<Metadata> {
@@ -12,11 +12,11 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/checkout">
 
 export default async function CheckoutPage({ params }: PageProps<"/[lang]/checkout">) {
   const t = getT(toLang((await params).lang));
-  const [cardEnabled, keepzEnabled] = await Promise.all([bogEnabledCached(), keepzEnabledCached()]);
+  const [cardEnabled, flittEnabled] = await Promise.all([bogEnabledCached(), flittEnabledCached()]);
   return (
     <>
       <Breadcrumbs items={[{ label: t("კალათა"), href: "/cart" }, { label: t("გაფორმება") }]} />
-      <CheckoutView cardEnabled={cardEnabled} keepzEnabled={keepzEnabled} />
+      <CheckoutView cardEnabled={cardEnabled} flittEnabled={flittEnabled} />
     </>
   );
 }

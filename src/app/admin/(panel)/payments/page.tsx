@@ -2,8 +2,8 @@ import { eq } from "drizzle-orm";
 import { db, settings } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { ensurePaymentSchema } from "@/lib/bog";
-import { saveBogSettings, saveKeepzSettings } from "@/lib/actions/admin";
-import { KEEPZ_DEFAULT_URL, KEEPZ_SETTINGS_KEY, type KeepzConfig } from "@/lib/keepz";
+import { saveBogSettings, saveFlittSettings } from "@/lib/actions/admin";
+import { FLITT_SETTINGS_KEY, type FlittConfig } from "@/lib/flitt";
 import { BOG_SETTINGS_KEY } from "@/lib/bog";
 import { Card, PageTitle } from "@/components/admin/ui";
 
@@ -11,9 +11,9 @@ const MESSAGES: Record<string, [string, string]> = {
   connected: ["bg-green-50 text-green-800 border-green-200", "შენახულია — ბანკთან კავშირი წარმატებულია ✓"],
   "auth-failed": ["bg-red-50 text-red-800 border-red-200", "შენახულია, მაგრამ ბანკმა გასაღებები ვერ დაადასტურა — გადაამოწმეთ Client ID და Secret Key."],
   saved: ["bg-slate-50 text-slate-700 border-slate-200", "შენახულია."],
-  "keepz-reached": ["bg-green-50 text-green-800 border-green-200", "Keepz: შენახულია — სერვერმა მოთხოვნა მიიღო ✓ (საბოლოოდ შეამოწმეთ სატესტო გადახდით)"],
-  "keepz-failed": ["bg-red-50 text-red-800 border-red-200", "Keepz: შენახულია, მაგრამ კავშირი ვერ დამყარდა — გადაამოწმეთ ID-ები და გასაღებები."],
-  "keepz-saved": ["bg-slate-50 text-slate-700 border-slate-200", "Keepz: შენახულია."],
+  "flitt-connected": ["bg-green-50 text-green-800 border-green-200", "Flitt: შენახულია — კავშირი წარმატებულია ✓"],
+  "flitt-failed": ["bg-red-50 text-red-800 border-red-200", "Flitt: შენახულია, მაგრამ Flitt-მა მონაცემები ვერ დაადასტურა — გადაამოწმეთ Merchant ID და Secret Key."],
+  "flitt-saved": ["bg-slate-50 text-slate-700 border-slate-200", "Flitt: შენახულია."],
 };
 
 export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/payments">) {
@@ -28,8 +28,9 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
   const secretHint = hasSecret ? `••••••••${v.clientSecret!.slice(-4)}` : "";
   const msg = typeof r === "string" ? MESSAGES[r] : undefined;
   const detail = typeof sp.m === "string" ? sp.m : "";
-  const [kzRow] = await db.select().from(settings).where(eq(settings.key, KEEPZ_SETTINGS_KEY));
-  const kz = (kzRow?.value ?? {}) as Partial<KeepzConfig>;
+  const [flRow] = await db.select().from(settings).where(eq(settings.key, FLITT_SETTINGS_KEY));
+  const fl = (flRow?.value ?? {}) as Partial<FlittConfig>;
+  const flHint = fl.secretKey ? `••••${fl.secretKey.slice(-4)}` : "";
 
   return (
     <>
@@ -86,55 +87,26 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
           </div>
         </Card>
 
-        <Card title="Keepz — კრედო ბანკი">
-          <form action={saveKeepzSettings} className="grid gap-4 max-w-xl">
+        <Card title="Flitt — ბარათი, Apple Pay, Google Pay">
+          <form action={saveFlittSettings} className="grid gap-4 max-w-xl">
             <label className="flex items-center gap-2 font-semibold">
-              <input type="checkbox" name="enabled" defaultChecked={kz.enabled ?? true} className="size-4 accent-[#ff5a00]" />
-              Keepz-ით გადახდა ჩართულია
+              <input type="checkbox" name="enabled" defaultChecked={fl.enabled ?? true} className="size-4 accent-[#ff5a00]" />
+              Flitt-ით გადახდა ჩართულია
             </label>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <label className="grid gap-1">
-                <span className="text-sm text-slate-500">Integrator ID</span>
-                <input name="integratorId" defaultValue={kz.integratorId ?? ""} autoComplete="off" spellCheck={false} className={inp} />
-              </label>
-              <label className="grid gap-1">
-                <span className="text-sm text-slate-500">Receiver ID</span>
-                <input name="receiverId" defaultValue={kz.receiverId ?? ""} autoComplete="off" spellCheck={false} className={inp} />
-              </label>
-            </div>
             <label className="grid gap-1">
-              <span className="text-sm text-slate-500">Keepz Public Key (PEM)</span>
-              <textarea
-                name="publicKey"
-                rows={3}
-                spellCheck={false}
-                placeholder={kz.publicKey ? "შენახულია — შეცვლისთვის ჩასვით ახალი" : "-----BEGIN PUBLIC KEY----- …"}
+              <span className="text-sm text-slate-500">Merchant ID</span>
+              <input name="merchantId" defaultValue={fl.merchantId ?? ""} inputMode="numeric" autoComplete="off" spellCheck={false} className={inp} />
+            </label>
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-500">Payment Secret Key</span>
+              <input
+                name="secretKey"
+                type="password"
+                autoComplete="new-password"
+                placeholder={fl.secretKey ? `შენახულია (${flHint}) — შეცვლისთვის ჩაწერეთ ახალი` : "ჩაწერეთ Secret Key"}
                 className={inp}
               />
             </label>
-            <label className="grid gap-1">
-              <span className="text-sm text-slate-500">Private Key (PEM)</span>
-              <textarea
-                name="privateKey"
-                rows={3}
-                spellCheck={false}
-                placeholder={kz.privateKey ? "შენახულია — შეცვლისთვის ჩასვით ახალი" : "-----BEGIN PRIVATE KEY----- …"}
-                className={inp}
-              />
-            </label>
-            <details className="text-sm">
-              <summary className="cursor-pointer text-slate-500">დამატებით</summary>
-              <div className="grid sm:grid-cols-[1fr_140px] gap-3 mt-3">
-                <label className="grid gap-1">
-                  <span className="text-sm text-slate-500">API მისამართი</span>
-                  <input name="baseUrl" defaultValue={kz.baseUrl || KEEPZ_DEFAULT_URL} spellCheck={false} className={inp} />
-                </label>
-                <label className="grid gap-1">
-                  <span className="text-sm text-slate-500">Receiver type</span>
-                  <input name="receiverType" defaultValue={kz.receiverType || "BRANCH"} spellCheck={false} className={inp} />
-                </label>
-              </div>
-            </details>
             <div>
               <button className="rounded-lg bg-[#ff5a00] px-5 py-2.5 font-semibold text-white hover:bg-[#e65100]">
                 შენახვა და კავშირის შემოწმება
@@ -142,15 +114,16 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
             </div>
           </form>
         </Card>
-        <Card title="Keepz — ინფორმაცია">
+        <Card title="Flitt — ინფორმაცია">
           <div className="grid gap-3 text-sm text-slate-600">
-            <p>Integrator ID, Receiver ID და გასაღებებს (RSA) Keepz გასცემს კრედო ბანკთან / Keepz-თან ხელშეკრულების შემდეგ.</p>
+            <p>Merchant ID და Payment Secret Key ჩანს Flitt-ის კაბინეტში (portal.flitt.com → მერჩანტის პარამეტრები).</p>
+            <p>Apple Pay და Google Pay ჩაირთვება Flitt-ის კაბინეტში (Payment methods) — საიტზე დამატებით არაფერია საჭირო.</p>
             <p>
-              Callback URL (თუ მოგთხოვენ):
+              Callback URL ავტომატურად იგზავნება:
               <br />
-              <code className="break-all text-xs bg-slate-100 rounded px-1.5 py-1 inline-block mt-1">https://emix.ge/api/payments/keepz/callback</code>
+              <code className="break-all text-xs bg-slate-100 rounded px-1.5 py-1 inline-block mt-1">https://emix.ge/api/payments/flitt/callback</code>
             </p>
-            <p>შენახვის შემდეგ გაფორმების გვერდზე გამოჩნდება მეთოდი „კრედო ბანკი — Keepz“.</p>
+            <p>სატესტოდ: Merchant ID <code>1549901</code>, Secret Key <code>test</code>, ბარათი <code>4444555511116666</code>.</p>
           </div>
         </Card>
       </div>

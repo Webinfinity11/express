@@ -129,6 +129,6 @@ export const cart: Record<string, string> = {
   "პრომოკოდის ვადა ამოიწურა.": "This promo code has expired.",
   "პრომოკოდის ლიმიტი ამოიწურა.": "This promo code has reached its usage limit.",
   "კავშირის შეცდომა. სცადეთ ხელახლა.": "Connection error. Please try again.",
-  "კრედო ბანკი — Keepz": "Credo Bank — Keepz",
-  "ბარათით ან ბანკის აპლიკაციით Keepz-ის დაცულ გვერდზე": "By card or banking app on the secure Keepz page",
+  "ბარათი, Apple Pay, Google Pay": "Card, Apple Pay, Google Pay",
+  "Visa, Mastercard, Apple Pay და Google Pay — Flitt-ის დაცულ გვერდზე": "Visa, Mastercard, Apple Pay and Google Pay on the secure Flitt page",
 };

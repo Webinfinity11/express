@@ -10,7 +10,7 @@ import { brands, categories, db, orders, pages, productVariants, products, promo
 import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { BOG_SETTINGS_KEY, getBogConfig, token as bogToken } from "@/lib/bog";
-import { KEEPZ_DEFAULT_URL, KEEPZ_SETTINGS_KEY, testKeepz } from "@/lib/keepz";
+import { FLITT_SETTINGS_KEY, testFlitt } from "@/lib/flitt";
 import { enKey, sanitizeSection } from "@/lib/content";
 import { contentDefaults, type ContentKey } from "@/lib/content-schema";
 import { RESERVED_SLUGS } from "@/lib/site-links";
@@ -576,38 +576,33 @@ export async function saveBogSettings(form: FormData) {
   redirect(`/admin/payments?r=${result}`);
 }
 
-/* ---------- გადახდები: Keepz (კრედო ბანკი) ---------- */
-export async function saveKeepzSettings(form: FormData) {
+/* ---------- გადახდები: Flitt (ბარათი, Apple Pay, Google Pay) ---------- */
+export async function saveFlittSettings(form: FormData) {
   await requireAdmin();
-  const [row] = await db.select().from(settings).where(eq(settings.key, KEEPZ_SETTINGS_KEY));
+  const [row] = await db.select().from(settings).where(eq(settings.key, FLITT_SETTINGS_KEY));
   const stored = (row?.value ?? {}) as Record<string, unknown>;
-  const s = (k: string, max = 300) => String(form.get(k) ?? "").trim().slice(0, max);
-  const keep = (k: string) => s(k, 8000) || (typeof stored[k] === "string" ? (stored[k] as string) : "");
+  const newSecret = String(form.get("secretKey") ?? "").trim().slice(0, 500);
   const value = {
     enabled: form.get("enabled") === "on",
-    integratorId: s("integratorId"),
-    receiverId: s("receiverId"),
-    receiverType: s("receiverType") || "BRANCH",
-    // ცარიელი ველი = ძველი გასაღები რჩება
-    publicKey: keep("publicKey"),
-    privateKey: keep("privateKey"),
-    baseUrl: s("baseUrl") || KEEPZ_DEFAULT_URL,
+    merchantId: String(form.get("merchantId") ?? "").replace(/D/g, "").slice(0, 12),
+    // ცარიელი ველი = ძველი საიდუმლო გასაღები რჩება
+    secretKey: newSecret || (typeof stored.secretKey === "string" ? stored.secretKey : ""),
   };
   await db
     .insert(settings)
-    .values({ key: KEEPZ_SETTINGS_KEY, value })
+    .values({ key: FLITT_SETTINGS_KEY, value })
     .onConflictDoUpdate({ target: settings.key, set: { value, updatedAt: new Date() } });
   updateTag("payments");
 
-  let r = "keepz-saved";
+  let r = "flitt-saved";
   let m = "";
-  if (value.integratorId && value.publicKey && value.privateKey) {
+  if (value.merchantId && value.secretKey) {
     try {
-      const res = await testKeepz(value);
-      r = res.status >= 500 || res.status === 401 || res.status === 403 ? "keepz-failed" : "keepz-reached";
-      m = `HTTP ${res.status}: ${res.body}`;
+      const res = await testFlitt(value);
+      r = res.ok ? "flitt-connected" : "flitt-failed";
+      m = res.ok ? "" : res.msg;
     } catch (e) {
-      r = "keepz-failed";
+      r = "flitt-failed";
       m = e instanceof Error ? e.message : String(e);
     }
   }
