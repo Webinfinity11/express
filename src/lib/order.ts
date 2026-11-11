@@ -19,15 +19,20 @@ export type OrderInput = {
 
 export type OrderErrors = Partial<Record<"name" | "phone" | "email" | "address" | "items", string>>;
 
-export const PAYMENTS: Record<Payment, { title: string; text: string; logo?: string }> = {
+export const PAYMENTS: Record<Payment, { title: string; text: string; logos?: { src: string; alt: string; w: number }[] }> = {
   card: {
     title: "ბარათით გადახდა",
     text: "Visa და Mastercard ბარათებით — საქართველოს ბანკის დაცულ გვერდზე",
-    logo: "/images/payments/bog.svg",
+    logos: [{ src: "/images/payments/bog.svg", alt: "საქართველოს ბანკი", w: 40 }],
   },
   flitt: {
     title: "ბარათი, Apple Pay, Google Pay",
     text: "Visa, Mastercard, Apple Pay და Google Pay — Flitt-ის დაცულ გვერდზე",
+    // Flitt TBC-ის ჯგუფისაა — ორივე ლოგო, რომ კლიენტმა იცნოს
+    logos: [
+      { src: "/images/payments/flitt.svg", alt: "Flitt", w: 52 },
+      { src: "/images/payments/tbc.svg", alt: "თიბისი ბანკი", w: 30 },
+    ],
   },
   manual: { title: "ოპერატორთან შეთანხმებით", text: "ოპერატორი დაგიკავშირდებათ გადახდის დეტალებისთვის" },
 };

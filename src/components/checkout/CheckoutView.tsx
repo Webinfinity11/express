@@ -247,7 +247,13 @@ export function CheckoutView({ cardEnabled = false, flittEnabled = false }: { ca
                     <strong>{t(PAYMENTS[k].title)}</strong>
                     <small>{t(PAYMENTS[k].text)}</small>
                   </span>
-                  {PAYMENTS[k].logo && <img className="payment-logo" src={PAYMENTS[k].logo} alt={t("საქართველოს ბანკი")} width={40} height={34} />}
+                  {PAYMENTS[k].logos && (
+                    <span className="payment-logos">
+                      {PAYMENTS[k].logos!.map((l) => (
+                        <img key={l.src} className="payment-logo" src={l.src} alt={t(l.alt)} width={l.w} height={30} style={{ width: l.w }} />
+                      ))}
+                    </span>
+                  )}
                 </label>
               ))}
             </div>

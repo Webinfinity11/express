@@ -629,7 +629,7 @@ body .p-details h1{-webkit-text-stroke:.9px currentColor;paint-order:stroke fill
 .item-brand-logo{height:20px;width:auto;max-width:90px;object-fit:contain;display:block}
 
 /* BOG Pay — გადახდის მეთოდი ლოგოთი */
-.shipping-methods.payment-methods{grid-template-columns:1fr}.payment-methods .shipping-choice{align-items:center}.payment-logo{margin-left:auto;width:40px;height:auto;flex-shrink:0}
+.shipping-methods.payment-methods{grid-template-columns:1fr}.payment-methods .shipping-choice{align-items:center}.payment-logos{margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0}.payment-logo{height:auto;flex-shrink:0}
 
 /* ენის გადამრთველი */
 .lang-switch{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:650;color:#8d8d8d;letter-spacing:.5px;white-space:nowrap}

@@ -63,6 +63,7 @@ export const cart: Record<string, string> = {
   "თვითგატანის მისამართი:": "Pickup address:",
   "გადახდის მეთოდი": "Payment method",
   "საქართველოს ბანკი": "Bank of Georgia",
+  "თიბისი ბანკი": "TBC Bank",
   "კომენტარი": "Comment",
   "კომენტარი შეკვეთაზე": "Order comment",
   "მაგ. მიწოდების სასურველი დრო, სადარბაზოს კოდი...": "e.g. preferred delivery time, entrance code...",
