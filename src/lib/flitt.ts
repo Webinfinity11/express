@@ -82,7 +82,6 @@ async function call(c: FlittConfig, path: string, params: Record<string, unknown
 export async function createFlittOrder(o: { number: string; total: number; origin: string; lang?: "ka" | "en" }) {
   const c = await getFlittConfig();
   if (!flittReady(c)) throw new Error("Flitt არ არის კონფიგურირებული");
-  const prefix = o.lang === "en" ? "/en" : "";
   const r = await call(c, "/checkout/url", {
     version: "1.0.1",
     order_id: o.number,
@@ -90,7 +89,8 @@ export async function createFlittOrder(o: { number: string; total: number; origi
     amount: Math.round(o.total), // თეთრებში
     currency: "GEL",
     lang: o.lang === "en" ? "en" : "ka",
-    response_url: `${o.origin}${prefix}/checkout/result?order=${encodeURIComponent(o.number)}`,
+    // Flitt აქ POST-ით აბრუნებს — api route გადაამისამართებს შედეგის გვერდზე
+    response_url: `${o.origin}/api/payments/flitt/return?order=${encodeURIComponent(o.number)}${o.lang === "en" ? "&lang=en" : ""}`,
     // Flitt callback-ს მხოლოდ საჯარო მისამართზე აგზავნის; ლოკალურად სტატუსს result გვერდი ამოწმებს
     server_callback_url: `${o.origin}/api/payments/flitt/callback`,
     lifetime: 3600,
