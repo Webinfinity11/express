@@ -56,6 +56,7 @@ export const cart: Record<string, string> = {
   "კურიერით მიწოდება": "Courier delivery",
   "მისამართზე მიტანა": "Delivered to your address",
   "თვითგატანა": "Pickup",
+  "გამზადება მაქსიმუმ 1 სამუშაო დღე": "ready within 1 business day",
   "უფასო": "Free",
   "ქალაქი / რეგიონი": "City / region",
   "მისამართი": "Address",

@@ -109,8 +109,8 @@ export const content: Record<string, string> = {
     "Call us and together we'll pick the best appliances for you.",
 
   // shipping
-  "თვითგატანა უფასოა. მისამართი და სამუშაო საათები შეკვეთის დადასტურებისას გეცნობებათ.":
-    "Pickup is free. We'll share the address and opening hours when your order is confirmed.",
+  "თვითგატანა უფასოა. შეკვეთის გამზადებას მაქსიმუმ 1 სამუშაო დღე სჭირდება. მისამართი და სამუშაო საათები შეკვეთის დადასტურებისას გეცნობებათ.":
+    "Pickup is free. Preparing your order takes up to 1 business day. We'll share the address and opening hours when your order is confirmed.",
   "გარანტია და დაბრუნების პირობები განისაზღვრება კონკრეტული პროდუქტის მიხედვით.":
     "Warranty and return terms depend on the specific product.",
 

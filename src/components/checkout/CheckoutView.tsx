@@ -206,7 +206,7 @@ export function CheckoutView({ cardEnabled = false, flittEnabled = false }: { ca
                 <input type="radio" name="delivery" checked={delivery === "pickup"} onChange={() => store.setDelivery("pickup")} />
                 <span>
                   <strong>{t("თვითგატანა")}</strong>
-                  <small>{CONTACT.address} · {t("უფასო")}</small>
+                  <small>{CONTACT.address} · {t("უფასო")} · {t("გამზადება მაქსიმუმ 1 სამუშაო დღე")}</small>
                 </span>
                 <Icon name="store" />
               </label>
