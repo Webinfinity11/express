@@ -228,9 +228,14 @@ export function CheckoutView({ cardEnabled = false, flittEnabled = false }: { ca
                 {field("address", t("მისამართი"), { autoComplete: "street-address", maxLength: 300, placeholder: t("ქუჩა, სახლი, ბინა") })}
               </div>
             ) : (
+              <>
               <p className="demo-caption checkout-pickup-note">
                 <Icon name="pin" /> {t("თვითგატანის მისამართი:")} {CONTACT.address}
               </p>
+              <p className="demo-caption checkout-pickup-note">
+                <Icon name="info" /> {t("ფილიალიდან გატანისას პროდუქტის საწყობიდან მოტანას შეიძლება დრო დასჭირდეს — გამზადებას მაქსიმუმ 1 სამუშაო დღე სჭირდება. როცა შეკვეთა მზად იქნება, დაგირეკავთ.")}
+              </p>
+              </>
             )}
           </section>
 
@@ -271,7 +276,7 @@ export function CheckoutView({ cardEnabled = false, flittEnabled = false }: { ca
                 maxLength={1000}
                 value={form.comment}
                 onChange={set("comment")}
-                placeholder={t("მაგ. მიწოდების სასურველი დრო, სადარბაზოს კოდი...")}
+                placeholder={delivery === "pickup" ? t("დაწერეთ დამატებითი ინფორმაცია შეკვეთის შესახებ...") : t("დაწერეთ დამატებითი ინფორმაცია: სადარბაზოს კოდი, სართული, ორიენტირი...")}
               />
             </label>
           </section>
