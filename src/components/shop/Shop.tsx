@@ -74,7 +74,14 @@ export function Shop() {
   const pathname = usePathname();
   const sp = useSearchParams();
   const { favorites, openModal } = useStore();
-  const { products: PRODUCTS, categories, categoryName, subtree, content } = useCatalog();
+  const { products: RAW_PRODUCTS, categories, categoryName, subtree, content } = useCatalog();
+  // ბრენდები რეგისტრის გარეშე ერთიანდება (MIDEA = Midea)
+  const PRODUCTS = useMemo(() => {
+    const count = new Map<string, Map<string, number>>();
+    for (const p of RAW_PRODUCTS) if (p.brand) { const m = count.get(p.brand.toLowerCase()) ?? new Map<string, number>(); m.set(p.brand, (m.get(p.brand) ?? 0) + 1); count.set(p.brand.toLowerCase(), m); }
+    const canon = new Map([...count].map(([k, m]) => [k, [...m].sort((x, y) => y[1] - x[1])[0][0]]));
+    return RAW_PRODUCTS.map((p) => (p.brand && canon.get(p.brand.toLowerCase()) !== p.brand ? { ...p, brand: canon.get(p.brand.toLowerCase())! } : p));
+  }, [RAW_PRODUCTS]);
   // ფასის შკალის ზედა ზღვარი — ყველაზე ძვირი პროდუქტი, დამრგვალებული 100-მდე
   const PRICE_MAX = Math.max(100, Math.ceil(Math.max(0, ...PRODUCTS.map((p) => p.price)) / 100) * 100);
   // ფასის შკალის ქვედა ზღვარი — ყველაზე იაფი პროდუქტი (0 არ გვაქვს)
