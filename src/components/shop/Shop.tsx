@@ -28,6 +28,8 @@ type Filters = {
   sort: Sort;
 };
 
+const normVal = (v: string) => v.replace(/\s+/g, " ").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").trim();
+
 type Limits = { categories: Set<string>; brands: string[]; priceMax: number; priceMin: number };
 
 const clampPrice = (v: string | null, fallback: number, PRICE_MAX: number, PRICE_MIN = 0) => {
@@ -124,7 +126,7 @@ export function Shop() {
     for (const p of scoped) {
       const seen = new Set<string>();
       for (const [k, v] of p.specs) {
-        const label = k.trim(), val = v.trim();
+        const label = k.trim(), val = normVal(v);
         if (!label || !val || val.length > 28 || label === "ბრენდი" || seen.has(label)) continue;
         seen.add(label);
         const m = groups.get(label) ?? new Map<string, number>();
@@ -155,7 +157,7 @@ export function Shop() {
       byLabel.set(l, (byLabel.get(l) ?? new Set()).add(a.slice(i + 2)));
     }
     const attrOk = (p: (typeof PRODUCTS)[number]) =>
-      [...byLabel].every(([l, vals]) => p.specs.some(([k, v]) => k.trim() === l && vals.has(v.trim())));
+      [...byLabel].every(([l, vals]) => p.specs.some(([k, v]) => k.trim() === l && vals.has(normVal(v))));
     const out = PRODUCTS.filter((p) => {
       const text = [p.name, p.brand, p.keywords, p.sku, categoryName(p.category)].join(" ");
       const ntext = normSearch(text);
