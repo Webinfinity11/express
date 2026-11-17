@@ -17,7 +17,7 @@ export function ImageWatermark() {
       if (!BLOB.test(src)) return;
       img.dataset.wmOrig = src;
       img.removeAttribute("srcset");
-      img.src = `/api/wm?u=${encodeURIComponent(src)}`;
+      img.src = `/api/wm?v=2&u=${encodeURIComponent(src)}`;
       setTimeout(() => {
         const orig = img.dataset.wmOrig;
         delete img.dataset.wmOrig;
