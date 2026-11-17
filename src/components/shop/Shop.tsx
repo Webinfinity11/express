@@ -27,22 +27,22 @@ type Filters = {
   sort: Sort;
 };
 
-type Limits = { categories: Set<string>; brands: string[]; priceMax: number };
+type Limits = { categories: Set<string>; brands: string[]; priceMax: number; priceMin: number };
 
-const clampPrice = (v: string | null, fallback: number, PRICE_MAX: number) => {
+const clampPrice = (v: string | null, fallback: number, PRICE_MAX: number, PRICE_MIN = 0) => {
   const n = Number(v);
-  return v !== null && Number.isFinite(n) ? Math.max(0, Math.min(PRICE_MAX, n)) : fallback;
+  return v !== null && Number.isFinite(n) ? Math.max(PRICE_MIN, Math.min(PRICE_MAX, n)) : fallback;
 };
 
-function parse(sp: URLSearchParams, { categories, brands, priceMax: PRICE_MAX }: Limits): Filters {
+function parse(sp: URLSearchParams, { categories, brands, priceMax: PRICE_MAX, priceMin: PRICE_MIN }: Limits): Filters {
   const category = sp.get("category") ?? "all";
   const sort = sp.get("sort") as Sort;
   return {
     category: categories.has(category) ? category : "all",
     brands: (sp.get("brand") ?? "").split("|").filter((b) => brands.includes(b)),
     q: (sp.get("q") ?? "").slice(0, 100),
-    min: clampPrice(sp.get("min"), 0, PRICE_MAX),
-    max: clampPrice(sp.get("max"), PRICE_MAX, PRICE_MAX),
+    min: clampPrice(sp.get("min"), PRICE_MIN, PRICE_MAX, PRICE_MIN),
+    max: clampPrice(sp.get("max"), PRICE_MAX, PRICE_MAX, PRICE_MIN),
     sale: sp.get("sale") === "1",
     new: sp.get("new") === "1",
     favorites: sp.get("favorites") === "1",
@@ -50,12 +50,12 @@ function parse(sp: URLSearchParams, { categories, brands, priceMax: PRICE_MAX }:
   };
 }
 
-function serialize(f: Filters, PRICE_MAX: number) {
+function serialize(f: Filters, PRICE_MAX: number, PRICE_MIN: number) {
   const p = new URLSearchParams();
   if (f.category !== "all") p.set("category", f.category);
   if (f.brands.length) p.set("brand", f.brands.join("|"));
   if (f.q) p.set("q", f.q);
-  if (f.min) p.set("min", String(f.min));
+  if (f.min !== PRICE_MIN) p.set("min", String(f.min));
   if (f.max !== PRICE_MAX) p.set("max", String(f.max));
   for (const k of ["sale", "new", "favorites"] as const) if (f[k]) p.set(k, "1");
   if (f.sort !== "featured") p.set("sort", f.sort);
@@ -72,6 +72,8 @@ export function Shop() {
   const { products: PRODUCTS, categories, categoryName, subtree } = useCatalog();
   // ფასის შკალის ზედა ზღვარი — ყველაზე ძვირი პროდუქტი, დამრგვალებული 100-მდე
   const PRICE_MAX = Math.max(100, Math.ceil(Math.max(0, ...PRODUCTS.map((p) => p.price)) / 100) * 100);
+  // ფასის შკალის ქვედა ზღვარი — ყველაზე იაფი პროდუქტი (0 არ გვაქვს)
+  const PRICE_MIN = Math.floor(Math.min(PRICE_MAX, ...PRODUCTS.map((p) => p.price).filter((x) => x > 0)));
   const BRANDS = useMemo(() => [...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))].sort(), [PRODUCTS]);
   // კატეგორიის რაოდენობა ქვეკატეგორიების ჩათვლით; ცარიელი კატეგორიები ფილტრში არ ჩანს
   const counts = useMemo(
@@ -102,11 +104,11 @@ export function Shop() {
 
   // ფილტრების ერთადერთი წყარო URL-ია — ბმულები, header-ის ძიება და „უკან“ ღილაკი თავისით მუშაობს
   const f = useMemo(
-    () => parse(new URLSearchParams(sp.toString()), { categories: new Set(categories.map((c) => c.id)), brands: BRANDS, priceMax: PRICE_MAX }),
-    [sp, categories, BRANDS, PRICE_MAX],
+    () => parse(new URLSearchParams(sp.toString()), { categories: new Set(categories.map((c) => c.id)), brands: BRANDS, priceMax: PRICE_MAX, priceMin: PRICE_MIN }),
+    [sp, categories, BRANDS, PRICE_MAX, PRICE_MIN],
   );
   const update = (changes: Partial<Filters>) => {
-    const qs = serialize({ ...f, ...changes }, PRICE_MAX);
+    const qs = serialize({ ...f, ...changes }, PRICE_MAX, PRICE_MIN);
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
   const reset = () => router.replace(pathname, { scroll: false });
@@ -151,7 +153,7 @@ export function Shop() {
   if (f.category !== "all") chips.push(["category", categoryName(f.category), () => update({ category: "all" })]);
   if (f.q) chips.push(["q", t("ძიება: {q}", { q: f.q }), () => update({ q: "" })]);
   for (const b of f.brands) chips.push(["brand:" + b, b, () => update({ brands: f.brands.filter((x) => x !== b) })]);
-  if (f.min || f.max !== PRICE_MAX) chips.push(["price", `${money(f.min)}–${money(f.max)} ₾`, () => update({ min: 0, max: PRICE_MAX })]);
+  if (f.min !== PRICE_MIN || f.max !== PRICE_MAX) chips.push(["price", `${money(f.min)}–${money(f.max)} ₾`, () => update({ min: PRICE_MIN, max: PRICE_MAX })]);
   for (const [k, l] of [["sale", t("ფასდაკლებით")], ["new", t("ახალი")], ["favorites", t("ფავორიტები")]] as [Flag, string][])
     if (f[k]) chips.push([k, l, () => update({ [k]: false })]);
 
@@ -207,13 +209,13 @@ export function Shop() {
             <label>
               <input
                 type="number"
-                min={0}
+                min={PRICE_MIN}
                 max={PRICE_MAX}
                 defaultValue={f.min}
                 key={"min" + f.min}
                 aria-label={t("მინიმალური ფასი")}
                 onBlur={(e) => {
-                  const min = clampPrice(e.target.value, 0, PRICE_MAX);
+                  const min = clampPrice(e.target.value, PRICE_MIN, PRICE_MAX, PRICE_MIN);
                   update({ min, max: Math.max(min, f.max) });
                 }}
               />
@@ -222,13 +224,13 @@ export function Shop() {
             <label>
               <input
                 type="number"
-                min={0}
+                min={PRICE_MIN}
                 max={PRICE_MAX}
                 defaultValue={f.max}
                 key={"max" + f.max}
                 aria-label={t("მაქსიმალური ფასი")}
                 onBlur={(e) => {
-                  const max = clampPrice(e.target.value, PRICE_MAX, PRICE_MAX);
+                  const max = clampPrice(e.target.value, PRICE_MAX, PRICE_MAX, PRICE_MIN);
                   update({ max, min: Math.min(max, f.min) });
                 }}
               />
@@ -238,7 +240,7 @@ export function Shop() {
           <input
             className="price-range"
             type="range"
-            min={0}
+            min={PRICE_MIN}
             max={PRICE_MAX}
             step={10}
             value={f.max}
@@ -249,7 +251,7 @@ export function Shop() {
             }}
           />
           <div className="price-range-labels">
-            <span>0 ₾</span>
+            <span>{money(PRICE_MIN)} ₾</span>
             <span>{money(PRICE_MAX)} ₾</span>
           </div>
         </div>
