@@ -415,11 +415,11 @@ export function Shop() {
                   {t("ყველა პროდუქტის ნახვა")} <Icon name="arrow" />
                 </Link>
               </div>
-              <div className="categories-grid subcat-grid">
+              <div className="subcat-grid">
                 {subCats.map((c) => (
-                  <Link key={c.id} className="category-card" href={categoryHref(c.id)}>
-                    {c.image ? <img src={c.image} alt="" loading="lazy" /> : null}
-                    <span>{c.name}</span>
+                  <Link key={c.id} className="subcat-card" href={categoryHref(c.id)}>
+                    <span className="subcat-img">{c.image ? <img src={c.image} alt="" loading="lazy" /> : <Icon name="grid" />}</span>
+                    <strong>{c.name}</strong>
                     <small>{t("{n} პროდუქტი", { n: counts.get(c.id) ?? 0 })}</small>
                   </Link>
                 ))}
