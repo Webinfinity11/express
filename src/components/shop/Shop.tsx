@@ -18,6 +18,7 @@ type Flag = "sale" | "new" | "favorites";
 type Filters = {
   category: string;
   brands: string[];
+  all: boolean; // true = ქვეკატეგორიების გვერდის გარეშე, პირდაპირ პროდუქტები
   attrs: string[]; // "სპეც-სახელი::მნიშვნელობა"
   q: string;
   min: number;
@@ -43,6 +44,7 @@ function parse(sp: URLSearchParams, { categories, brands, priceMax: PRICE_MAX, p
   return {
     category: categories.has(category) ? category : "all",
     brands: (sp.get("brand") ?? "").split("|").filter((b) => brands.includes(b)),
+    all: sp.get("all") === "1",
     attrs: sp.getAll("attr").filter((a) => a.includes("::")).slice(0, 30),
     q: (sp.get("q") ?? "").slice(0, 100),
     min: clampPrice(sp.get("min"), PRICE_MIN, PRICE_MAX, PRICE_MIN),
@@ -58,6 +60,7 @@ function serialize(f: Filters, PRICE_MAX: number, PRICE_MIN: number) {
   const p = new URLSearchParams();
   if (f.category !== "all") p.set("category", f.category);
   if (f.brands.length) p.set("brand", f.brands.join("|"));
+  if (f.all) p.set("all", "1");
   for (const a of f.attrs) p.append("attr", a);
   if (f.q) p.set("q", f.q);
   if (f.min !== PRICE_MIN) p.set("min", String(f.min));
@@ -148,7 +151,7 @@ export function Shop() {
       .slice(0, 5);
   }, [scoped, f.category]);
   const update = (changes: Partial<Filters>) => {
-    if (changes.category !== undefined && changes.category !== f.category) changes = { ...changes, attrs: [], brands: [] };
+    if (changes.category !== undefined && changes.category !== f.category) changes = { ...changes, attrs: [], brands: [], all: changes.all ?? false };
     const qs = serialize({ ...f, ...changes }, PRICE_MAX, PRICE_MIN);
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
@@ -208,6 +211,9 @@ export function Shop() {
   for (const [k, l] of [["sale", t("ფასდაკლებით")], ["new", t("ახალი")], ["favorites", t("ფავორიტები")]] as [Flag, string][])
     if (f[k]) chips.push([k, l, () => update({ [k]: false })]);
 
+  const subCats = f.category === "all" ? [] : CATEGORIES.filter((c) => c.parent === f.category);
+  const showSubs = subCats.length > 0 && !f.all && !f.q;
+
   const sidebar = (
     <aside className="shop-sidebar" aria-label={t("კატალოგის ფილტრები")}>
       <div className="sidebar-title">
@@ -228,7 +234,7 @@ export function Shop() {
             const subs = CATEGORIES.filter((c) => c.parent === top.id);
             const topLabel = (
               <label className="filter-check">
-                <input type="radio" name="category" checked={f.category === top.id} onChange={() => update({ category: top.id })} />
+                <input type="radio" name="category" checked={f.category === top.id} onChange={() => update({ category: top.id, all: subs.length > 0 })} />
                 <span>{top.name}</span>
                 <span className="filter-n">{counts.get(top.id)}</span>
               </label>
@@ -398,6 +404,29 @@ export function Shop() {
       <div className="catalog-layout">
         <div id="filterHome">{sidebar}</div>
         <section className="catalog-results" aria-labelledby="catalogTitle">
+          {showSubs ? (
+            <div className="subcat-landing">
+              <div className="catalog-toolbar">
+                <div>
+                  <span className="eyebrow small-eyebrow">EXPLORE EXPRESS MIX</span>
+                  <h2 id="catalogTitle">{title}</h2>
+                </div>
+                <Link className="button secondary" href={`${categoryHref(f.category)}&all=1`}>
+                  {t("ყველა პროდუქტის ნახვა")} <Icon name="arrow" />
+                </Link>
+              </div>
+              <div className="categories-grid subcat-grid">
+                {subCats.map((c) => (
+                  <Link key={c.id} className="category-card" href={categoryHref(c.id)}>
+                    {c.image ? <img src={c.image} alt="" loading="lazy" /> : null}
+                    <span>{c.name}</span>
+                    <small>{t("{n} პროდუქტი", { n: counts.get(c.id) ?? 0 })}</small>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
           <div className="catalog-toolbar">
             <div>
               <span className="eyebrow small-eyebrow">EXPLORE EXPRESS MIX</span>
@@ -471,6 +500,8 @@ export function Shop() {
                 <i></i>
               </span>
             </div>
+          )}
+            </>
           )}
         </section>
       </div>

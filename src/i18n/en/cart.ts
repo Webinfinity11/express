@@ -40,6 +40,7 @@ export const cart: Record<string, string> = {
   "თქვენი დანაზოგი ამ კალათაში:": "You save in this cart:",
   "კიდევ უფრო მეტი კომფორტი": "Even more comfort",
   "ყველა პროდუქტი": "All products",
+  "ყველა პროდუქტის ნახვა": "View all products",
 
   // გაფორმება
   "შეკვეთის გაფორმება": "Checkout",
