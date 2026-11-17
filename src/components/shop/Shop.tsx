@@ -300,7 +300,6 @@ export function Shop() {
         <div className="help-actions">
           <a className="button secondary" href={content.site.phoneHref}>{t("დარეკვა")} <Icon name="phone" /></a>
           <a className="button secondary" href={`https://wa.me/${content.site.phoneHref.replace(/D/g, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          {content.site.facebook && <a className="button secondary" href={content.site.facebook} target="_blank" rel="noopener noreferrer">Messenger</a>}
         </div>
       </div>
     </aside>
