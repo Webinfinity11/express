@@ -6,9 +6,6 @@ import { PLACEHOLDER_IMAGE, type Catalog, type Product, type ShipClass } from "@
 import { ensureSchema } from "@/db/ensure";
 import type { Lang } from "@/i18n";
 
-/** Blob-ზე ატვირთული პროდუქტის სურათი გადის /api/wm-ზე (ლოგოს ვატერმარკი); სხვა ბმულები უცვლელია */
-const wm = (url: string) => (url && /^https:\/\/[^/]+\.public\.blob\.vercel-storage\.com\//.test(url) ? `/api/wm?u=${encodeURIComponent(url)}` : url);
-
 /** ინგლისური ტექსტი, თუ შევსებულია; თორემ ქართული */
 const pick = (lang: Lang, ka: string, en: string | undefined) => (lang === "en" && en?.trim() ? en.trim() : ka);
 
@@ -41,7 +38,7 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
   const list: Product[] = rows.map((p) => {
     const price = p.price;
     const oldPrice = p.oldPrice && p.oldPrice > price ? p.oldPrice : price;
-    const gallery = p.images.length ? p.images.map(wm) : [PLACEHOLDER_IMAGE];
+    const gallery = p.images.length ? p.images : [PLACEHOLDER_IMAGE];
     const vs = variants
       .filter((v) => v.productId === p.id)
       .map((v) => {
@@ -54,7 +51,7 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
           sku: v.sku,
           price: vPrice,
           oldPrice: vOld,
-          image: wm(v.image ?? "") || v.image,
+          image: v.image,
           inStock: v.stockQty == null ? v.inStock : v.stockQty > 0,
         };
       });
@@ -71,7 +68,7 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
       oldPrice,
       image: gallery[0],
       gallery,
-      scene: wm(p.sceneImage || "") || gallery[gallery.length - 1],
+      scene: p.sceneImage || gallery[gallery.length - 1],
       color: pick(lang, p.colorName, p.en?.colorName),
       tone: p.colorHex || "#151515",
       subtitle: pick(lang, p.subtitle, p.en?.subtitle),

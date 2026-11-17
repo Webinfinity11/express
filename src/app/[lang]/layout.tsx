@@ -5,6 +5,7 @@ import { AdminEdit } from "@/components/AdminEdit";
 import { CartDrawer } from "@/components/CartDrawer";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { ImageWatermark } from "@/components/ImageWatermark";
 import { ModalHost } from "@/components/ModalHost";
 import { Navigation } from "@/components/Navigation";
 import { SvgSprite } from "@/components/SvgSprite";
@@ -55,6 +56,7 @@ export default async function StoreLayout({ children, params }: LayoutProps<"/[l
               <CartDrawer />
               <ModalHost />
               <Toast />
+              <ImageWatermark />
               <AdminEdit />
             </StoreProvider>
           </CatalogProvider>

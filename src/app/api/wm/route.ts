@@ -33,18 +33,17 @@ export async function GET(request: Request) {
   try {
     const base = sharp(input, { failOn: "none" }).rotate().resize({ width: 1600, withoutEnlargement: true });
     const { data, info } = await base.toBuffer({ resolveWithObject: true });
-    const w = Math.max(90, Math.round(info.width * 0.2));
+    const w = Math.max(90, Math.round(info.width * 0.36));
     const pad = Math.round(w * 0.06);
     const logo = await sharp(await loadLogo(origin)).resize({ width: w - pad * 2 }).toBuffer({ resolveWithObject: true });
     const plateW = logo.info.width + pad * 2;
     const plateH = logo.info.height + pad * 2;
-    const plate = await sharp({ create: { width: plateW, height: plateH, channels: 4, background: { r: 18, g: 19, b: 19, alpha: 0.62 } } })
+    const plate = await sharp({ create: { width: plateW, height: plateH, channels: 4, background: { r: 18, g: 19, b: 19, alpha: 0.5 } } })
       .composite([{ input: Buffer.from(`<svg width="${plateW}" height="${plateH}"><rect rx="${Math.round(pad * 1.4)}" width="${plateW}" height="${plateH}" fill="#fff"/></svg>`), blend: "dest-in" }, { input: logo.data, left: pad, top: pad }])
       .png()
       .toBuffer();
-    const margin = Math.round(info.width * 0.025);
-    const out = await sharp(data)
-      .composite([{ input: plate, left: Math.max(0, info.width - plateW - margin), top: Math.max(0, info.height - plateH - margin) }])
+        const out = await sharp(data)
+      .composite([{ input: plate, left: Math.max(0, Math.round((info.width - plateW) / 2)), top: Math.max(0, Math.round((info.height - plateH) / 2)) }])
       .webp({ quality: 85 })
       .toBuffer();
     return new Response(new Uint8Array(out), {
