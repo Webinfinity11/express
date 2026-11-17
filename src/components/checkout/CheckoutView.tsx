@@ -233,7 +233,7 @@ export function CheckoutView({ cardEnabled = false, flittEnabled = false }: { ca
                 <Icon name="pin" /> {t("თვითგატანის მისამართი:")} {CONTACT.address}
               </p>
               <p className="demo-caption checkout-pickup-note">
-                <Icon name="info" /> {t("ფილიალიდან გატანისას პროდუქტის საწყობიდან მოტანას შეიძლება დრო დასჭირდეს — გამზადებას მაქსიმუმ 1 სამუშაო დღე სჭირდება. როცა შეკვეთა მზად იქნება, დაგირეკავთ.")}
+                <Icon name="info" /> {t("ფილიალიდან გატანისას პროდუქტის საწყობიდან მოტანას შეიძლება დრო დასჭირდეს - გამზადებას მაქსიმუმ 1 სამუშაო დღე სჭირდება.")}
               </p>
               </>
             )}

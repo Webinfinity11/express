@@ -69,7 +69,7 @@ export const cart: Record<string, string> = {
   "კომენტარი შეკვეთაზე": "Order comment",
   "დაწერეთ დამატებითი ინფორმაცია შეკვეთის შესახებ...": "Add any extra information about your order...",
   "დაწერეთ დამატებითი ინფორმაცია: სადარბაზოს კოდი, სართული, ორიენტირი...": "Add extra information: entrance code, floor, landmark...",
-  "ფილიალიდან გატანისას პროდუქტის საწყობიდან მოტანას შეიძლება დრო დასჭირდეს — გამზადებას მაქსიმუმ 1 სამუშაო დღე სჭირდება. როცა შეკვეთა მზად იქნება, დაგირეკავთ.": "For store pickup, the item may need to be brought from our warehouse, so preparation can take up to 1 business day. We will call you when your order is ready.",
+  "ფილიალიდან გატანისას პროდუქტის საწყობიდან მოტანას შეიძლება დრო დასჭირდეს - გამზადებას მაქსიმუმ 1 სამუშაო დღე სჭირდება.": "For store pickup, the item may need to be brought from our warehouse, so preparation can take up to 1 business day.",
   "კალათაში დაბრუნება": "Back to cart",
   "თქვენი შეკვეთა ({n})": "Your order ({n})",
   "მიწოდება: {city}": "Delivery: {city}",
