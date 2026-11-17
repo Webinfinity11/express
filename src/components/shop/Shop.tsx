@@ -69,7 +69,7 @@ export function Shop() {
   const pathname = usePathname();
   const sp = useSearchParams();
   const { favorites, openModal } = useStore();
-  const { products: PRODUCTS, categories, categoryName, subtree } = useCatalog();
+  const { products: PRODUCTS, categories, categoryName, subtree, content } = useCatalog();
   // ფასის შკალის ზედა ზღვარი — ყველაზე ძვირი პროდუქტი, დამრგვალებული 100-მდე
   const PRICE_MAX = Math.max(100, Math.ceil(Math.max(0, ...PRODUCTS.map((p) => p.price)) / 100) * 100);
   // ფასის შკალის ქვედა ზღვარი — ყველაზე იაფი პროდუქტი (0 არ გვაქვს)
@@ -297,9 +297,11 @@ export function Shop() {
         <Icon name="headphones" />
         <strong>{t("გჭირდებათ დახმარება?")}</strong>
         <p>{t("ერთად შევარჩიოთ თქვენი ტექნიკა.")}</p>
-        <button className="button secondary" onClick={() => openModal("info:contact")}>
-          {t("დაგვიკავშირდით")} <Icon name="arrow" />
-        </button>
+        <div className="help-actions">
+          <a className="button secondary" href={content.site.phoneHref}>{t("დარეკვა")} <Icon name="phone" /></a>
+          <a className="button secondary" href={`https://wa.me/${content.site.phoneHref.replace(/D/g, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          {content.site.facebook && <a className="button secondary" href={content.site.facebook} target="_blank" rel="noopener noreferrer">Messenger</a>}
+        </div>
       </div>
     </aside>
   );

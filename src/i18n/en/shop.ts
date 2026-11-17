@@ -26,6 +26,7 @@ export const shop: Record<string, string> = {
   "გჭირდებათ დახმარება?": "Need help?",
   "ერთად შევარჩიოთ თქვენი ტექნიკა.": "Let's choose your appliances together.",
   "დაგვიკავშირდით": "Contact us",
+  "დარეკვა": "Call us",
   "ტექნიკა თქვენი": "Appliances for",
   "ყოველდღიურობისთვის.": "your everyday life.",
   "თქვენი სახლი. თქვენი არჩევანი. Express Mix.": "Your home. Your choice. Express Mix.",
