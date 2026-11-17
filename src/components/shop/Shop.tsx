@@ -18,6 +18,7 @@ type Flag = "sale" | "new" | "favorites";
 type Filters = {
   category: string;
   brands: string[];
+  attrs: string[]; // "სპეც-სახელი::მნიშვნელობა"
   q: string;
   min: number;
   max: number;
@@ -40,6 +41,7 @@ function parse(sp: URLSearchParams, { categories, brands, priceMax: PRICE_MAX, p
   return {
     category: categories.has(category) ? category : "all",
     brands: (sp.get("brand") ?? "").split("|").filter((b) => brands.includes(b)),
+    attrs: sp.getAll("attr").filter((a) => a.includes("::")).slice(0, 30),
     q: (sp.get("q") ?? "").slice(0, 100),
     min: clampPrice(sp.get("min"), PRICE_MIN, PRICE_MAX, PRICE_MIN),
     max: clampPrice(sp.get("max"), PRICE_MAX, PRICE_MAX, PRICE_MIN),
@@ -54,6 +56,7 @@ function serialize(f: Filters, PRICE_MAX: number, PRICE_MIN: number) {
   const p = new URLSearchParams();
   if (f.category !== "all") p.set("category", f.category);
   if (f.brands.length) p.set("brand", f.brands.join("|"));
+  for (const a of f.attrs) p.append("attr", a);
   if (f.q) p.set("q", f.q);
   if (f.min !== PRICE_MIN) p.set("min", String(f.min));
   if (f.max !== PRICE_MAX) p.set("max", String(f.max));
@@ -75,6 +78,7 @@ export function Shop() {
   // ფასის შკალის ქვედა ზღვარი — ყველაზე იაფი პროდუქტი (0 არ გვაქვს)
   const PRICE_MIN = Math.floor(Math.min(PRICE_MAX, ...PRODUCTS.map((p) => p.price).filter((x) => x > 0)));
   const BRANDS = useMemo(() => [...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))].sort(), [PRODUCTS]);
+  const ATTR_SEP = "::";
   // კატეგორიის რაოდენობა ქვეკატეგორიების ჩათვლით; ცარიელი კატეგორიები ფილტრში არ ჩანს
   const counts = useMemo(
     () => new Map(categories.map((c) => [c.id, PRODUCTS.filter((p) => subtree(c.id).has(p.category)).length])),
@@ -107,7 +111,35 @@ export function Shop() {
     () => parse(new URLSearchParams(sp.toString()), { categories: new Set(categories.map((c) => c.id)), brands: BRANDS, priceMax: PRICE_MAX, priceMin: PRICE_MIN }),
     [sp, categories, BRANDS, PRICE_MAX, PRICE_MIN],
   );
+  // არჩეული კატეგორიის პროდუქტები — ბრენდებისა და მახასიათებლების ფილტრი მხოლოდ მათგან გროვდება
+  const scoped = useMemo(() => {
+    if (f.category === "all") return PRODUCTS;
+    const ids = subtree(f.category);
+    return PRODUCTS.filter((p) => ids.has(p.category));
+  }, [PRODUCTS, f.category, subtree]);
+  const scopedBrands = useMemo(() => [...new Set(scoped.map((p) => p.brand).filter(Boolean))].sort(), [scoped]);
+  const attrGroups = useMemo(() => {
+    if (f.category === "all") return [];
+    const groups = new Map<string, Map<string, number>>();
+    for (const p of scoped) {
+      const seen = new Set<string>();
+      for (const [k, v] of p.specs) {
+        const label = k.trim(), val = v.trim();
+        if (!label || !val || val.length > 28 || label === "ბრენდი" || seen.has(label)) continue;
+        seen.add(label);
+        const m = groups.get(label) ?? new Map<string, number>();
+        m.set(val, (m.get(val) ?? 0) + 1);
+        groups.set(label, m);
+      }
+    }
+    return [...groups.entries()]
+      .map(([label, m]) => ({ label, values: [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ka", { numeric: true })), total: [...m.values()].reduce((a, b) => a + b, 0) }))
+      .filter((g) => g.total >= 3 && g.values.length >= 2 && g.values.length <= 16)
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 5);
+  }, [scoped, f.category]);
   const update = (changes: Partial<Filters>) => {
+    if (changes.category !== undefined && changes.category !== f.category) changes = { ...changes, attrs: [], brands: [] };
     const qs = serialize({ ...f, ...changes }, PRICE_MAX, PRICE_MIN);
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
@@ -116,12 +148,21 @@ export function Shop() {
   const list = useMemo(() => {
     const words = normSearch(f.q.trim()).split(/\s+/).filter(Boolean);
     const inCategory = f.category === "all" ? null : subtree(f.category);
+    const byLabel = new Map<string, Set<string>>();
+    for (const a of f.attrs) {
+      const i = a.indexOf(ATTR_SEP);
+      const l = a.slice(0, i);
+      byLabel.set(l, (byLabel.get(l) ?? new Set()).add(a.slice(i + 2)));
+    }
+    const attrOk = (p: (typeof PRODUCTS)[number]) =>
+      [...byLabel].every(([l, vals]) => p.specs.some(([k, v]) => k.trim() === l && vals.has(v.trim())));
     const out = PRODUCTS.filter((p) => {
       const text = [p.name, p.brand, p.keywords, p.sku, categoryName(p.category)].join(" ");
       const ntext = normSearch(text);
       return (
         (!inCategory || inCategory.has(p.category)) &&
         (!f.brands.length || f.brands.includes(p.brand)) &&
+        attrOk(p) &&
         p.price >= f.min &&
         p.price <= f.max &&
         (!f.sale || p.oldPrice > p.price) &&
@@ -152,6 +193,7 @@ export function Shop() {
   const chips: [string, string, () => void][] = [];
   if (f.category !== "all") chips.push(["category", categoryName(f.category), () => update({ category: "all" })]);
   if (f.q) chips.push(["q", t("ძიება: {q}", { q: f.q }), () => update({ q: "" })]);
+  for (const a of f.attrs) chips.push(["attr:" + a, a.replace(ATTR_SEP, ": "), () => update({ attrs: f.attrs.filter((x) => x !== a) })]);
   for (const b of f.brands) chips.push(["brand:" + b, b, () => update({ brands: f.brands.filter((x) => x !== b) })]);
   if (f.min !== PRICE_MIN || f.max !== PRICE_MAX) chips.push(["price", `${money(f.min)}–${money(f.max)} ₾`, () => update({ min: PRICE_MIN, max: PRICE_MAX })]);
   for (const [k, l] of [["sale", t("ფასდაკლებით")], ["new", t("ახალი")], ["favorites", t("ფავორიტები")]] as [Flag, string][])
@@ -261,7 +303,7 @@ export function Shop() {
           {t("ბრენდი")} <Icon name="chevron" />
         </summary>
         <div className="filter-section-body">
-          {BRANDS.map((b) => (
+          {scopedBrands.map((b) => (
             <label className="filter-check" key={b}>
               <input
                 type="checkbox"
@@ -269,11 +311,30 @@ export function Shop() {
                 onChange={(e) => update({ brands: e.target.checked ? [...f.brands, b] : f.brands.filter((x) => x !== b) })}
               />
               <span>{b}</span>
-              <span className="filter-n">{PRODUCTS.filter((p) => p.brand === b).length}</span>
+              <span className="filter-n">{scoped.filter((p) => p.brand === b).length}</span>
             </label>
           ))}
         </div>
       </details>
+      {attrGroups.map((g) => (
+        <details className="filter-section" key={g.label} open>
+          <summary>
+            {g.label} <Icon name="chevron" />
+          </summary>
+          <div className="filter-section-body">
+            {g.values.map(([v, n]) => {
+              const key = g.label + ATTR_SEP + v;
+              return (
+                <label className="filter-check" key={key}>
+                  <input type="checkbox" checked={f.attrs.includes(key)} onChange={(e) => update({ attrs: e.target.checked ? [...f.attrs, key] : f.attrs.filter((x) => x !== key) })} />
+                  <span>{v}</span>
+                  <span className="filter-n">{n}</span>
+                </label>
+              );
+            })}
+          </div>
+        </details>
+      ))}
       <details className="filter-section" open>
         <summary>
           {t("შეთავაზებები")} <Icon name="chevron" />
