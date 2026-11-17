@@ -299,7 +299,7 @@ export function Shop() {
         <p>{t("ერთად შევარჩიოთ თქვენი ტექნიკა.")}</p>
         <div className="help-actions">
           <a className="button secondary" href={content.site.phoneHref}>{t("დარეკვა")} <Icon name="phone" /></a>
-          <a className="button secondary" href={`https://wa.me/${content.site.phoneHref.replace(/D/g, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a className="button secondary" href={`https://wa.me/${content.site.phoneHref.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
       </div>
     </aside>
