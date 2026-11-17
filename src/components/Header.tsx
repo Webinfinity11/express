@@ -1,11 +1,12 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { stripLang } from "@/i18n";
 import { Link, useLang, useRouter, useT } from "@/i18n/client";
+import { categoryHref, productHref } from "@/lib/data";
 import { Icon } from "./Icon";
 
 /** ენის გადამრთველი — იგივე გვერდი მეორე ენაზე (სრული გადატვირთვით) */
@@ -54,8 +55,27 @@ export function Header() {
   const router = useRouter();
   const t = useT();
   const { cartCount, favorites, openModal } = useStore();
-  const { content } = useCatalog();
+  const { content, products, categories, categoryName } = useCatalog();
   const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(-1);
+
+  const suggestions = useMemo(() => {
+    const words = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    if (!words.length) return [];
+    const match = (text: string) => words.every((w) => text.toLocaleLowerCase().includes(w));
+    const cats = categories.filter((c) => match(c.name)).slice(0, 4).map((c) => ({ key: "c" + c.id, label: c.name, sub: t("კატეგორია"), href: categoryHref(c.id), image: "" }));
+    const prods = products
+      .filter((p) => match([p.name, p.brand, p.sku].join(" ")))
+      .slice(0, 6)
+      .map((p) => ({ key: "p" + p.id, label: p.name, sub: categoryName(p.category), href: productHref(p), image: p.image }));
+    return [...cats, ...prods];
+  }, [query, products, categories, categoryName, t]);
+  const go = (href: string) => {
+    setOpen(false);
+    setActive(-1);
+    router.push(href);
+  };
 
   return (
     <header className="site-header">
@@ -68,6 +88,8 @@ export function Header() {
           role="search"
           onSubmit={(e) => {
             e.preventDefault();
+            if (active >= 0 && suggestions[active]) return go(suggestions[active].href);
+            setOpen(false);
             const q = query.trim();
             router.push(q ? `/products?q=${encodeURIComponent(q)}` : "/products");
           }}
@@ -82,11 +104,41 @@ export function Header() {
             autoComplete="off"
             maxLength={100}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setOpen(true);
+              setActive(-1);
+            }}
+            onFocus={() => setOpen(true)}
+            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setOpen(false);
+              else if (e.key === "ArrowDown" && suggestions.length) (e.preventDefault(), setOpen(true), setActive((a) => (a + 1) % suggestions.length));
+              else if (e.key === "ArrowUp" && suggestions.length) (e.preventDefault(), setActive((a) => (a <= 0 ? suggestions.length - 1 : a - 1)));
+            }}
           />
           <button type="submit" aria-label={t("ძიება")}>
             <Icon name="search" />
           </button>
+          {open && suggestions.length > 0 && (
+            <ul className="search-suggest" role="listbox">
+              {suggestions.map((x, i) => (
+                <li key={x.key} role="option" aria-selected={i === active}>
+                  <a
+                    href={x.href}
+                    className={i === active ? "active" : undefined}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      go(x.href);
+                    }}
+                  >
+                    {x.image ? <img src={x.image} alt="" width={36} height={36} /> : <span className="ss-ico"><Icon name="search" /></span>}
+                    <span className="ss-text"><b>{x.label}</b><small>{x.sub}</small></span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </form>
         <div className="header-actions">
           <LangSwitch />

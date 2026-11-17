@@ -637,3 +637,15 @@ body .p-details h1{-webkit-text-stroke:.9px currentColor;paint-order:stroke fill
 .lang-switch a:hover{color:#fff}
 .lang-switch .active{color:var(--orange)!important}
 @media(max-width:700px){.lang-switch{font-size:12px;gap:4px}}
+
+.search{position:relative;overflow:visible}
+.search button{border-radius:inherit}
+.search-suggest{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:60;margin:0;padding:6px;list-style:none;background:#fff;border:1px solid #eee;border-radius:10px;box-shadow:0 12px 30px #0002;max-height:70vh;overflow:auto}
+.search-suggest a{display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:7px;color:#222;text-decoration:none}
+.search-suggest a:hover,.search-suggest a.active{background:#f4f4f4}
+.search-suggest img{width:36px;height:36px;object-fit:contain;border-radius:6px;background:#fafafa;flex:none}
+.search-suggest .ss-ico{width:36px;height:36px;display:grid;place-items:center;flex:none;color:#999}
+.search-suggest .ss-ico svg{width:18px;height:18px}
+.search-suggest .ss-text{display:flex;flex-direction:column;min-width:0}
+.search-suggest b{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-suggest small{font-size:12px;color:#888}
