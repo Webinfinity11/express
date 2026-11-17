@@ -10,7 +10,8 @@ import { categoryHref, productHref } from "@/lib/data";
 export async function generateStaticParams({ params }: { params: { lang: string } }) {
   const { products } = await getCatalog(toLang(params.lang));
   // Cache Components-ს ერთი პარამეტრი მაინც სჭირდება; პროდუქტების გარეშე → 404
-  return products.length ? products.map((p) => ({ slug: p.slug })) : [{ slug: "_" }];
+  // პროდუქტი ბევრია (1700+), ყველას build-ზე არ ვაგენერირებთ — დანარჩენი პირველ ვიზიტზე გენერირდება და იქეშება
+  return products.length ? products.slice(0, 20).map((p) => ({ slug: p.slug })) : [{ slug: "_" }];
 }
 
 async function find(lang: Lang, slug: string) {
