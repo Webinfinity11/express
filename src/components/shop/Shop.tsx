@@ -8,6 +8,7 @@ import { ItemCard } from "@/components/ItemCard";
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { categoryHref, money } from "@/lib/data";
+import { normSearch } from "@/lib/search-norm";
 import { Link, useLang, useT } from "@/i18n/client";
 
 const SORTS = ["featured", "price-asc", "price-desc", "new", "name"] as const;
@@ -111,10 +112,11 @@ export function Shop() {
   const reset = () => router.replace(pathname, { scroll: false });
 
   const list = useMemo(() => {
-    const words = f.q.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    const words = normSearch(f.q.trim()).split(/\s+/).filter(Boolean);
     const inCategory = f.category === "all" ? null : subtree(f.category);
     const out = PRODUCTS.filter((p) => {
-      const text = [p.name, p.brand, p.keywords, p.sku, categoryName(p.category)].join(" ").toLocaleLowerCase();
+      const text = [p.name, p.brand, p.keywords, p.sku, categoryName(p.category)].join(" ");
+      const ntext = normSearch(text);
       return (
         (!inCategory || inCategory.has(p.category)) &&
         (!f.brands.length || f.brands.includes(p.brand)) &&
@@ -123,7 +125,7 @@ export function Shop() {
         (!f.sale || p.oldPrice > p.price) &&
         (!f.new || p.isNew) &&
         (!f.favorites || favorites.includes(p.id)) &&
-        words.every((w) => text.includes(w))
+        words.every((w) => ntext.includes(w))
       );
     });
     if (f.sort === "price-asc") out.sort((a, b) => a.price - b.price);

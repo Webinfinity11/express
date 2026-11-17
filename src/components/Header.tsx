@@ -7,6 +7,7 @@ import { useStore } from "@/context/StoreContext";
 import { stripLang } from "@/i18n";
 import { Link, useLang, useRouter, useT } from "@/i18n/client";
 import { categoryHref, productHref } from "@/lib/data";
+import { normSearch } from "@/lib/search-norm";
 import { Icon } from "./Icon";
 
 /** ენის გადამრთველი — იგივე გვერდი მეორე ენაზე (სრული გადატვირთვით) */
@@ -61,9 +62,9 @@ export function Header() {
   const [active, setActive] = useState(-1);
 
   const suggestions = useMemo(() => {
-    const words = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    const words = normSearch(query.trim()).split(/\s+/).filter(Boolean);
     if (!words.length) return [];
-    const match = (text: string) => words.every((w) => text.toLocaleLowerCase().includes(w));
+    const match = (text: string) => { const n = normSearch(text); return words.every((w) => n.includes(w)); };
     const cats = categories.filter((c) => match(c.name)).slice(0, 4).map((c) => ({ key: "c" + c.id, label: c.name, sub: t("კატეგორია"), href: categoryHref(c.id), image: "" }));
     const prods = products
       .filter((p) => match([p.name, p.brand, p.sku].join(" ")))
