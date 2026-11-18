@@ -294,19 +294,36 @@ export function Shop() {
               <span>₾</span>
             </label>
           </div>
-          <input
-            className="price-range"
-            type="range"
-            min={PRICE_MIN}
-            max={PRICE_MAX}
-            step={10}
-            value={f.max}
-            aria-label={t("ფასის ზედა ზღვარი")}
-            onChange={(e) => {
-              const max = Number(e.target.value);
-              update({ max, min: Math.min(max, f.min) });
-            }}
-          />
+          <div className="price-slider" style={{ ["--lo" as string]: `${((f.min - PRICE_MIN) / Math.max(1, PRICE_MAX - PRICE_MIN)) * 100}%`, ["--hi" as string]: `${((f.max - PRICE_MIN) / Math.max(1, PRICE_MAX - PRICE_MIN)) * 100}%` }}>
+            <input
+              className="price-range"
+              type="range"
+              min={PRICE_MIN}
+              max={PRICE_MAX}
+              step={10}
+              value={f.min}
+              style={{ zIndex: f.min > PRICE_MAX - (PRICE_MAX - PRICE_MIN) / 10 ? 3 : 1 }}
+              aria-label={t("მინიმალური ფასი")}
+              onChange={(e) => {
+                const min = Math.min(Number(e.target.value), f.max);
+                update({ min });
+              }}
+            />
+            <input
+              className="price-range"
+              type="range"
+              min={PRICE_MIN}
+              max={PRICE_MAX}
+              step={10}
+              value={f.max}
+              style={{ zIndex: 2 }}
+              aria-label={t("ფასის ზედა ზღვარი")}
+              onChange={(e) => {
+                const max = Math.max(Number(e.target.value), f.min);
+                update({ max });
+              }}
+            />
+          </div>
           <div className="price-range-labels">
             <span>{money(PRICE_MIN)} ₾</span>
             <span>{money(PRICE_MAX)} ₾</span>
