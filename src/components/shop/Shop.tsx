@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
+import { PriceFilter } from "@/components/shop/PriceFilter";
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { categoryHref, money } from "@/lib/data";
@@ -262,72 +263,7 @@ export function Shop() {
           {t("ფასი")} <Icon name="chevron" />
         </summary>
         <div className="filter-section-body">
-          <div className="price-fields">
-            <label>
-              <input
-                type="number"
-                min={PRICE_MIN}
-                max={PRICE_MAX}
-                defaultValue={f.min}
-                key={"min" + f.min}
-                aria-label={t("მინიმალური ფასი")}
-                onBlur={(e) => {
-                  const min = clampPrice(e.target.value, PRICE_MIN, PRICE_MAX, PRICE_MIN);
-                  update({ min, max: Math.max(min, f.max) });
-                }}
-              />
-              <span>₾</span>
-            </label>
-            <label>
-              <input
-                type="number"
-                min={PRICE_MIN}
-                max={PRICE_MAX}
-                defaultValue={f.max}
-                key={"max" + f.max}
-                aria-label={t("მაქსიმალური ფასი")}
-                onBlur={(e) => {
-                  const max = clampPrice(e.target.value, PRICE_MAX, PRICE_MAX, PRICE_MIN);
-                  update({ max, min: Math.min(max, f.min) });
-                }}
-              />
-              <span>₾</span>
-            </label>
-          </div>
-          <div className="price-slider" style={{ ["--lo" as string]: `${((f.min - PRICE_MIN) / Math.max(1, PRICE_MAX - PRICE_MIN)) * 100}%`, ["--hi" as string]: `${((f.max - PRICE_MIN) / Math.max(1, PRICE_MAX - PRICE_MIN)) * 100}%` }}>
-            <input
-              className="price-range"
-              type="range"
-              min={PRICE_MIN}
-              max={PRICE_MAX}
-              step={10}
-              value={f.min}
-              style={{ zIndex: f.min > PRICE_MAX - (PRICE_MAX - PRICE_MIN) / 10 ? 3 : 1 }}
-              aria-label={t("მინიმალური ფასი")}
-              onChange={(e) => {
-                const min = Math.min(Number(e.target.value), f.max);
-                update({ min });
-              }}
-            />
-            <input
-              className="price-range"
-              type="range"
-              min={PRICE_MIN}
-              max={PRICE_MAX}
-              step={10}
-              value={f.max}
-              style={{ zIndex: 2 }}
-              aria-label={t("ფასის ზედა ზღვარი")}
-              onChange={(e) => {
-                const max = Math.max(Number(e.target.value), f.min);
-                update({ max });
-              }}
-            />
-          </div>
-          <div className="price-range-labels">
-            <span>{money(PRICE_MIN)} ₾</span>
-            <span>{money(PRICE_MAX)} ₾</span>
-          </div>
+          <PriceFilter min={PRICE_MIN} max={PRICE_MAX} lo={f.min} hi={f.max} onCommit={(min, max) => update({ min, max })} />
         </div>
       </details>
       <details className="filter-section" id="brandFilters" open>
