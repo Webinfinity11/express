@@ -213,7 +213,8 @@ export function Shop() {
     if (f[k]) chips.push([k, l, () => update({ [k]: false })]);
 
   const subCats = f.category === "all" ? [] : CATEGORIES.filter((c) => c.parent === f.category);
-  const showSubs = subCats.length > 0 && !f.all && !f.q;
+  const filtered = f.brands.length > 0 || f.attrs.length > 0 || f.min !== PRICE_MIN || f.max !== PRICE_MAX || f.sale || f.new || f.favorites;
+  const showSubs = subCats.length > 0 && !f.all && !f.q && !filtered;
 
   const sidebar = (
     <aside className="shop-sidebar" aria-label={t("კატალოგის ფილტრები")}>
