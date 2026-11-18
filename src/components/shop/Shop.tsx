@@ -235,7 +235,7 @@ export function Shop() {
             const subs = CATEGORIES.filter((c) => c.parent === top.id);
             const topLabel = (
               <label className="filter-check">
-                <input type="radio" name="category" checked={f.category === top.id} onChange={() => update({ category: top.id, all: subs.length > 0 })} />
+                <input type="radio" name="category" checked={f.category === top.id} onChange={() => update({ category: top.id })} />
                 <span>{top.name}</span>
                 <span className="filter-n">{counts.get(top.id)}</span>
               </label>
