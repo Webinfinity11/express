@@ -4,6 +4,7 @@ import { asc, eq } from "drizzle-orm";
 import { categories, db, shippingClasses } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { PageTitle } from "@/components/admin/ui";
+import { EntitySeoBox } from "@/components/admin/seo/EntitySeoBox";
 import { CategoryForm } from "@/components/admin/CategoryForm";
 
 export default async function EditCategory({ params, searchParams }: PageProps<"/admin/categories/[id]">) {
@@ -29,6 +30,11 @@ export default async function EditCategory({ params, searchParams }: PageProps<"
         {category ? category.name : "ახალი კატეგორია"}
       </PageTitle>
       <CategoryForm category={category} all={all} defaultParent={parent} classes={classes} />
+      {category && (
+        <div className="mt-6 max-w-3xl">
+          <EntitySeoBox kind="category" row={category} />
+        </div>
+      )}
     </>
   );
 }

@@ -15,6 +15,7 @@ const links = [
   ["/admin/shipping", "მიწოდება"],
   ["/admin/payments", "გადახდები"],
   ["/admin/pages", "გვერდები და მენიუ"],
+  ["/admin/seo", "SEO"],
 ] as const;
 
 export function AdminNav({ newOrders = 0 }: { newOrders?: number }) {

@@ -10,7 +10,8 @@ export const viewport: Viewport = { themeColor: "#141414" };
 export default function AdminRoot({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ka">
-      <body>
+      {/* ბრაუზერის გაფართოებები (მაგ. ColorZilla) body-ს ატრიბუტებს ამატებენ */}
+      <body suppressHydrationWarning>
         <div className="min-h-screen bg-slate-50 text-slate-800 text-[15px]">{children}</div>
       </body>
     </html>

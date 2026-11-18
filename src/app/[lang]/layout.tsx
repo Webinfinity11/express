@@ -14,6 +14,7 @@ import { CatalogProvider } from "@/context/CatalogContext";
 import { StoreProvider } from "@/context/StoreContext";
 import { getCatalog } from "@/lib/catalog";
 import { getContent } from "@/lib/content";
+import { getSeoSettings, resolveSeo } from "@/lib/seo";
 import { LangProvider } from "@/i18n/client";
 import { LANGS, getT, isLang } from "@/i18n";
 import "../globals.css";
@@ -25,11 +26,20 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
-  const { lang } = await params;
-  const t = getT(isLang(lang) ? lang : "ka");
+  const { lang: l } = await params;
+  const lang = isLang(l) ? l : "ka";
+  const s = await getSeoSettings();
+  const { title, description } = resolveSeo(s, { lang, type: "home" });
+  const v = s.verification;
+  const other: Record<string, string> = {};
+  if (v.bing) other["msvalidate.01"] = v.bing;
   return {
-    title: t("Express Mix | ტექნიკა თქვენი სახლისთვის"),
-    description: t("Express Mix: სახლისა და სამზარეულოს ტექნიკა. ხარისხიანი ბრენდები, საუკეთესო ფასები, კომფორტული შოპინგი."),
+    metadataBase: new URL(s.siteUrl || "https://emix.ge"),
+    title,
+    description,
+    applicationName: s.siteName,
+    openGraph: { siteName: s.siteName, locale: lang === "en" ? "en_US" : "ka_GE", images: s.defaultOgImage ? [{ url: s.defaultOgImage }] : undefined },
+    verification: { google: v.google || undefined, yandex: v.yandex || undefined, other },
   };
 }
 
@@ -41,7 +51,8 @@ export default async function StoreLayout({ children, params }: LayoutProps<"/[l
   const [catalog, content] = await Promise.all([getCatalog(lang), getContent(lang)]);
   return (
     <html lang={lang}>
-      <body>
+      {/* ბრაუზერის გაფართოებები (მაგ. ColorZilla) body-ს ატრიბუტებს ამატებენ */}
+      <body suppressHydrationWarning>
         <LangProvider lang={lang}>
           <CatalogProvider catalog={catalog} content={content}>
             <StoreProvider>

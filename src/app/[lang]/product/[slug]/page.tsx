@@ -6,6 +6,7 @@ import { ProductView } from "@/components/product/ProductView";
 import { getT, localePath, toLang, type Lang } from "@/i18n";
 import { getCatalog } from "@/lib/catalog";
 import { categoryHref, productHref } from "@/lib/data";
+import { buildMetadata, getSeoOverrides } from "@/lib/seo";
 
 export async function generateStaticParams({ params }: { params: { lang: string } }) {
   const { products } = await getCatalog(toLang(params.lang));
@@ -22,14 +23,24 @@ async function find(lang: Lang, slug: string) {
 export async function generateMetadata({ params }: PageProps<"/[lang]/product/[slug]">): Promise<Metadata> {
   const { lang: l, slug } = await params;
   const lang = toLang(l);
-  const { p } = await find(lang, slug);
+  const [{ catalog, p }, overrides] = await Promise.all([find(lang, slug), getSeoOverrides()]);
   if (!p) return {};
-  const path = productHref(p);
-  return {
-    title: `${p.name} | Express Mix`,
-    description: p.desc.slice(0, 160),
-    alternates: { canonical: localePath(lang, path), languages: { ka: path, en: localePath("en", path) } },
-  };
+  const category = catalog.categories.find((c) => c.id === p.category);
+  return buildMetadata({
+    lang,
+    type: "product",
+    path: productHref(p),
+    override: overrides.products[p.slug],
+    image: p.image,
+    vars: {
+      title: p.name,
+      excerpt: p.desc || p.subtitle,
+      category: category?.name,
+      brand: p.brand,
+      price: String(p.price),
+      sku: p.sku,
+    },
+  });
 }
 
 export default async function ProductPage({ params }: PageProps<"/[lang]/product/[slug]">) {

@@ -8,6 +8,7 @@ import { ProductCarousel } from "@/components/home/ProductCarousel";
 import { Newsletter } from "@/components/home/Newsletter";
 import { getCatalog } from "@/lib/catalog";
 import { getContent } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 import { categoryHref, discountPercent, indexCatalog } from "@/lib/data";
 import { getT, toLang } from "@/i18n";
 import { Link } from "@/i18n/client";
@@ -21,9 +22,9 @@ const PERK_META: { info: InfoKey; icon: string }[] = [
 
 const BLOCK_HREF: Record<string, string> = { sale: "sale=1", new: "new=1" };
 
-export const metadata: Metadata = {
-  alternates: { languages: { ka: "/", en: "/en" } },
-};
+export async function generateMetadata({ params }: PageProps<"/[lang]">): Promise<Metadata> {
+  return buildMetadata({ lang: toLang((await params).lang), type: "home", path: "/" });
+}
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const lang = toLang((await params).lang);

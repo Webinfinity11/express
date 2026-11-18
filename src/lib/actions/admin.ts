@@ -225,7 +225,7 @@ export async function duplicateProduct(id: number): Promise<ActionResult> {
   const { id: _id, createdAt: _c, updatedAt: _u, ...rest } = src;
   const [copy] = await db
     .insert(products)
-    .values({ ...rest, slug, name: `${src.name} (ასლი)`, published: false, featured: false })
+    .values({ ...rest, slug, name: `${src.name} (ასლი)`, published: false, featured: false, seo: {} })
     .returning({ id: products.id });
   const variants = await db.select().from(productVariants).where(eq(productVariants.productId, id));
   if (variants.length) await db.insert(productVariants).values(variants.map(({ id: _v, ...v }) => ({ ...v, productId: copy.id })));

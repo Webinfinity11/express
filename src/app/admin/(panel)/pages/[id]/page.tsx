@@ -5,6 +5,7 @@ import { db, pages } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { getLinkOptions } from "@/lib/link-options";
 import { PageTitle } from "@/components/admin/ui";
+import { EntitySeoBox } from "@/components/admin/seo/EntitySeoBox";
 import { PageForm } from "@/components/admin/PageForm";
 
 export default async function EditPage({ params }: PageProps<"/admin/pages/[id]">) {
@@ -37,6 +38,11 @@ export default async function EditPage({ params }: PageProps<"/admin/pages/[id]"
         {page ? page.title : "ახალი გვერდი"}
       </PageTitle>
       <PageForm key={page?.updatedAt.toISOString() ?? "new"} page={page} links={links} />
+      {page && (
+        <div className="mt-6 max-w-3xl">
+          <EntitySeoBox kind="page" row={page} />
+        </div>
+      )}
     </>
   );
 }

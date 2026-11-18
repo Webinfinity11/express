@@ -5,6 +5,7 @@ import { brands, categories, db, productVariants, products, shippingClasses } fr
 import { requireAdmin } from "@/lib/auth";
 import { PageTitle } from "@/components/admin/ui";
 import { ProductForm } from "@/components/admin/ProductForm";
+import { EntitySeoBox } from "@/components/admin/seo/EntitySeoBox";
 import { DuplicateButton } from "@/components/admin/DuplicateButton";
 import { getAttrSuggestions } from "@/lib/attribute-suggestions";
 
@@ -49,6 +50,11 @@ export default async function EditProduct({ params }: PageProps<"/admin/products
         {product ? product.name : "ახალი პროდუქტი"}
       </PageTitle>
       <ProductForm product={product} variants={variants} categories={cats} brands={brandRows.map((b) => ({ name: b.name, logo: b.logo }))} classes={classes} suggestions={suggestions} />
+      {product && (
+        <div className="mt-6 max-w-3xl">
+          <EntitySeoBox kind="product" row={product} />
+        </div>
+      )}
     </>
   );
 }

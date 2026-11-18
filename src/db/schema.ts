@@ -7,6 +7,17 @@ export type CategoryEn = { name?: string };
 export type ProductEn = { name?: string; label?: string; subtitle?: string; description?: string; specs?: Spec[]; colorName?: string };
 export type VariantEn = { name?: string };
 export type PageEn = { title?: string; eyebrow?: string; subtitle?: string; body?: string; buttonText?: string; metaDescription?: string };
+/** SEO (Rank Math-ის მსგავსი): ცარიელი ველი = Titles & Meta შაბლონი */
+export type EntitySeo = {
+  title?: string;
+  description?: string;
+  focusKeyword?: string;
+  ogImage?: string;
+  canonical?: string;
+  noindex?: boolean;
+  en?: { title?: string; description?: string };
+};
+const seo = () => jsonb("seo").$type<EntitySeo>().notNull().default({});
 const en = <T,>() => jsonb("en").$type<T>().notNull().default({} as T);
 export type OrderLine = {
   key: string;
@@ -46,6 +57,7 @@ export const categories = pgTable(
     // ჰედერის „კატეგორიების“ მენიუში ჩანს
     showInMenu: boolean("show_in_menu").notNull().default(true),
     en: en<CategoryEn>(),
+    seo: seo(),
     // null = მშობელი კატეგორიის ლოჯისტიკური კლასი
     shippingClassId: integer("shipping_class_id").references(() => shippingClasses.id, { onDelete: "set null" }),
     sortOrder: integer("sort_order").notNull().default(0),
@@ -76,6 +88,7 @@ export const products = pgTable(
     colorName: text("color_name").notNull().default(""),
     colorHex: text("color_hex"),
     en: en<ProductEn>(),
+    seo: seo(),
     featured: boolean("featured").notNull().default(false),
     isNew: boolean("is_new").notNull().default(false),
     published: boolean("published").notNull().default(true),
@@ -180,11 +193,28 @@ export const pages = pgTable("pages", {
   buttonHref: text("button_href").notNull().default(""),
   metaDescription: text("meta_description").notNull().default(""),
   en: en<PageEn>(),
+  seo: seo(),
   published: boolean("published").notNull().default(true),
   createdAt: created(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** გადამისამართებები (Rank Math → Redirections). source — მისამართი დომენის გარეშე. */
+export const seoRedirects = pgTable("seo_redirects", {
+  id: serial("id").primaryKey(),
+  source: text("source").notNull(),
+  // exact | starts | regex
+  matchType: text("match_type").notNull().default("exact"),
+  target: text("target").notNull().default(""),
+  // 301 | 302 | 307 | 410 | 451
+  code: integer("code").notNull().default(301),
+  active: boolean("active").notNull().default(true),
+  hits: integer("hits").notNull().default(0),
+  lastHit: timestamp("last_hit", { withTimezone: true }),
+  createdAt: created(),
+});
+
+export type RedirectRow = typeof seoRedirects.$inferSelect;
 export type PageRow = typeof pages.$inferSelect;
 export type CategoryRow = typeof categories.$inferSelect;
 export type ProductRow = typeof products.$inferSelect;

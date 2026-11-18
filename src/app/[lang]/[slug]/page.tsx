@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Icon } from "@/components/Icon";
 import { InnerFooterBlocks } from "@/components/InnerFooterBlocks";
 import { getPages } from "@/lib/pages";
+import { buildMetadata, getSeoOverrides } from "@/lib/seo";
 import { toLang, type Lang } from "@/i18n";
 import { Link } from "@/i18n/client";
 
@@ -20,13 +21,17 @@ async function find(lang: Lang, slug: string) {
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;
-  const page = await find(toLang(lang), slug);
+  const [page, overrides] = await Promise.all([find(toLang(lang), slug), getSeoOverrides()]);
   if (!page) return {};
-  return {
-    title: `${page.title} | Express Mix`,
-    description: page.metaDescription || page.subtitle || undefined,
-    alternates: { languages: { ka: `/${page.slug}`, en: `/en/${page.slug}` } },
-  };
+  return buildMetadata({
+    lang: toLang(lang),
+    type: "page",
+    path: `/${page.slug}`,
+    override: overrides.pages[page.slug],
+    image: page.image,
+    ogType: "article",
+    vars: { title: page.title, excerpt: page.metaDescription || page.subtitle || page.body },
+  });
 }
 
 /** body: ცარიელი ხაზი = ახალი აბზაცი, „## “ = ქვესათაური, „- “ = სია */
