@@ -45,31 +45,54 @@ export function PriceFilter({ min, max, lo, hi, onCommit }: Props) {
     set(which === 0 ? [Math.min(v, b), b] : [a, Math.max(v, a)]);
   };
 
-  const startDrag = (which: 0 | 1) => (e: React.PointerEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // გადათრევა — window-ის მოვლენებით (არა setPointerCapture), რომ ყველა ბრაუზერში (Safari-შიც) იმუშაოს
+  const begin = (which: 0 | 1) => {
     dragging.current = which;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    (e.currentTarget as HTMLElement).focus();
-  };
-  const onMove = (e: React.PointerEvent) => {
-    if (dragging.current !== null) move(dragging.current, valueAt(e.clientX));
-  };
-  const endDrag = () => {
-    if (dragging.current === null) return;
-    dragging.current = null;
-    onCommit(live.current[0], live.current[1]);
+    const mv = (ev: PointerEvent | MouseEvent | TouchEvent) => {
+      const pt = "touches" in ev ? ev.touches[0] : (ev as PointerEvent | MouseEvent);
+      if (pt && dragging.current !== null) move(dragging.current, valueAt(pt.clientX));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", mv);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+      window.removeEventListener("mousemove", mv);
+      window.removeEventListener("mouseup", up);
+      window.removeEventListener("touchmove", mv);
+      window.removeEventListener("touchend", up);
+      window.removeEventListener("touchcancel", up);
+      if (dragging.current === null) return;
+      dragging.current = null;
+      onCommit(live.current[0], live.current[1]);
+    };
+    const opts = { passive: true } as const;
+    window.addEventListener("pointermove", mv);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+    window.addEventListener("mousemove", mv);
+    window.addEventListener("mouseup", up);
+    window.addEventListener("touchmove", mv, opts);
+    window.addEventListener("touchend", up);
+    window.addEventListener("touchcancel", up);
   };
 
-  // დაწკაპუნება ზოლზე — უახლოესი სახელური გადადის იქ
+  const startDrag = (which: 0 | 1) => (e: React.PointerEvent) => {
+    if (dragging.current !== null) return;
+    e.preventDefault();
+    e.stopPropagation();
+    (e.currentTarget as HTMLElement).focus();
+    begin(which);
+  };
+
+  // დაწკაპუნება ზოლზე — უახლოესი სახელური გადადის იქ და მაშინვე გადასათრევია
   const onTrack = (e: React.PointerEvent) => {
+    if (dragging.current !== null) return;
+    e.preventDefault();
     const v = valueAt(e.clientX);
     const which: 0 | 1 = Math.abs(v - live.current[0]) <= Math.abs(v - live.current[1]) && v <= live.current[1] ? 0 : 1;
     move(which, v);
-    dragging.current = which;
-    const thumb = trackRef.current!.querySelectorAll<HTMLElement>("[role=slider]")[which];
-    thumb.setPointerCapture(e.pointerId);
-    thumb.focus();
+    trackRef.current!.querySelectorAll<HTMLElement>("[role=slider]")[which].focus();
+    begin(which);
   };
 
   const onKey = (which: 0 | 1) => (e: React.KeyboardEvent) => {
@@ -115,7 +138,7 @@ export function PriceFilter({ min, max, lo, hi, onCommit }: Props) {
         {field(0, t("მინიმალური ფასი"))}
         {field(1, t("მაქსიმალური ფასი"))}
       </div>
-      <div className="price-slider" ref={trackRef} onPointerDown={onTrack} onPointerMove={onMove} onPointerUp={endDrag} onPointerCancel={endDrag}>
+      <div className="price-slider" ref={trackRef} onPointerDown={onTrack} onMouseDown={(e) => e.preventDefault()} onDragStart={(e) => e.preventDefault()}>
         <div className="price-slider-fill" style={{ left: `${pct(draft[0])}%`, right: `${100 - pct(draft[1])}%` }} />
         {([0, 1] as const).map((w) => (
           <div
