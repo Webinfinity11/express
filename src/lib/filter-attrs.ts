@@ -1,5 +1,4 @@
 /** კატეგორიის ფილტრები: მახასიათებლების ავტომატური ჯგუფები (Shop-ისა და ადმინის საერთო ლოგიკა). */
-export const ATTR_AUTO_LIMIT = 5;
 
 export const normVal = (v: string) => v.replace(/\s+/g, " ").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").trim();
 
@@ -31,7 +30,7 @@ export function computeAttrGroups(specsList: [string, string][][], opts: { all?:
 
 /** ავტომატურ რეჟიმში ჩანს ის, რაც ამ წესებს აკმაყოფილებს (ადმინში „ავტო“ ნიშნით). */
 export function autoAttrLabels(specsList: [string, string][][]): string[] {
-  return computeAttrGroups(specsList).slice(0, ATTR_AUTO_LIMIT).map((g) => g.label);
+  return computeAttrGroups(specsList).map((g) => g.label);
 }
 
 export const FILTER_KEYS = { categories: "categories", price: "price", brand: "brand", offers: "offers" } as const;

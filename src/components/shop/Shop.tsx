@@ -6,7 +6,7 @@ import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
 import { PriceFilter } from "@/components/shop/PriceFilter";
-import { ATTR_AUTO_LIMIT, FILTER_KEYS, attrKey, computeAttrGroups, normVal } from "@/lib/filter-attrs";
+import { FILTER_KEYS, attrKey, computeAttrGroups, normVal } from "@/lib/filter-attrs";
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { categoryHref, money } from "@/lib/data";
@@ -140,7 +140,7 @@ export function Shop() {
   const attrGroups = useMemo(() => {
     if (f.category === "all") return [];
     const specs = scoped.map((p) => p.specs);
-    if (!catFilters) return computeAttrGroups(specs).slice(0, ATTR_AUTO_LIMIT);
+    if (!catFilters) return computeAttrGroups(specs);
     return computeAttrGroups(specs, { all: true }).filter((g) => catFilters.includes(attrKey(g.label)));
   }, [scoped, f.category, catFilters]);
   const update = (changes: Partial<Filters>) => {
