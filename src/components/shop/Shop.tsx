@@ -6,7 +6,7 @@ import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
 import { PriceFilter } from "@/components/shop/PriceFilter";
-import { FILTER_KEYS, attrKey, computeAttrGroups, normVal } from "@/lib/filter-attrs";
+import { FILTER_KEYS, computeAttrGroups, filterRules, normVal } from "@/lib/filter-attrs";
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { categoryHref, money } from "@/lib/data";
@@ -135,14 +135,14 @@ export function Shop() {
   }, [PRODUCTS, f.category, subtree]);
   const scopedBrands = useMemo(() => [...new Set(scoped.map((p) => p.brand).filter(Boolean))].sort(), [scoped]);
   // ადმინში კატეგორიაზე არჩეული ფილტრები (null = ავტომატური)
-  const catFilters = useMemo(() => (f.category === "all" ? null : (categories.find((c) => c.id === f.category)?.filters ?? null)), [categories, f.category]);
-  const showFilter = (key: string) => !catFilters || catFilters.includes(key);
+  const rules = useMemo(() => filterRules(f.category === "all" ? null : categories.find((c) => c.id === f.category)?.filters), [categories, f.category]);
+  const showFilter = rules.show;
   const attrGroups = useMemo(() => {
     if (f.category === "all") return [];
     const specs = scoped.map((p) => p.specs);
-    if (!catFilters) return computeAttrGroups(specs);
-    return computeAttrGroups(specs, { all: true }).filter((g) => catFilters.includes(attrKey(g.label)));
-  }, [scoped, f.category, catFilters]);
+    const auto = new Set(computeAttrGroups(specs).map((g) => g.label));
+    return computeAttrGroups(specs, { all: true }).filter((g) => rules.attr(g.label, auto.has(g.label)));
+  }, [scoped, f.category, rules]);
   const update = (changes: Partial<Filters>) => {
     if (changes.category !== undefined && changes.category !== f.category) changes = { ...changes, attrs: [], brands: [], all: changes.all ?? false };
     const qs = serialize({ ...f, ...changes }, PRICE_MAX, PRICE_MIN);
