@@ -101,6 +101,9 @@ export function Shop() {
   const STRIP = categories.filter((c) => c.showOnHome);
   const [view, setView] = useState<"grid" | "list">("grid");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  // ქვეკატეგორიები ხელით იხსნება, კატეგორიაზე შესვლისას თავისით არ იშლება
+  const [openTops, setOpenTops] = useState<Set<string | number>>(new Set());
+  const toggleTop = (id: string | number) => setOpenTops((p) => { const n = new Set(p); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   // კატეგორიების ზოლის ისრები
   const catsRef = useRef<HTMLDivElement>(null);
   const [catEdges, setCatEdges] = useState({ start: true, end: false });
@@ -243,18 +246,20 @@ export function Shop() {
             );
             if (!subs.length) return <div key={top.id}>{topLabel}</div>;
             return (
-              <details className="filter-tree" key={top.id} open={f.category === top.id || subs.some((s) => s.id === f.category)}>
-                <summary>
+              <div className="filter-tree" key={top.id}>
+                <div className="filter-tree-head">
                   {topLabel}
-                </summary>
-                {subs.map((c) => (
-                  <label className="filter-check filter-sub" key={c.id}>
-                    <input type="radio" name="category" checked={f.category === c.id} onChange={() => update({ category: c.id })} />
-                    <span>{c.name}</span>
-                    <span className="filter-n">{counts.get(c.id)}</span>
-                  </label>
-                ))}
-              </details>
+                  <button type="button" className="filter-tree-toggle" aria-expanded={openTops.has(top.id)} aria-label={top.name} onClick={() => toggleTop(top.id)} />
+                </div>
+                {openTops.has(top.id) &&
+                  subs.map((c) => (
+                    <label className="filter-check filter-sub" key={c.id}>
+                      <input type="radio" name="category" checked={f.category === c.id} onChange={() => update({ category: c.id })} />
+                      <span>{c.name}</span>
+                      <span className="filter-n">{counts.get(c.id)}</span>
+                    </label>
+                  ))}
+              </div>
             );
           })}
         </div>

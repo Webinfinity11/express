@@ -517,11 +517,11 @@ body .category-card span{font-family:var(--font)!important;font-weight:700;color
 
 
 /* შოპის კატეგორიები: ქვე-კატეგორიები dropdown-ით */
-.filter-tree>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:6px}
-.filter-tree>summary::-webkit-details-marker{display:none}
-.filter-tree>summary>label{flex:1;min-width:0}
-.filter-tree>summary::after{content:"";flex:none;width:7px;height:7px;border-right:1.5px solid #777571;border-bottom:1.5px solid #777571;transform:rotate(45deg);margin:0 4px 4px 2px;transition:transform .2s}
-.filter-tree[open]>summary::after{transform:rotate(-135deg);margin-bottom:0}
+.filter-tree-head{display:flex;align-items:center;gap:6px}
+.filter-tree-head>label{flex:1;min-width:0}
+.filter-tree-toggle{flex:none;width:28px;height:28px;border:0;background:none;cursor:pointer;position:relative}
+.filter-tree-toggle::after{content:"";position:absolute;left:10px;top:7px;width:7px;height:7px;border-right:1.5px solid #777571;border-bottom:1.5px solid #777571;transform:rotate(45deg);transition:transform .2s}
+.filter-tree-toggle[aria-expanded="true"]::after{transform:rotate(-135deg);top:11px}
 .filter-sub{padding-left:26px}
 
 /* შოპი: ბანერსა და ფილტრ-ზონას შორის უფსკრული (ზედა კატეგორიების ზოლის მოშორების შემდეგ) */
