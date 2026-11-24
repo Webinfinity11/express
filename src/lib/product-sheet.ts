@@ -6,7 +6,7 @@ import type { categories, products, shippingClasses } from "../db/schema";
 
 type Product = typeof products.$inferSelect;
 type Category = Pick<typeof categories.$inferSelect, "id" | "name" | "parentId" | "sortOrder">;
-type ShippingClass = Pick<typeof shippingClasses.$inferSelect, "id" | "name">;
+type ShippingClass = Pick<typeof shippingClasses.$inferSelect, "id" | "name" | "code">;
 export type ProductValues = Partial<typeof products.$inferInsert>;
 
 const SHEET = "პროდუქცია";
@@ -90,6 +90,9 @@ const specsToText = (specs: Product["specs"]) => {
   return specs.map((s) => `${s.label}: ${s.value}`).join(separator);
 };
 
+/** სახელი ცარიელია → კოდი (XS, L, XL...) */
+const classLabel = (c: ShippingClass) => c.name.trim() || c.code;
+
 function productToRow(p: Product, categoryPath: Map<number, string>, className: Map<number, string>) {
   const hasSale = p.oldPrice != null && p.oldPrice > p.price;
   const bool = (v: boolean) => (v ? YES : NO);
@@ -143,7 +146,7 @@ export async function buildWorkbook(rows: Product[], cats: Category[], classes: 
 
   const paths = categoryPaths(cats);
   const categoryPath = new Map(paths.map((c) => [c.id, c.path]));
-  const className = new Map(classes.map((c) => [c.id, c.name]));
+  const className = new Map(classes.map((c) => [c.id, classLabel(c)]));
   for (const p of rows) ws.addRow(productToRow(p, categoryPath, className));
   ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: COLUMNS.length } };
 
@@ -154,7 +157,7 @@ export async function buildWorkbook(rows: Product[], cats: Category[], classes: 
   ];
   lists.getRow(1).font = { bold: true };
   paths.forEach((c, i) => (lists.getCell(i + 2, 1).value = c.path));
-  classes.forEach((c, i) => (lists.getCell(i + 2, 2).value = c.name));
+  classes.forEach((c, i) => (lists.getCell(i + 2, 2).value = classLabel(c)));
 
   const help = wb.addWorksheet(HELP_SHEET);
   help.columns = [
@@ -319,7 +322,7 @@ export function planImport(sheet: SheetRow[], existing: Product[], cats: Categor
   const pathToId = new Map(paths.map((c) => [c.path.toLowerCase(), c.id]));
   const nameToIds = new Map<string, number[]>();
   for (const c of paths) nameToIds.set(c.name.toLowerCase(), [...(nameToIds.get(c.name.toLowerCase()) ?? []), c.id]);
-  const classToId = new Map(classes.map((c) => [c.name.toLowerCase(), c.id]));
+  const classToId = new Map(classes.flatMap((c) => [[classLabel(c).toLowerCase(), c.id], [c.code.toLowerCase(), c.id]] as const));
   const slugs = new Set(existing.map((p) => p.slug));
   const usedIds = new Set<number>();
   const newSkus = new Set<string>();
