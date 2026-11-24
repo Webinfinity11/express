@@ -82,6 +82,17 @@ export function ProductForm({
     setSpecs([...specs.filter((s) => s.label.trim() || s.value.trim()), ...catSpecs.filter((l) => !have.has(l)).map((label) => ({ label, value: "" }))]);
   };
   const [dragSpec, setDragSpec] = useState<number | null>(null);
+  // ვარიაციის მახასიათებლების გადატანა (ისრებით ან გადათრევით)
+  const [dragVarSpec, setDragVarSpec] = useState<{ v: number; k: number } | null>(null);
+  const moveVarSpec = (vi: number, from: number, to: number) =>
+    setVariants((vs) =>
+      vs.map((x, j) => {
+        if (j !== vi || to < 0 || to >= x.specs.length || from === to) return x;
+        const next = [...x.specs];
+        next.splice(to, 0, next.splice(from, 1)[0]);
+        return { ...x, specs: next };
+      }),
+    );
   // მახასიათებლის გადატანა from → to პოზიციაზე (ისრებით ან გადათრევით)
   const moveSpec = (from: number, to: number) => {
     if (to < 0 || to >= specs.length || from === to) return;
@@ -320,13 +331,46 @@ export function ProductForm({
                     <p className="text-xs text-slate-500 mb-2">მხოლოდ ეს ვარიაცია. ემატება პროდუქტის მახასიათებლებს; იგივე სახელის შემთხვევაში ვარიაციისა ჩანს (მაგ. მოცულობა: 7 კგ).</p>
                     <div className="grid gap-2">
                       {v.specs.map((s, k) => (
-                        <div key={k} className="grid grid-cols-[1fr_1fr_auto] gap-2">
+                        <div
+                          key={k}
+                          className={`flex gap-2 items-center rounded-lg ${dragVarSpec?.v === i && dragVarSpec.k === k ? "opacity-50 bg-orange-50" : ""}`}
+                          onDragOver={(e) => {
+                            if (dragVarSpec === null || dragVarSpec.v !== i) return;
+                            e.preventDefault();
+                            if (dragVarSpec.k !== k) {
+                              moveVarSpec(i, dragVarSpec.k, k);
+                              setDragVarSpec({ v: i, k });
+                            }
+                          }}
+                          onDrop={(e) => e.preventDefault()}
+                        >
+                          <span
+                            draggable
+                            onDragStart={(e) => {
+                              e.dataTransfer.effectAllowed = "move";
+                              setDragVarSpec({ v: i, k });
+                            }}
+                            onDragEnd={() => setDragVarSpec(null)}
+                            className="cursor-grab active:cursor-grabbing select-none text-slate-400 hover:text-slate-700 px-1 text-lg leading-none"
+                            title="გადაათრიეთ"
+                            aria-hidden="true"
+                          >
+                            ⠿
+                          </span>
+                          <div className="flex flex-col">
+                            <button type="button" onClick={() => moveVarSpec(i, k, k - 1)} disabled={k === 0} className="text-slate-500 hover:text-[#ff5a00] disabled:opacity-25 px-1 text-xs leading-4" aria-label="ზემოთ">
+                              ▲
+                            </button>
+                            <button type="button" onClick={() => moveVarSpec(i, k, k + 1)} disabled={k === v.specs.length - 1} className="text-slate-500 hover:text-[#ff5a00] disabled:opacity-25 px-1 text-xs leading-4" aria-label="ქვემოთ">
+                              ▼
+                            </button>
+                          </div>
                           <input
                             value={s.label}
                             placeholder="სახელი"
                             list="spec-labels"
                             onChange={(e) => setVariant(i, { specs: v.specs.map((x, j) => (j === k ? { ...x, label: e.target.value } : x)) })}
-                            className={inputCls}
+                            className={`${inputCls} w-2/5`}
                           />
                           <input
                             value={s.value}
