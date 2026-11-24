@@ -42,7 +42,7 @@ export type Product = {
 
 export type ShipClass = { code: string; tbilisi: number; regions: number };
 
-export type Category = { id: string; name: string; image: string; parent: string | null; showOnHome: boolean; showInMenu: boolean };
+export type Category = { id: string; name: string; image: string; parent: string | null; showOnHome: boolean; showInMenu: boolean; filters: string[] | null };
 export type Brand = { name: string; logo: string | null };
 export type Catalog = { products: Product[]; categories: Category[]; brands: Brand[] };
 

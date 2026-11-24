@@ -1,10 +1,12 @@
 import { asc } from "drizzle-orm";
 import { categories, db, products, shippingClasses } from "@/db";
+import { ensureSchema } from "@/db/ensure";
 import { requireAdmin } from "@/lib/auth";
 import { buildWorkbook } from "@/lib/product-sheet";
 
 export async function GET() {
   await requireAdmin();
+  await ensureSchema();
   const [rows, cats, classes] = await Promise.all([
     db.select().from(products).orderBy(asc(products.id)),
     db.select().from(categories),

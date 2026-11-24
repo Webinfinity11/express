@@ -93,6 +93,7 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
       parent: c.parentId ? (slugOf.get(c.parentId) ?? null) : null,
       showOnHome: c.showOnHome,
       showInMenu: c.showInMenu,
+      filters: c.filters ?? null,
     })),
     brands: brandRows.filter((b) => b.showInStrip).map((b) => ({ name: b.name, logo: b.logo })),
   };

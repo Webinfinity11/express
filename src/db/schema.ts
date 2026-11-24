@@ -58,6 +58,8 @@ export const categories = pgTable(
     showInMenu: boolean("show_in_menu").notNull().default(true),
     en: en<CategoryEn>(),
     seo: seo(),
+    // მაღაზიის ფილტრები ამ კატეგორიაში (ჩართული გასაღებები); null = ავტომატური
+    filters: jsonb("filters").$type<string[] | null>(),
     // null = მშობელი კატეგორიის ლოჯისტიკური კლასი
     shippingClassId: integer("shipping_class_id").references(() => shippingClasses.id, { onDelete: "set null" }),
     sortOrder: integer("sort_order").notNull().default(0),

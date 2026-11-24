@@ -8,6 +8,7 @@ import { deleteCategory, saveCategory } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
 import { Button, Card, Field, inputCls } from "./ui";
 import { SingleImage } from "./ImageUploader";
+import { attrKey, FILTER_KEYS } from "@/lib/filter-attrs";
 import { inheritedClass, ShippingClassSelect } from "./ShippingClassSelect";
 
 type Cat = { id: number; name: string; parentId: number | null; shippingClassId: number | null };
@@ -17,11 +18,13 @@ export function CategoryForm({
   all,
   defaultParent,
   classes,
+  attrOptions,
 }: {
   category: CategoryRow | null;
   all: Cat[];
   defaultParent: number | null;
   classes: ShippingClassRow[];
+  attrOptions: { label: string; count: number; auto: boolean }[];
 }) {
   const router = useRouter();
   const [pending, start] = useTransition();
@@ -34,6 +37,14 @@ export function CategoryForm({
   const [showOnHome, setShowOnHome] = useState(category?.showOnHome ?? false);
   const [showInMenu, setShowInMenu] = useState(category?.showInMenu ?? true);
   const [sortOrder, setSortOrder] = useState(String(category?.sortOrder ?? 0));
+  // null = ავტომატური (ახლანდელი ნაგულისხმევი ფილტრები)
+  const [filters, setFilters] = useState<string[] | null>(category?.filters ?? null);
+  const autoFilters = [FILTER_KEYS.price, FILTER_KEYS.brand, FILTER_KEYS.offers, ...attrOptions.filter((a) => a.auto).map((a) => attrKey(a.label))];
+  const filterOn = (key: string) => (filters ?? autoFilters).includes(key);
+  const toggleFilter = (key: string, on: boolean) => {
+    const cur = filters ?? autoFilters;
+    setFilters(on ? [...cur, key] : cur.filter((k) => k !== key));
+  };
   const [shippingClassId, setShippingClassId] = useState<number | null>(category?.shippingClassId ?? null);
 
   // კატეგორია საკუთარ თავში ან ქვეკატეგორიაში ვერ გადავა
@@ -59,7 +70,7 @@ export function CategoryForm({
   const save = () =>
     start(async () => {
       setMessage(null);
-      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, showInMenu, shippingClassId, sortOrder, en: { name: nameEn } });
+      const res = await saveCategory(category?.id ?? null, { name, slug, parentId, image: image || null, showOnHome, showInMenu, shippingClassId, sortOrder, filters, en: { name: nameEn } });
       if (!res.ok) return setMessage({ ok: false, text: res.error });
       setMessage({ ok: true, text: "შენახულია ✓" });
       if (!category) router.replace(`/admin/categories/${res.id}`);
@@ -131,6 +142,38 @@ export function CategoryForm({
             <SingleImage value={image} onChange={setImage} />
             <p className="text-xs text-slate-500 mt-2">რეკომენდებულია გამჭვირვალე ფონით (PNG/WEBP), პროდუქტის ფოტო.</p>
           </div>
+          {category && (
+            <div className="border-t border-slate-200 pt-4">
+              <h3 className="font-bold mb-1">ფილტრები მაღაზიაში</h3>
+              <p className="text-sm text-slate-500 mb-3">მონიშნეთ, რომელი ფილტრები გამოჩნდეს ამ კატეგორიაში. მახასიათებლები პროდუქტებიდან თავისით ივსება.</p>
+              <div className="grid gap-2">
+                {[
+                  [FILTER_KEYS.price, "ფასი"],
+                  [FILTER_KEYS.brand, "ბრენდი"],
+                  [FILTER_KEYS.offers, "შეთავაზებები (ფასდაკლება, ახალი)"],
+                ].map(([key, label]) => (
+                  <label key={key} className="flex items-center gap-2">
+                    <input type="checkbox" checked={filterOn(key)} onChange={(e) => toggleFilter(key, e.target.checked)} className="h-4 w-4 accent-[#ff5a00]" />
+                    {label}
+                  </label>
+                ))}
+                {attrOptions.length > 0 && <div className="text-xs font-semibold text-slate-500 mt-2">მახასიათებლები</div>}
+                {attrOptions.map((a) => (
+                  <label key={a.label} className="flex items-center gap-2">
+                    <input type="checkbox" checked={filterOn(attrKey(a.label))} onChange={(e) => toggleFilter(attrKey(a.label), e.target.checked)} className="h-4 w-4 accent-[#ff5a00]" />
+                    {a.label} <span className="text-xs text-slate-400">({a.count} პროდუქტი)</span>
+                  </label>
+                ))}
+                {attrOptions.length === 0 && <p className="text-xs text-slate-500">ამ კატეგორიის პროდუქტებს ფილტრისთვის გამოსადეგი მახასიათებლები ჯერ არ აქვს.</p>}
+              </div>
+              {filters && (
+                <button type="button" onClick={() => setFilters(null)} className="mt-3 text-sm font-semibold text-[#ff5a00]">
+                  დაბრუნება ავტომატურ რეჟიმზე
+                </button>
+              )}
+              <p className="text-xs text-slate-500 mt-2">შეცვლის შემდეგ დააჭირეთ „შენახვა“.</p>
+            </div>
+          )}
         </div>
       </Card>
       <Card>

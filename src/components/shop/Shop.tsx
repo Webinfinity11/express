@@ -6,6 +6,7 @@ import { Dialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ItemCard } from "@/components/ItemCard";
 import { PriceFilter } from "@/components/shop/PriceFilter";
+import { ATTR_AUTO_LIMIT, FILTER_KEYS, attrKey, computeAttrGroups, normVal } from "@/lib/filter-attrs";
 import { useCatalog } from "@/context/CatalogContext";
 import { useStore } from "@/context/StoreContext";
 import { categoryHref, money } from "@/lib/data";
@@ -30,7 +31,6 @@ type Filters = {
   sort: Sort;
 };
 
-const normVal = (v: string) => v.replace(/\s+/g, " ").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").trim();
 
 type Limits = { categories: Set<string>; brands: string[]; priceMax: number; priceMin: number };
 
@@ -134,26 +134,14 @@ export function Shop() {
     return PRODUCTS.filter((p) => ids.has(p.category));
   }, [PRODUCTS, f.category, subtree]);
   const scopedBrands = useMemo(() => [...new Set(scoped.map((p) => p.brand).filter(Boolean))].sort(), [scoped]);
+  // ადმინში კატეგორიაზე არჩეული ფილტრები (null = ავტომატური)
+  const catFilters = useMemo(() => (f.category === "all" ? null : (categories.find((c) => c.id === f.category)?.filters ?? null)), [categories, f.category]);
+  const showFilter = (key: string) => !catFilters || catFilters.includes(key);
   const attrGroups = useMemo(() => {
     if (f.category === "all") return [];
-    const groups = new Map<string, Map<string, number>>();
-    for (const p of scoped) {
-      const seen = new Set<string>();
-      for (const [k, v] of p.specs) {
-        const label = k.trim(), val = normVal(v);
-        if (!label || !val || val.length > 28 || label === "ბრენდი" || seen.has(label)) continue;
-        seen.add(label);
-        const m = groups.get(label) ?? new Map<string, number>();
-        m.set(val, (m.get(val) ?? 0) + 1);
-        groups.set(label, m);
-      }
-    }
-    return [...groups.entries()]
-      .map(([label, m]) => ({ label, values: [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ka", { numeric: true })), total: [...m.values()].reduce((a, b) => a + b, 0) }))
-      .filter((g) => g.total >= 3 && g.values.length >= 2 && g.values.length <= 16)
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 5);
-  }, [scoped, f.category]);
+    const groups = computeAttrGroups(scoped.map((p) => p.specs));
+    return catFilters ? groups.filter((g) => catFilters.includes(attrKey(g.label))) : groups.slice(0, ATTR_AUTO_LIMIT);
+  }, [scoped, f.category, catFilters]);
   const update = (changes: Partial<Filters>) => {
     if (changes.category !== undefined && changes.category !== f.category) changes = { ...changes, attrs: [], brands: [], all: changes.all ?? false };
     const qs = serialize({ ...f, ...changes }, PRICE_MAX, PRICE_MIN);
@@ -264,6 +252,7 @@ export function Shop() {
           })}
         </div>
       </details>
+      {showFilter(FILTER_KEYS.price) && (
       <details className="filter-section" open>
         <summary>
           {t("ფასი")} <Icon name="chevron" />
@@ -272,6 +261,8 @@ export function Shop() {
           <PriceFilter min={PRICE_MIN} max={PRICE_MAX} lo={f.min} hi={f.max} onCommit={(min, max) => update({ min, max })} />
         </div>
       </details>
+      )}
+      {showFilter(FILTER_KEYS.brand) && (
       <details className="filter-section" id="brandFilters" open>
         <summary>
           {t("ბრენდი")} <Icon name="chevron" />
@@ -290,6 +281,7 @@ export function Shop() {
           ))}
         </div>
       </details>
+      )}
       {attrGroups.map((g) => (
         <details className="filter-section" key={g.label} open>
           <summary>
@@ -309,6 +301,7 @@ export function Shop() {
           </div>
         </details>
       ))}
+      {showFilter(FILTER_KEYS.offers) && (
       <details className="filter-section" open>
         <summary>
           {t("შეთავაზებები")} <Icon name="chevron" />
@@ -328,6 +321,7 @@ export function Shop() {
           ))}
         </div>
       </details>
+      )}
       <div className="filter-help">
         <Icon name="headphones" />
         <strong>{t("გჭირდებათ დახმარება?")}</strong>

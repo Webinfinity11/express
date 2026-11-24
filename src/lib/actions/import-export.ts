@@ -3,6 +3,7 @@
 import { eq } from "drizzle-orm";
 import { updateTag } from "next/cache";
 import { z } from "zod";
+import { ensureSchema } from "@/db/ensure";
 import { categories, db, products, shippingClasses } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { matchPhotos, type PhotoMatch } from "@/lib/photo-match";
@@ -36,6 +37,7 @@ async function buildPlan(form: FormData): Promise<{ ok: true; plan: ImportPlan }
   if (file.size > MAX_FILE) return { ok: false, error: "ფაილი 3.5MB-ზე მეტია" };
   const sheet = await parseWorkbook(await file.arrayBuffer());
   if (!sheet.ok) return sheet;
+  await ensureSchema();
   const [existing, cats, classes] = await Promise.all([
     db.select().from(products),
     db.select().from(categories),

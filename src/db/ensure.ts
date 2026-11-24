@@ -12,6 +12,7 @@ export function ensureSchema() {
     await db.execute(sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status text, ADD COLUMN IF NOT EXISTS bog_order_id text`);
     for (const table of ["categories", "products", "product_variants", "pages"])
       await db.execute(sql.raw(`ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS en jsonb NOT NULL DEFAULT '{}'::jsonb`));
+    await db.execute(sql`ALTER TABLE categories ADD COLUMN IF NOT EXISTS filters jsonb`);
     // SEO: ველები ჩანაწერებზე და გადამისამართებების ცხრილი
     for (const table of ["categories", "products", "pages"])
       await db.execute(sql.raw(`ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS seo jsonb NOT NULL DEFAULT '{}'::jsonb`));

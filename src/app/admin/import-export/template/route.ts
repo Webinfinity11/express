@@ -1,9 +1,11 @@
 import { categories, db, shippingClasses } from "@/db";
+import { ensureSchema } from "@/db/ensure";
 import { requireAdmin } from "@/lib/auth";
 import { buildWorkbook } from "@/lib/product-sheet";
 
 export async function GET() {
   await requireAdmin();
+  await ensureSchema();
   const [cats, classes] = await Promise.all([db.select().from(categories), db.select().from(shippingClasses)]);
   const body = await buildWorkbook([], cats, classes);
   return new Response(new Uint8Array(body), {

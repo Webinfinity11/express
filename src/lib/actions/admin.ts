@@ -7,6 +7,7 @@ import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { brands, categories, db, orders, pages, productVariants, products, promoCodes, settings, shippingClasses } from "@/db";
+import { ensureSchema } from "@/db/ensure";
 import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { BOG_SETTINGS_KEY, getBogConfig, token as bogToken } from "@/lib/bog";
@@ -252,6 +253,7 @@ const categorySchema = z.object({
   shippingClassId: z.number().int().nullable().optional(),
   sortOrder: z.coerce.number().int().min(-1000).max(1000),
   en: z.object({ name: enText(120) }).optional(),
+  filters: z.array(z.string().max(120)).max(60).nullable().optional(),
 });
 export type CategoryInput = z.input<typeof categorySchema>;
 
@@ -260,6 +262,7 @@ export async function saveCategory(id: number | null, input: CategoryInput): Pro
   const parsed = categorySchema.safeParse(input);
   if (!parsed.success) return fail(parsed.error.issues[0].message);
   const d = parsed.data;
+  await ensureSchema();
 
   if (id && d.parentId) {
     // კატეგორია საკუთარ თავში ან ქვეკატეგორიაში ვერ გადავა
@@ -278,6 +281,7 @@ export async function saveCategory(id: number | null, input: CategoryInput): Pro
     ...(d.shippingClassId !== undefined && { shippingClassId: d.shippingClassId }),
     sortOrder: d.sortOrder,
     ...(d.en && { en: cleanEn(d.en) }),
+    ...(d.filters !== undefined && { filters: d.filters }),
   };
   let categoryId = id;
   if (id) await db.update(categories).set(values).where(eq(categories.id, id));

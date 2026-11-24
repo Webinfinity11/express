@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { asc, sql } from "drizzle-orm";
 import { categories, db, products, type CategoryRow } from "@/db";
+import { ensureSchema } from "@/db/ensure";
 import { requireAdmin } from "@/lib/auth";
 import { Button, PageTitle } from "@/components/admin/ui";
 import { CategoryFlagToggle } from "@/components/admin/Toggles";
 
 export default async function CategoriesAdmin() {
   await requireAdmin();
+  await ensureSchema();
   const [cats, counts] = await Promise.all([
     db.select().from(categories).orderBy(asc(categories.sortOrder), asc(categories.name)),
     db
