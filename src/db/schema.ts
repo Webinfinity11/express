@@ -120,6 +120,8 @@ export const productVariants = pgTable(
     image: text("image"),
     inStock: boolean("in_stock").notNull().default(true),
     stockQty: integer("stock_qty"),
+    // ვარიაციის საკუთარი მახასიათებლები: ემატება/ანაცვლებს პროდუქტის მახასიათებლებს
+    specs: jsonb("specs").$type<Spec[]>().notNull().default([]),
     en: en<VariantEn>(),
     sortOrder: integer("sort_order").notNull().default(0),
   },

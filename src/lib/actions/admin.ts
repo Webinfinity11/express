@@ -92,6 +92,7 @@ const variantSchema = z.object({
   image: z.union([z.literal(""), z.null(), imageUrl]).optional(),
   inStock: z.boolean(),
   stockQty: optInt,
+  specs: z.array(z.object({ label: z.string().trim().max(80), value: z.string().trim().max(200) })).max(40).optional(),
   en: z.object({ name: z.string().trim().max(80) }).partial().optional(),
 });
 
@@ -143,6 +144,7 @@ export type ProductInput = z.input<typeof productSchema>;
 
 export async function saveProduct(id: number | null, input: ProductInput): Promise<ActionResult> {
   await requireAdmin();
+  await ensureSchema();
   const parsed = productSchema.safeParse(input);
   if (!parsed.success) return fail(parsed.error.issues[0].message);
   const d = parsed.data;
@@ -195,6 +197,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
       image: v.image || null,
       inStock: v.inStock,
       stockQty: num(v.stockQty),
+      specs: (v.specs ?? []).filter((s) => s.label && s.value),
       ...(v.en && { en: cleanEn(v.en) }),
       sortOrder: i,
     };
@@ -216,6 +219,7 @@ export async function deleteProduct(id: number): Promise<ActionResult> {
 /** ასლი დამალულ (დრაფტ) მდგომარეობაში, ვარიაციებით; აბრუნებს ახალ id-ს. */
 export async function duplicateProduct(id: number): Promise<ActionResult> {
   await requireAdmin();
+  await ensureSchema();
   const [src] = await db.select().from(products).where(eq(products.id, id));
   if (!src) return fail("პროდუქტი ვერ მოიძებნა");
   const taken = new Set(

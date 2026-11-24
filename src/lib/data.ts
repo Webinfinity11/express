@@ -10,6 +10,7 @@ export type Variant = {
   oldPrice: number;
   image: string | null;
   inStock: boolean;
+  specs: [string, string][];
 };
 
 export type Product = {

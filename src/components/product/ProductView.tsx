@@ -32,6 +32,20 @@ export function ProductView({ p }: { p: Product }) {
   const variant = p.variants.find((v) => v.id === vid) ?? null;
   const cur = variant ?? p;
   const inStock = variant ? variant.inStock : p.inStock;
+  // პროდუქტის მახასიათებლები + არჩეული ვარიაციისა (იგივე სახელზე ვარიაციისა ჩანს)
+  const specs: [string, string][] = (() => {
+    const own = variant?.specs ?? [];
+    if (!own.length) return p.specs;
+    const ov = new Map(own.map(([k, v]) => [k.trim(), v] as const));
+    const used = new Set<string>();
+    const merged = p.specs.map(([k, v]) => {
+      const o = ov.get(k.trim());
+      if (o === undefined) return [k, v] as [string, string];
+      used.add(k.trim());
+      return [k, o] as [string, string];
+    });
+    return [...merged, ...own.filter(([k]) => !used.has(k.trim()))];
+  })();
   const key = lineKey(p.id, variant?.id);
   const [index, setIndex] = useState(0);
   const [qty, setQty] = useState(1);
@@ -153,7 +167,7 @@ export function ProductView({ p }: { p: Product }) {
             )}
           </div>
           <dl className="p-mini-specs">
-            {p.specs.map(([k, v]) => (
+            {specs.map(([k, v]) => (
               <div key={k}>
                 <dt>{k}</dt>
                 <dd>{v}</dd>
@@ -305,7 +319,7 @@ export function ProductView({ p }: { p: Product }) {
                   [t("დასახელება"), p.name],
                   [t("პროდუქტის კოდი"), variant?.sku || p.sku],
                   [t("კატეგორია"), categoryName(p.category)],
-                  ...p.specs,
+                  ...specs,
                   [t("ფერი"), variant?.name || p.color],
                 ] as [string, string][]
               )

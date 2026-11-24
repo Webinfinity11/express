@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { asc, eq } from "drizzle-orm";
 import { brands, categories, db, productVariants, products, shippingClasses } from "@/db";
+import { ensureSchema } from "@/db/ensure";
 import { requireAdmin } from "@/lib/auth";
 import { PageTitle } from "@/components/admin/ui";
 import { ProductForm } from "@/components/admin/ProductForm";
@@ -11,6 +12,7 @@ import { getAttrSuggestions } from "@/lib/attribute-suggestions";
 
 export default async function EditProduct({ params }: PageProps<"/admin/products/[id]">) {
   await requireAdmin();
+  await ensureSchema();
   const { id } = await params;
   const isNew = id === "new";
   const [product] = isNew ? [null] : await db.select().from(products).where(eq(products.id, Number(id) || 0));

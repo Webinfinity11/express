@@ -22,6 +22,7 @@ type VariantDraft = {
   inStock: boolean;
   stockQty: string;
   nameEn: string;
+  specs: Spec[];
 };
 
 const str = (v: number | null | undefined) => (v == null ? "" : String(v));
@@ -36,6 +37,7 @@ const toDraft = (v: VariantRow): VariantDraft => ({
   inStock: v.inStock,
   stockQty: str(v.stockQty),
   nameEn: v.en?.name ?? "",
+  specs: v.specs ?? [],
 });
 
 export function ProductForm({
@@ -110,7 +112,7 @@ export function ProductForm({
 
   const setVariant = (i: number, patch: Partial<VariantDraft>) => setVariants((vs) => vs.map((v, j) => (j === i ? { ...v, ...patch } : v)));
   const addVariant = () =>
-    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", image: "", inStock: true, stockQty: "", nameEn: "" }]);
+    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", image: "", inStock: true, stockQty: "", nameEn: "", specs: [] }]);
 
   const submit = () =>
     start(async () => {
@@ -148,6 +150,7 @@ export function ProductForm({
           image: v.image || null,
           inStock: v.inStock,
           stockQty: v.stockQty.trim() ? v.stockQty : null,
+          specs: v.specs,
           en: { name: v.nameEn },
         })),
         en: { ...en, specs: specsEn },
@@ -311,6 +314,37 @@ export function ProductForm({
                       />
                       მარაგშია
                     </label>
+                  </div>
+                  <div>
+                    <span className="block text-sm font-semibold mb-1.5">მახასიათებლები</span>
+                    <p className="text-xs text-slate-500 mb-2">მხოლოდ ეს ვარიაცია. ემატება პროდუქტის მახასიათებლებს; იგივე სახელის შემთხვევაში ვარიაციისა ჩანს (მაგ. მოცულობა: 7 კგ).</p>
+                    <div className="grid gap-2">
+                      {v.specs.map((s, k) => (
+                        <div key={k} className="grid grid-cols-[1fr_1fr_auto] gap-2">
+                          <input
+                            value={s.label}
+                            placeholder="სახელი"
+                            list="spec-labels"
+                            onChange={(e) => setVariant(i, { specs: v.specs.map((x, j) => (j === k ? { ...x, label: e.target.value } : x)) })}
+                            className={inputCls}
+                          />
+                          <input
+                            value={s.value}
+                            placeholder="მნიშვნელობა"
+                            onChange={(e) => setVariant(i, { specs: v.specs.map((x, j) => (j === k ? { ...x, value: e.target.value } : x)) })}
+                            className={inputCls}
+                          />
+                          <Button type="button" variant="danger" onClick={() => setVariant(i, { specs: v.specs.filter((_, j) => j !== k) })} aria-label="წაშლა">
+                            ✕
+                          </Button>
+                        </div>
+                      ))}
+                      <div>
+                        <Button type="button" variant="secondary" onClick={() => setVariant(i, { specs: [...v.specs, { label: "", value: "" }] })}>
+                          + მახასიათებელი
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex flex-wrap items-end justify-between gap-3">
                     <div className="w-full sm:w-auto">
