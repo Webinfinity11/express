@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Content } from "@/lib/content-schema";
 import { Link, useT } from "@/i18n/client";
 import { Icon } from "../Icon";
@@ -17,11 +17,24 @@ export function Hero({ home }: { home: Content["home"] }) {
   // მობილურზე თითის გასმით გადართვა
   const touchX = useRef<number | null>(null);
 
+  // ყოველ 6 წამში თავისით შემდეგ ბანერზე (კურსორის/ფოკუსის დროს ჩერდება; ხელით გადართვისას ითვლა თავიდან)
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (SLIDES.length < 2 || paused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setTimeout(() => setIndex((i) => (i + 1) % SLIDES.length), 6000);
+    return () => clearTimeout(id);
+  }, [index, paused, SLIDES.length]);
+
   return (
     <section
       className="hx wrap"
       aria-label={t("მთავარი შეთავაზებები")}
       aria-roledescription={t("კარუსელი")}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
       onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
       onTouchEnd={(e) => {
         if (touchX.current === null) return;

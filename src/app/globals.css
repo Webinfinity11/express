@@ -666,3 +666,21 @@ body .p-details h1{-webkit-text-stroke:.9px currentColor;paint-order:stroke fill
 .subcat-card strong{font-size:15px;font-weight:650;line-height:1.35}
 .subcat-card small{font-size:12.5px;color:#8a8a8a}
 @media(max-width:700px){.subcat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.subcat-card{padding:10px 10px 12px}.subcat-card strong{font-size:13.5px}}
+
+/* მთავარი: დაბალი ბანერი და უფრო პატარა კატეგორიის ბოქსები (ერთ რიგში მეტი კატეგორია) */
+@media(min-width:1001px){
+  .hx{height:auto;min-height:430px}
+  .hx-content{padding:18px 52px 0}
+  .hx h1{margin-bottom:12px}
+  .hx p{font-size:18px;margin-bottom:20px}
+  .hx-dots{margin-top:18px}
+  .hx-benefits{padding:14px 52px 18px}
+  .categories-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:8px}
+  .category-card{min-height:128px;padding:10px 4px 9px;gap:6px;border-radius:9px}
+  .category-card img{height:72px;max-width:72px}
+  body .category-card span{font-size:12.5px;line-height:1.3;min-height:2.6em;max-width:100%}
+  body .category-card .sale-badge,.category-card .sale-badge{width:50px;height:50px;font-size:26px}
+}
+@media(min-width:1251px){
+  .categories-grid{grid-template-columns:repeat(12,minmax(0,1fr))}
+}
