@@ -17,12 +17,12 @@ export function Hero({ home }: { home: Content["home"] }) {
   // მობილურზე თითის გასმით გადართვა
   const touchX = useRef<number | null>(null);
 
-  // ყოველ 6 წამში თავისით შემდეგ ბანერზე (კურსორის/ფოკუსის დროს ჩერდება; ხელით გადართვისას ითვლა თავიდან)
+  // ყოველ ~9 წამში თავისით შემდეგ ბანერზე (კურსორის/ფოკუსის დროს ჩერდება; ხელით გადართვისას ითვლა თავიდან)
   const [paused, setPaused] = useState(false);
   useEffect(() => {
     if (SLIDES.length < 2 || paused) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setTimeout(() => setIndex((i) => (i + 1) % SLIDES.length), 6000);
+    const id = setTimeout(() => setIndex((i) => (i + 1) % SLIDES.length), 9500);
     return () => clearTimeout(id);
   }, [index, paused, SLIDES.length]);
 
@@ -49,12 +49,12 @@ export function Hero({ home }: { home: Content["home"] }) {
       <div className="hx-shade" />
       <div className="hx-content">
         <span className="hx-eyebrow">{home.heroEyebrow}</span>
-        <h1>
+        <h1 key={`t${index}`} className="hx-anim">
           {slide.title}
           {(slide.title2 || slide.accent) && <br />}
           {slide.title2} {slide.accent && <span>{slide.accent}</span>}
         </h1>
-        <p>{slide.text}</p>
+        <p key={`p${index}`} className="hx-anim">{slide.text}</p>
         <Link className="button primary hx-cta" href={slide.href || "/products"}>
           {home.heroButton} <Icon name="arrow" />
         </Link>

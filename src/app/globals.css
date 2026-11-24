@@ -668,11 +668,18 @@ body .p-details h1{-webkit-text-stroke:.9px currentColor;paint-order:stroke fill
 @media(max-width:700px){.subcat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.subcat-card{padding:10px 10px 12px}.subcat-card strong{font-size:13.5px}}
 
 /* მთავარი: დაბალი ბანერი და უფრო პატარა კატეგორიის ბოქსები (ერთ რიგში მეტი კატეგორია) */
+.hx-media img{animation-duration:1s}
+.hx-anim{animation:hx-text .9s ease-out}
+@keyframes hx-text{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(min-width:1001px){
+  .hx h1{font-size:clamp(30px,3.2vw,46px)}
+  .hx-eyebrow{font-size:14px;margin-bottom:10px}
+  .hx-cta{min-height:46px;padding:10px 22px;font-size:16px}
+  .hx-benefit{font-size:14.5px}
   .hx{height:auto;min-height:430px}
   .hx-content{padding:18px 52px 0}
   .hx h1{margin-bottom:12px}
-  .hx p{font-size:18px;margin-bottom:20px}
+  .hx p{font-size:16.5px;margin-bottom:18px}
   .hx-dots{margin-top:18px}
   .hx-benefits{padding:14px 52px 18px}
   .categories-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:8px}
