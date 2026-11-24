@@ -139,8 +139,9 @@ export function Shop() {
   const showFilter = (key: string) => !catFilters || catFilters.includes(key);
   const attrGroups = useMemo(() => {
     if (f.category === "all") return [];
-    const groups = computeAttrGroups(scoped.map((p) => p.specs));
-    return catFilters ? groups.filter((g) => catFilters.includes(attrKey(g.label))) : groups.slice(0, ATTR_AUTO_LIMIT);
+    const specs = scoped.map((p) => p.specs);
+    if (!catFilters) return computeAttrGroups(specs).slice(0, ATTR_AUTO_LIMIT);
+    return computeAttrGroups(specs, { all: true }).filter((g) => catFilters.includes(attrKey(g.label)));
   }, [scoped, f.category, catFilters]);
   const update = (changes: Partial<Filters>) => {
     if (changes.category !== undefined && changes.category !== f.category) changes = { ...changes, attrs: [], brands: [], all: changes.all ?? false };
@@ -289,7 +290,7 @@ export function Shop() {
           <summary>
             {g.label} <Icon name="chevron" />
           </summary>
-          <div className="filter-section-body">
+          <div className={`filter-section-body${g.values.length > 10 ? " filter-scroll" : ""}`}>
             {g.values.map(([v, n]) => {
               const key = g.label + ATTR_SEP + v;
               return (

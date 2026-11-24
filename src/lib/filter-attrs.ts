@@ -6,7 +6,7 @@ export const normVal = (v: string) => v.replace(/\s+/g, " ").replace(/\(\s+/g, "
 export type AttrGroup = { label: string; values: [string, number][]; total: number };
 
 /** პროდუქტების specs-იდან ფილტრად ვარგისი მახასიათებლები, ყველაზე ხშირი წინ. */
-export function computeAttrGroups(specsList: [string, string][][]): AttrGroup[] {
+export function computeAttrGroups(specsList: [string, string][][], opts: { all?: boolean } = {}): AttrGroup[] {
   const groups = new Map<string, Map<string, number>>();
   for (const specs of specsList) {
     const seen = new Set<string>();
@@ -21,8 +21,14 @@ export function computeAttrGroups(specsList: [string, string][][]): AttrGroup[] 
   }
   return [...groups.entries()]
     .map(([label, m]) => ({ label, values: [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ka", { numeric: true })), total: [...m.values()].reduce((a, b) => a + b, 0) }))
-    .filter((g) => g.total >= 3 && g.values.length >= 2 && g.values.length <= 16)
+    .filter((g) => (opts.all ? g.total >= 1 && g.values.length >= 2 : g.total >= 3 && g.values.length >= 2 && g.values.length <= 16))
+    .map((g) => (g.values.length > 16 ? { ...g, values: [...g.values].sort((a, b) => a[0].localeCompare(b[0], "ka", { numeric: true })) } : g))
     .sort((a, b) => b.total - a.total);
+}
+
+/** ავტომატურ რეჟიმში ჩანს ის, რაც ამ წესებს აკმაყოფილებს (ადმინში „ავტო“ ნიშნით). */
+export function autoAttrLabels(specsList: [string, string][][]): string[] {
+  return computeAttrGroups(specsList).slice(0, ATTR_AUTO_LIMIT).map((g) => g.label);
 }
 
 export const FILTER_KEYS = { categories: "categories", price: "price", brand: "brand", offers: "offers" } as const;

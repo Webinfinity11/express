@@ -6,7 +6,7 @@ import { ensureSchema } from "@/db/ensure";
 import { requireAdmin } from "@/lib/auth";
 import { PageTitle } from "@/components/admin/ui";
 import { EntitySeoBox } from "@/components/admin/seo/EntitySeoBox";
-import { computeAttrGroups, ATTR_AUTO_LIMIT } from "@/lib/filter-attrs";
+import { autoAttrLabels, computeAttrGroups } from "@/lib/filter-attrs";
 import { CategoryForm } from "@/components/admin/CategoryForm";
 
 export default async function EditCategory({ params, searchParams }: PageProps<"/admin/categories/[id]">) {
@@ -33,8 +33,9 @@ export default async function EditCategory({ params, searchParams }: PageProps<"
       for (const c of all) if (c.parentId && ids.has(c.parentId) && !ids.has(c.id)) (ids.add(c.id), (grew = true));
     }
     const rows = await db.select({ categoryId: products.categoryId, specs: products.specs }).from(products);
-    const groups = computeAttrGroups(rows.filter((r) => r.categoryId && ids.has(r.categoryId)).map((r) => r.specs.map((s) => [s.label, s.value] as [string, string])));
-    attrOptions = groups.map((g, i) => ({ label: g.label, count: g.total, auto: i < ATTR_AUTO_LIMIT }));
+    const specsList = rows.filter((r) => r.categoryId && ids.has(r.categoryId)).map((r) => r.specs.map((s) => [s.label, s.value] as [string, string]));
+    const auto = new Set(autoAttrLabels(specsList));
+    attrOptions = computeAttrGroups(specsList, { all: true }).map((g) => ({ label: g.label, count: g.total, auto: auto.has(g.label) }));
   }
   return (
     <>
