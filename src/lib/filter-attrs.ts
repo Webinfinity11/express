@@ -25,5 +25,5 @@ export function computeAttrGroups(specsList: [string, string][][]): AttrGroup[] 
     .sort((a, b) => b.total - a.total);
 }
 
-export const FILTER_KEYS = { price: "price", brand: "brand", offers: "offers" } as const;
+export const FILTER_KEYS = { categories: "categories", price: "price", brand: "brand", offers: "offers" } as const;
 export const attrKey = (label: string) => `attr:${label}`;

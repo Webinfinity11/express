@@ -213,6 +213,7 @@ export function Shop() {
         <h2>{t("ფილტრები")}</h2>
         <button onClick={reset}>{t("გასუფთავება")}</button>
       </div>
+      {showFilter(FILTER_KEYS.categories) && (
       <details className="filter-section" open>
         <summary>
           {t("კატეგორიები")} <Icon name="chevron" />
@@ -252,6 +253,7 @@ export function Shop() {
           })}
         </div>
       </details>
+      )}
       {showFilter(FILTER_KEYS.price) && (
       <details className="filter-section" open>
         <summary>

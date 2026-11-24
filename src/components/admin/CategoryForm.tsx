@@ -39,7 +39,7 @@ export function CategoryForm({
   const [sortOrder, setSortOrder] = useState(String(category?.sortOrder ?? 0));
   // null = ავტომატური (ახლანდელი ნაგულისხმევი ფილტრები)
   const [filters, setFilters] = useState<string[] | null>(category?.filters ?? null);
-  const autoFilters = [FILTER_KEYS.price, FILTER_KEYS.brand, FILTER_KEYS.offers, ...attrOptions.filter((a) => a.auto).map((a) => attrKey(a.label))];
+  const autoFilters = [FILTER_KEYS.categories, FILTER_KEYS.price, FILTER_KEYS.brand, FILTER_KEYS.offers, ...attrOptions.filter((a) => a.auto).map((a) => attrKey(a.label))];
   const filterOn = (key: string) => (filters ?? autoFilters).includes(key);
   const toggleFilter = (key: string, on: boolean) => {
     const cur = filters ?? autoFilters;
@@ -148,7 +148,8 @@ export function CategoryForm({
               <p className="text-sm text-slate-500 mb-3">მონიშნეთ, რომელი ფილტრები გამოჩნდეს ამ კატეგორიაში. მახასიათებლები პროდუქტებიდან თავისით ივსება.</p>
               <div className="grid gap-2">
                 {[
-                  [FILTER_KEYS.price, "ფასი"],
+                  [FILTER_KEYS.categories, "კატეგორიები"],
+              [FILTER_KEYS.price, "ფასი"],
                   [FILTER_KEYS.brand, "ბრენდი"],
                   [FILTER_KEYS.offers, "შეთავაზებები (ფასდაკლება, ახალი)"],
                 ].map(([key, label]) => (
