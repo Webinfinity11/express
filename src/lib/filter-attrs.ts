@@ -35,29 +35,3 @@ export function autoAttrLabels(specsList: [string, string][][]): string[] {
 
 export const FILTER_KEYS = { categories: "categories", price: "price", brand: "brand", offers: "offers" } as const;
 export const attrKey = (label: string) => `attr:${label}`;
-
-/**
- * კატეგორიის ფილტრების შენახვის ფორმატი (categories.filters):
- *  null            → ავტომატური: ყველა ვარგისი ფილტრი, ახალი მახასიათებლებიც თავისით ემატება
- *  ["v2", ...]     → "off:<key>" = გამორთული, "on:<key>" = დამატებით ჩართული (ავტომატურად არავარგისი მახასიათებელი)
- *  ძველი (v2-ის გარეშე) → მხოლოდ ჩამოთვლილი ჩანს
- */
-export const FILTERS_V2 = "v2";
-
-export type FilterRules = {
-  /** ფასი / ბრენდი / შეთავაზებები / კატეგორიები */
-  show: (key: string) => boolean;
-  /** მახასიათებელი: passesAuto = ავტომატურ წესებს აკმაყოფილებს */
-  attr: (label: string, passesAuto: boolean) => boolean;
-};
-
-export function filterRules(raw: string[] | null | undefined): FilterRules {
-  if (!raw) return { show: () => true, attr: (_l, auto) => auto };
-  if (raw.includes(FILTERS_V2)) {
-    const off = new Set(raw.filter((k) => k.startsWith("off:")).map((k) => k.slice(4)));
-    const on = new Set(raw.filter((k) => k.startsWith("on:")).map((k) => k.slice(3)));
-    return { show: (key) => !off.has(key), attr: (label, auto) => (auto ? !off.has(attrKey(label)) : on.has(attrKey(label))) };
-  }
-  const enabled = new Set(raw);
-  return { show: (key) => enabled.has(key), attr: (label) => enabled.has(attrKey(label)) };
-}

@@ -8,7 +8,7 @@ import { deleteCategory, saveCategory } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
 import { Button, Card, Field, inputCls } from "./ui";
 import { SingleImage } from "./ImageUploader";
-import { attrKey, FILTER_KEYS, FILTERS_V2, filterRules } from "@/lib/filter-attrs";
+import { attrKey, FILTER_KEYS } from "@/lib/filter-attrs";
 import { inheritedClass, ShippingClassSelect } from "./ShippingClassSelect";
 
 type Cat = { id: number; name: string; parentId: number | null; shippingClassId: number | null };
@@ -39,29 +39,11 @@ export function CategoryForm({
   const [sortOrder, setSortOrder] = useState(String(category?.sortOrder ?? 0));
   // null = ავტომატური (ახლანდელი ნაგულისხმევი ფილტრები)
   const [filters, setFilters] = useState<string[] | null>(category?.filters ?? null);
-  const rules = filterRules(filters);
-  const autoOf = (key: string) => attrOptions.find((a) => attrKey(a.label) === key)?.auto ?? false;
-  const filterOn = (key: string) => (key.startsWith("attr:") ? rules.attr(key.slice(5), autoOf(key)) : rules.show(key));
+  const autoFilters = [FILTER_KEYS.categories, FILTER_KEYS.price, FILTER_KEYS.brand, FILTER_KEYS.offers, ...attrOptions.filter((a) => a.auto).map((a) => attrKey(a.label))];
+  const filterOn = (key: string) => (filters ?? autoFilters).includes(key);
   const toggleFilter = (key: string, on: boolean) => {
-    // ძველი ფორმატი → v2 (არჩევანი იგივე რჩება)
-    let cur = filters;
-    if (!cur || !cur.includes(FILTERS_V2)) {
-      const r = filterRules(cur);
-      const keys = [FILTER_KEYS.categories, FILTER_KEYS.price, FILTER_KEYS.brand, FILTER_KEYS.offers];
-      cur = [FILTERS_V2];
-      for (const k of keys) if (!r.show(k)) cur.push(`off:${k}`);
-      for (const a of attrOptions) {
-        const shown = r.attr(a.label, a.auto);
-        if (a.auto && !shown) cur.push(`off:${attrKey(a.label)}`);
-        if (!a.auto && shown) cur.push(`on:${attrKey(a.label)}`);
-      }
-    }
-    const auto = key.startsWith("attr:") ? autoOf(key) : true;
-    const marker = auto ? `off:${key}` : `on:${key}`;
-    const shouldHave = auto ? !on : on;
-    cur = cur.filter((k) => k !== marker);
-    if (shouldHave) cur.push(marker);
-    setFilters(cur);
+    const cur = filters ?? autoFilters;
+    setFilters(on ? [...cur, key] : cur.filter((k) => k !== key));
   };
   const [shippingClassId, setShippingClassId] = useState<number | null>(category?.shippingClassId ?? null);
 
