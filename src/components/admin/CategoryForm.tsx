@@ -45,6 +45,18 @@ export function CategoryForm({
     const cur = filters ?? autoFilters;
     setFilters(on ? [...cur, key] : cur.filter((k) => k !== key));
   };
+  // ხელით დამატებული ფილტრები (სიაში არარსებული მახასიათებლები)
+  const [newFilter, setNewFilter] = useState("");
+  const knownLabels = new Set(attrOptions.map((a) => attrKey(a.label)));
+  const customFilters = (filters ?? []).filter((k) => k.startsWith("attr:") && !knownLabels.has(k));
+  const addFilter = () => {
+    const label = newFilter.trim().replace(/s+/g, " ");
+    if (!label) return;
+    const key = attrKey(label);
+    const cur = filters ?? autoFilters;
+    if (!cur.includes(key)) setFilters([...cur, key]);
+    setNewFilter("");
+  };
   const [shippingClassId, setShippingClassId] = useState<number | null>(category?.shippingClassId ?? null);
 
   // კატეგორია საკუთარ თავში ან ქვეკატეგორიაში ვერ გადავა
@@ -166,7 +178,34 @@ export function CategoryForm({
                   </label>
                 ))}
                 {attrOptions.length === 0 && <p className="text-xs text-slate-500">ამ კატეგორიის პროდუქტებს ფილტრისთვის გამოსადეგი მახასიათებლები ჯერ არ აქვს.</p>}
+                {customFilters.map((k) => (
+                  <div key={k} className="flex items-center gap-2">
+                    <span className="h-4 w-4 text-center leading-4 text-[#ff5a00]">✓</span>
+                    {k.slice(5)} <span className="text-xs text-slate-400">(დამატებული ხელით)</span>
+                    <button type="button" onClick={() => toggleFilter(k, false)} className="text-xs text-red-600 ml-auto">
+                      წაშლა
+                    </button>
+                  </div>
+                ))}
               </div>
+              <div className="mt-3 flex gap-2">
+                <input
+                  value={newFilter}
+                  onChange={(e) => setNewFilter(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addFilter();
+                    }
+                  }}
+                  placeholder="ფილტრის დასახელება, მაგ. მაქსიმალური ჩატვირთვა"
+                  className={inputCls}
+                />
+                <button type="button" onClick={addFilter} className="shrink-0 px-4 rounded-lg border border-slate-300 text-sm font-semibold">
+                  + დამატება
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">ჩაწერეთ მახასიათებლის სახელი ზუსტად ისე, როგორც პროდუქტის მახასიათებლებშია. მნიშვნელობები პროდუქტებიდან თავისით აიღება.</p>
               {filters && (
                 <button type="button" onClick={() => setFilters(null)} className="mt-3 text-sm font-semibold text-[#ff5a00]">
                   დაბრუნება ავტომატურ რეჟიმზე
