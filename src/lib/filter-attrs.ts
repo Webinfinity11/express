@@ -3,6 +3,9 @@ export const ATTR_AUTO_LIMIT = 5;
 
 export const normVal = (v: string) => v.replace(/\s+/g, " ").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").trim();
 
+/** „7 კგ“, „198 ლ“, „68 dB“: რიცხვი + ერთეული; ასეთ მახასიათებელს ბევრი მნიშვნელობაც შეიძლება ჰქონდეს (ჩატვირთვა, მოცულობა). */
+const isMeasure = (values: [string, number][]) => values.filter(([v]) => /^\d+([.,]\d+)?\s*\p{L}+$/u.test(v)).length >= values.length * 0.8;
+
 export type AttrGroup = { label: string; values: [string, number][]; total: number };
 
 /** პროდუქტების specs-იდან ფილტრად ვარგისი მახასიათებლები, ყველაზე ხშირი წინ. */
@@ -21,7 +24,7 @@ export function computeAttrGroups(specsList: [string, string][][], opts: { all?:
   }
   return [...groups.entries()]
     .map(([label, m]) => ({ label, values: [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ka", { numeric: true })), total: [...m.values()].reduce((a, b) => a + b, 0) }))
-    .filter((g) => (opts.all ? g.total >= 1 && g.values.length >= 2 : g.total >= 3 && g.values.length >= 2 && g.values.length <= 16))
+    .filter((g) => (opts.all ? g.total >= 1 && g.values.length >= 2 : g.total >= 3 && g.values.length >= 2 && (g.values.length <= 16 || (g.values.length <= 120 && isMeasure(g.values)))))
     .map((g) => (g.values.length > 16 ? { ...g, values: [...g.values].sort((a, b) => a[0].localeCompare(b[0], "ka", { numeric: true })) } : g))
     .sort((a, b) => b.total - a.total);
 }
