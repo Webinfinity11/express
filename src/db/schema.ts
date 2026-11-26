@@ -118,6 +118,8 @@ export const productVariants = pgTable(
     price: money("price"),
     oldPrice: money("old_price"),
     image: text("image"),
+    // ვარიაციის გალერეა; პირველი = მთავარი (image-ში იგივე ინახება)
+    images: jsonb("images").$type<string[]>().notNull().default([]),
     inStock: boolean("in_stock").notNull().default(true),
     stockQty: integer("stock_qty"),
     // ვარიაციის საკუთარი მახასიათებლები: ემატება/ანაცვლებს პროდუქტის მახასიათებლებს

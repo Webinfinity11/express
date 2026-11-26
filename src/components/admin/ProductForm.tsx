@@ -18,7 +18,7 @@ type VariantDraft = {
   sku: string;
   price: string;
   oldPrice: string;
-  image: string;
+  images: string[];
   inStock: boolean;
   stockQty: string;
   nameEn: string;
@@ -33,7 +33,8 @@ const toDraft = (v: VariantRow): VariantDraft => ({
   sku: v.sku,
   price: str(v.price),
   oldPrice: str(v.oldPrice),
-  image: v.image ?? "",
+  // ძველ ვარიაციებს მხოლოდ ერთი სურათი აქვს (image)
+  images: v.images?.length ? v.images : v.image ? [v.image] : [],
   inStock: v.inStock,
   stockQty: str(v.stockQty),
   nameEn: v.en?.name ?? "",
@@ -123,7 +124,7 @@ export function ProductForm({
 
   const setVariant = (i: number, patch: Partial<VariantDraft>) => setVariants((vs) => vs.map((v, j) => (j === i ? { ...v, ...patch } : v)));
   const addVariant = () =>
-    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", image: "", inStock: true, stockQty: "", nameEn: "", specs: [] }]);
+    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", images: [], inStock: true, stockQty: "", nameEn: "", specs: [] }]);
 
   const submit = () =>
     start(async () => {
@@ -158,7 +159,7 @@ export function ProductForm({
           sku: v.sku,
           price: v.price || null,
           oldPrice: v.oldPrice || null,
-          image: v.image || null,
+          images: v.images,
           inStock: v.inStock,
           stockQty: v.stockQty.trim() ? v.stockQty : null,
           specs: v.specs,
@@ -391,9 +392,10 @@ export function ProductForm({
                     </div>
                   </div>
                   <div className="flex flex-wrap items-end justify-between gap-3">
-                    <div className="w-full sm:w-auto">
-                      <span className="block text-sm font-semibold mb-1.5">ვარიაციის სურათი</span>
-                      <SingleImage value={v.image} onChange={(url) => setVariant(i, { image: url })} />
+                    <div className="w-full">
+                      <span className="block text-sm font-semibold mb-1.5">ვარიაციის გალერეა</span>
+                      <p className="text-xs text-slate-500 mb-2">პირველი ფოტო მთავარია. თანმიმდევრობა შეცვალეთ გადათრევით ან ისრებით.</p>
+                      <ImageUploader value={v.images} onChange={(urls) => setVariant(i, { images: urls })} />
                     </div>
                     <div className="flex gap-2">
                       <Button

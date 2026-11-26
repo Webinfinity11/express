@@ -12,6 +12,7 @@ import { applyPaymentStatus } from "@/lib/bog";
  * check = MD5(ყველა პროდუქტის id+title+amount+price+type + პაროლი); ფასი თეთრებში.
  * სტატუსი: GET /widget/api.php, hash = MD5(merchantId+orderCode+პაროლი).
  * callback და საიტზე დაბრუნების ბმული დოკუმენტაციაში არ არის — სტატუსს თავად ვკითხულობთ (ადმინის შეკვეთები).
+ * /api/payments/credo/callback მზადაა იმ შემთხვევისთვის, თუ კრედო ამ მისამართს დაარეგისტრირებს.
  */
 
 export const CREDO_SETTINGS_KEY = "_credo";
@@ -123,7 +124,24 @@ export async function getCredoStatus(orderCode: string): Promise<number | null> 
   return Number(body.data);
 }
 
-/** მოლოდინში მყოფი განვადებების გადამოწმება; აბრუნებს შეცვლილების რაოდენობას. გამოიძახება მხოლოდ server action-იდან. */
+/** ერთი შეკვეთის სტატუსის გადამოწმება კრედოში; true = შეიცვალა */
+async function syncOrder(order: typeof orders.$inferSelect) {
+  const s = await getCredoStatus(order.number);
+  // 12/5 = ხელშეკრულება გაფორმებულია; 6/7 = უარი ან გაუქმება; დანარჩენი — ისევ მოლოდინში
+  const next = s === 12 || s === 5 ? "paid" : s === 6 || s === 7 ? "failed" : null;
+  if (!next) return false;
+  await applyPaymentStatus(order, next);
+  return true;
+}
+
+export async function syncCredoOrder(number: string) {
+  await ensureSchema();
+  const [order] = await db.select().from(orders).where(eq(orders.number, number));
+  if (!order || order.payment !== "credo" || order.paymentStatus !== "pending") return false;
+  return syncOrder(order);
+}
+
+/** მოლოდინში მყოფი განვადებების გადამოწმება; აბრუნებს შეცვლილების რაოდენობას. გამოიძახება server action-იდან ან route-იდან (არა render-ისას). */
 export async function syncPendingCredoOrders() {
   await ensureSchema();
   const since = new Date(Date.now() - 60 * 24 * 3600_000);
@@ -136,12 +154,7 @@ export async function syncPendingCredoOrders() {
   let changed = 0;
   for (const order of rows) {
     try {
-      const s = await getCredoStatus(order.number);
-      // 12/5 = ხელშეკრულება გაფორმებულია; 6/7 = უარი ან გაუქმება; დანარჩენი — ისევ მოლოდინში
-      const next = s === 12 || s === 5 ? "paid" : s === 6 || s === 7 ? "failed" : null;
-      if (!next) continue;
-      await applyPaymentStatus(order, next);
-      changed++;
+      if (await syncOrder(order)) changed++;
     } catch (e) {
       console.error("[credo] status sync failed", order.number, e);
     }

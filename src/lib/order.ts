@@ -34,7 +34,7 @@ export const PAYMENTS: Record<Payment, { title: string; text: string; logos?: { 
       { src: "/images/payments/tbc.svg", alt: "თიბისი ბანკი", w: 30 },
     ],
   },
-  credo: { title: "განვადება — კრედო ბანკი", text: "ონლაინ განვადება კრედო ბანკის დაცულ გვერდზე" },
+  credo: { title: "განვადება — კრედო ბანკი", text: "ონლაინ განვადება კრედო ბანკის დაცულ გვერდზე", logos: [{ src: "/images/payments/credo.svg", alt: "კრედო ბანკი", w: 120 }] },
   manual: { title: "ოპერატორთან შეთანხმებით", text: "ოპერატორი დაგიკავშირდებათ გადახდის დეტალებისთვის" },
 };
 

@@ -137,5 +137,6 @@ export const cart: Record<string, string> = {
   "ბარათი, Apple Pay, Google Pay": "Card, Apple Pay, Google Pay",
   "Visa, Mastercard, Apple Pay და Google Pay — Flitt-ის დაცულ გვერდზე": "Visa, Mastercard, Apple Pay and Google Pay on the secure Flitt page",
   "განვადება — კრედო ბანკი": "Installment — Credo Bank",
+  "კრედო ბანკი": "Credo Bank",
   "ონლაინ განვადება კრედო ბანკის დაცულ გვერდზე": "Online installment on the secure Credo Bank page",
 };

@@ -51,7 +51,8 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
           sku: v.sku,
           price: vPrice,
           oldPrice: vOld,
-          image: v.image,
+          image: v.images?.[0] ?? v.image,
+          images: v.images?.length ? v.images : v.image ? [v.image] : [],
           inStock: v.stockQty == null ? v.inStock : v.stockQty > 0,
           specs: (v.specs ?? []).map((s) => [s.label, s.value] as [string, string]),
         };

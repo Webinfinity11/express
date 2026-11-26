@@ -33,6 +33,7 @@ export function ImageUploader({ value, onChange, max = 12 }: { value: string[]; 
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [drag, setDrag] = useState<number | null>(null);
 
   async function upload(files: FileList | null) {
     if (!files?.length) return;
@@ -66,8 +67,27 @@ export function ImageUploader({ value, onChange, max = 12 }: { value: string[]; 
     <div>
       <div className={max === 1 ? "grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-md" : "grid grid-cols-3 sm:grid-cols-4 gap-3"}>
         {value.map((url, i) => (
-          <div key={url} className="relative aspect-square rounded-lg border border-slate-200 bg-white">
-            <img src={url} alt="" className="absolute inset-0 w-full h-full object-contain p-2" />
+          <div
+            key={url}
+            draggable={max > 1}
+            onDragStart={(e) => {
+              e.dataTransfer.effectAllowed = "move";
+              setDrag(i);
+            }}
+            onDragOver={(e) => {
+              if (drag === null) return;
+              e.preventDefault();
+              if (drag === i) return;
+              const next = [...value];
+              next.splice(i, 0, next.splice(drag, 1)[0]);
+              onChange(next);
+              setDrag(i);
+            }}
+            onDrop={(e) => e.preventDefault()}
+            onDragEnd={() => setDrag(null)}
+            className={`relative aspect-square rounded-lg border border-slate-200 bg-white${max > 1 ? " cursor-grab active:cursor-grabbing" : ""}${drag === i ? " opacity-50" : ""}`}
+          >
+            <img src={url} alt="" draggable={false} className="absolute inset-0 w-full h-full object-contain p-2" />
             {max > 1 && i === 0 && <span className="absolute left-1 top-1 text-[11px] bg-[#ff5a00] text-white rounded px-1.5">მთავარი</span>}
             <div className="absolute inset-x-1 bottom-1 flex justify-between gap-1">
               {max > 1 && (

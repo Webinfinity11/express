@@ -54,7 +54,9 @@ export function ProductView({ p }: { p: Product }) {
   const contentRef = useRef<HTMLElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const gallery = variant?.image ? [variant.image, ...p.gallery.filter((g) => g !== variant.image)] : p.gallery;
+  // ვარიაციის გალერეა (2+ ფოტო) მთლიანად ანაცვლებს პროდუქტისას; ერთი ფოტო ემატება წინ
+  const own = variant?.images ?? [];
+  const gallery = own.length > 1 ? own : own.length ? [own[0], ...p.gallery.filter((g) => g !== own[0])] : p.gallery;
   const go = (n: number) => setIndex((n + gallery.length) % gallery.length);
   const off = discountPercent(cur);
   const favorite = isFavorite(p.id);

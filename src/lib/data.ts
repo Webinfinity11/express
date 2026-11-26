@@ -9,6 +9,7 @@ export type Variant = {
   price: number;
   oldPrice: number;
   image: string | null;
+  images: string[];
   inStock: boolean;
   specs: [string, string][];
 };

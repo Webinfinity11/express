@@ -160,7 +160,12 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
         <Card title="კრედო — ინფორმაცია">
           <div className="grid gap-3 text-sm text-slate-600">
             <p>Merchant ID-ს და პაროლს კრედო ბანკი გასცემს მერჩანტად რეგისტრაციის შემდეგ. შევსებისთანავე გაფორმების გვერდზე გამოჩნდება განვადება.</p>
-            <p>კრედო საიტს სტატუსს თავად არ ატყობინებს: ის განახლდება, როცა ადმინში „შეკვეთები“ გაიხსნება.</p>
+            <p>
+              Callback URL (გადაეცით კრედოს):
+              <br />
+              <code className="break-all text-xs bg-slate-100 rounded px-1.5 py-1 inline-block mt-1">https://emix.ge/api/payments/credo/callback</code>
+            </p>
+            <p>სტატუსი ასევე განახლდება, როცა ადმინში „შეკვეთები“ გაიხსნება.</p>
           </div>
         </Card>
       </div>
