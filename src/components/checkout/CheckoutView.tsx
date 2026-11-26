@@ -32,7 +32,7 @@ function Steps({ step }: { step: 2 | 3 }) {
   );
 }
 
-export function CheckoutView({ cardEnabled = false, flittEnabled = false }: { cardEnabled?: boolean; flittEnabled?: boolean }) {
+export function CheckoutView({ cardEnabled = false, flittEnabled = false, credoEnabled = false }: { cardEnabled?: boolean; flittEnabled?: boolean; credoEnabled?: boolean }) {
   const store = useStore();
   const t = useT();
   const lang = useLang();
@@ -45,8 +45,8 @@ export function CheckoutView({ cardEnabled = false, flittEnabled = false }: { ca
   });
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", comment: "" });
-  // განვადება არ გვაქვს: ონლაინ ბარათი, ან (თუ BOG გამორთულია) ოპერატორთან შეთანხმება
-  const online: Payment[] = [...(cardEnabled ? (["card"] as const) : []), ...(flittEnabled ? (["flitt"] as const) : [])];
+  // ონლაინ ბარათი / განვადება, ან (თუ ყველა გამორთულია) ოპერატორთან შეთანხმება
+  const online: Payment[] = [...(cardEnabled ? (["card"] as const) : []), ...(flittEnabled ? (["flitt"] as const) : []), ...(credoEnabled ? (["credo"] as const) : [])];
   const methods: Payment[] = online.length ? online : ["manual"];
   const [payment, setPayment] = useState<Payment>(methods[0]);
   const [errors, setErrors] = useState<OrderErrors>({});

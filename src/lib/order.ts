@@ -2,7 +2,7 @@ import { CITIES, promoDiscount, shippingCost, type CatalogIndex, type City, type
 
 export type Delivery = "courier" | "pickup";
 // manual — ონლაინ გადახდა გამორთულია: ოპერატორი დაუკავშირდება
-export type Payment = "card" | "flitt" | "manual";
+export type Payment = "card" | "flitt" | "credo" | "manual";
 
 export type OrderInput = {
   name: string;
@@ -34,6 +34,7 @@ export const PAYMENTS: Record<Payment, { title: string; text: string; logos?: { 
       { src: "/images/payments/tbc.svg", alt: "თიბისი ბანკი", w: 30 },
     ],
   },
+  credo: { title: "განვადება — კრედო ბანკი", text: "ონლაინ განვადება კრედო ბანკის დაცულ გვერდზე" },
   manual: { title: "ოპერატორთან შეთანხმებით", text: "ოპერატორი დაგიკავშირდებათ გადახდის დეტალებისთვის" },
 };
 

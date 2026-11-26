@@ -8,12 +8,15 @@ import { DELIVERY_LABELS, PAYMENT_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/ad
 import { CITIES, gel } from "@/lib/data";
 import { Card, PageTitle } from "@/components/admin/ui";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
+import { CredoSync } from "@/components/admin/CredoSync";
+import { CREDO_STATUSES, getCredoStatus } from "@/lib/credo";
 
 export default async function OrderDetail({ params }: PageProps<"/admin/orders/[id]">) {
   await requireAdmin();
   await ensurePaymentSchema();
   const [order] = await db.select().from(orders).where(eq(orders.id, Number((await params).id) || 0));
   if (!order) notFound();
+  const credo = order.payment === "credo" ? await getCredoStatus(order.number).catch(() => null) : null;
   const info: [string, React.ReactNode][] = [
     ["სახელი", <b key="n">{order.name}</b>],
     [
@@ -36,13 +39,15 @@ export default async function OrderDetail({ params }: PageProps<"/admin/orders/[
           ],
         ] as [string, React.ReactNode][])
       : []),
-    ...(order.bogOrderId ? ([["BOG ID", <span key="bog" className="text-xs break-all">{order.bogOrderId}</span>]] as [string, React.ReactNode][]) : []),
+    ...(credo != null ? ([["კრედოს სტატუსი", CREDO_STATUSES[credo] ?? `კოდი ${credo}`]] as [string, string][]) : []),
+    ...(order.bogOrderId && order.payment === "card" ? ([["BOG ID", <span key="bog" className="text-xs break-all">{order.bogOrderId}</span>]] as [string, React.ReactNode][]) : []),
     ...(order.comment ? ([["კომენტარი", order.comment]] as [string, string][]) : []),
     ["თარიღი", order.createdAt.toLocaleString("ka-GE", { timeZone: "Asia/Tbilisi" })],
   ];
 
   return (
     <>
+      {order.payment === "credo" && <CredoSync />}
       <PageTitle actions={<OrderStatusSelect id={order.id} status={order.status} />}>
         <Link href="/admin/orders" className="text-slate-400 font-normal">
           შეკვეთები /

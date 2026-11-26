@@ -2,7 +2,8 @@ import { eq } from "drizzle-orm";
 import { db, settings } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { ensurePaymentSchema } from "@/lib/bog";
-import { saveBogSettings, saveFlittSettings } from "@/lib/actions/admin";
+import { saveBogSettings, saveCredoSettings, saveFlittSettings } from "@/lib/actions/admin";
+import { CREDO_SETTINGS_KEY, type CredoConfig } from "@/lib/credo";
 import { FLITT_SETTINGS_KEY, type FlittConfig } from "@/lib/flitt";
 import { BOG_SETTINGS_KEY } from "@/lib/bog";
 import { Card, PageTitle } from "@/components/admin/ui";
@@ -13,6 +14,7 @@ const MESSAGES: Record<string, [string, string]> = {
   saved: ["bg-slate-50 text-slate-700 border-slate-200", "შენახულია."],
   "flitt-connected": ["bg-green-50 text-green-800 border-green-200", "Flitt: შენახულია — კავშირი წარმატებულია ✓"],
   "flitt-failed": ["bg-red-50 text-red-800 border-red-200", "Flitt: შენახულია, მაგრამ Flitt-მა მონაცემები ვერ დაადასტურა — გადაამოწმეთ Merchant ID და Secret Key."],
+  "credo-saved": ["bg-slate-50 text-slate-700 border-slate-200", "კრედო: შენახულია. შესამოწმებლად გააფორმეთ საცდელი განაცხადი საიტიდან."],
   "flitt-saved": ["bg-slate-50 text-slate-700 border-slate-200", "Flitt: შენახულია."],
 };
 
@@ -31,6 +33,9 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
   const [flRow] = await db.select().from(settings).where(eq(settings.key, FLITT_SETTINGS_KEY));
   const fl = (flRow?.value ?? {}) as Partial<FlittConfig>;
   const flHint = fl.secretKey ? `••••${fl.secretKey.slice(-4)}` : "";
+
+  const [crRow] = await db.select().from(settings).where(eq(settings.key, CREDO_SETTINGS_KEY));
+  const cr = (crRow?.value ?? {}) as Partial<CredoConfig>;
 
   return (
     <>
@@ -124,6 +129,38 @@ export default async function PaymentsAdmin({ searchParams }: PageProps<"/admin/
               <code className="break-all text-xs bg-slate-100 rounded px-1.5 py-1 inline-block mt-1">https://emix.ge/api/payments/flitt/callback</code>
             </p>
             <p>სატესტოდ: Merchant ID <code>1549901</code>, Secret Key <code>test</code>, ბარათი <code>4444555511116666</code>.</p>
+          </div>
+        </Card>
+
+        <Card title="კრედო ბანკი — ონლაინ განვადება">
+          <form action={saveCredoSettings} className="grid gap-4 max-w-xl">
+            <label className="flex items-center gap-2 font-semibold">
+              <input type="checkbox" name="enabled" defaultChecked={cr.enabled ?? true} className="size-4 accent-[#ff5a00]" />
+              განვადება ჩართულია
+            </label>
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-500">Merchant ID</span>
+              <input name="merchantId" defaultValue={cr.merchantId ?? ""} autoComplete="off" spellCheck={false} className={inp} />
+            </label>
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-500">პაროლი (Secret)</span>
+              <input
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                placeholder={cr.password ? "შენახულია — შეცვლისთვის ჩაწერეთ ახალი" : "ჩაწერეთ პაროლი"}
+                className={inp}
+              />
+            </label>
+            <div>
+              <button className="rounded-lg bg-[#ff5a00] px-5 py-2.5 font-semibold text-white hover:bg-[#e65100]">შენახვა</button>
+            </div>
+          </form>
+        </Card>
+        <Card title="კრედო — ინფორმაცია">
+          <div className="grid gap-3 text-sm text-slate-600">
+            <p>Merchant ID-ს და პაროლს კრედო ბანკი გასცემს მერჩანტად რეგისტრაციის შემდეგ. შევსებისთანავე გაფორმების გვერდზე გამოჩნდება განვადება.</p>
+            <p>კრედო საიტს სტატუსს თავად არ ატყობინებს: ის განახლდება, როცა ადმინში „შეკვეთები“ გაიხსნება.</p>
           </div>
         </Card>
       </div>

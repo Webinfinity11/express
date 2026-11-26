@@ -7,6 +7,7 @@ import { ORDER_STATUSES, ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/li
 import { gel } from "@/lib/data";
 import { PageTitle, StatusBadge } from "@/components/admin/ui";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
+import { CredoSync } from "@/components/admin/CredoSync";
 
 export default async function OrdersAdmin({ searchParams }: PageProps<"/admin/orders">) {
   await requireAdmin();
@@ -23,6 +24,7 @@ export default async function OrdersAdmin({ searchParams }: PageProps<"/admin/or
   return (
     <>
       <AutoRefresh />
+      <CredoSync />
       <PageTitle>შეკვეთები</PageTitle>
       <div className="flex flex-wrap gap-2 mb-4">
         {[undefined, ...ORDER_STATUSES].map((s) => (

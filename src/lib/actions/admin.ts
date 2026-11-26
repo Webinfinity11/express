@@ -12,6 +12,7 @@ import { ORDER_STATUSES, slugify } from "@/lib/admin-shared";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { BOG_SETTINGS_KEY, getBogConfig, token as bogToken } from "@/lib/bog";
 import { FLITT_SETTINGS_KEY, testFlitt } from "@/lib/flitt";
+import { CREDO_SETTINGS_KEY, syncPendingCredoOrders } from "@/lib/credo";
 import { enKey, sanitizeSection } from "@/lib/content";
 import { contentDefaults, type ContentKey } from "@/lib/content-schema";
 import { RESERVED_SLUGS } from "@/lib/site-links";
@@ -615,4 +616,29 @@ export async function saveFlittSettings(form: FormData) {
     }
   }
   redirect(`/admin/payments?r=${r}${m ? `&m=${encodeURIComponent(m.slice(0, 300))}` : ""}`);
+}
+
+/* ---------- გადახდები: კრედო ბანკის განვადება ---------- */
+export async function saveCredoSettings(form: FormData) {
+  await requireAdmin();
+  const [row] = await db.select().from(settings).where(eq(settings.key, CREDO_SETTINGS_KEY));
+  const stored = (row?.value ?? {}) as Record<string, unknown>;
+  const password = String(form.get("password") ?? "").trim().slice(0, 500);
+  const value = {
+    enabled: form.get("enabled") === "on",
+    merchantId: String(form.get("merchantId") ?? "").trim().slice(0, 50),
+    // ცარიელი ველი = ძველი პაროლი რჩება
+    password: password || (typeof stored.password === "string" ? stored.password : ""),
+  };
+  await db
+    .insert(settings)
+    .values({ key: CREDO_SETTINGS_KEY, value })
+    .onConflictDoUpdate({ target: settings.key, set: { value, updatedAt: new Date() } });
+  updateTag("payments");
+  redirect("/admin/payments?r=credo-saved");
+}
+
+export async function syncCredo() {
+  await requireAdmin();
+  return syncPendingCredoOrders();
 }

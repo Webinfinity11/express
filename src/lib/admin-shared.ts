@@ -31,6 +31,7 @@ export const PAYMENT_LABELS: Record<string, string> = {
   installment: "განვადება",
   card: "ბარათით გადახდა (BOG)",
   flitt: "Flitt — ბარათი / Apple Pay / Google Pay",
+  credo: "განვადება — კრედო ბანკი",
   keepz: "Keepz — კრედო ბანკი",
   manual: "ოპერატორთან შეთანხმებით",
 };

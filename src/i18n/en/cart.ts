@@ -136,4 +136,6 @@ export const cart: Record<string, string> = {
   "კავშირის შეცდომა. სცადეთ ხელახლა.": "Connection error. Please try again.",
   "ბარათი, Apple Pay, Google Pay": "Card, Apple Pay, Google Pay",
   "Visa, Mastercard, Apple Pay და Google Pay — Flitt-ის დაცულ გვერდზე": "Visa, Mastercard, Apple Pay and Google Pay on the secure Flitt page",
+  "განვადება — კრედო ბანკი": "Installment — Credo Bank",
+  "ონლაინ განვადება კრედო ბანკის დაცულ გვერდზე": "Online installment on the secure Credo Bank page",
 };

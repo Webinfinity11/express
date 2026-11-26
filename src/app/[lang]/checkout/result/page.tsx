@@ -23,7 +23,7 @@ async function Result({ searchParams, lang }: { searchParams: PageProps<"/[lang]
   let [order] = number ? await db.select().from(orders).where(eq(orders.number, number)) : [];
 
   // callback შეიძლება ჯერ არ მოსულიყო — სტატუსს ბანკში თავად ვამოწმებთ
-  if (order?.bogOrderId && order.paymentStatus === "pending") {
+  if (order?.bogOrderId && order.payment !== "credo" && order.paymentStatus === "pending") {
     try {
       order = (order.payment === "flitt" ? await syncFlittOrder(order.number) : await syncBogOrder(order.bogOrderId)) ?? order;
     } catch (e) {

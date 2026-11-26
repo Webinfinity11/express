@@ -3,6 +3,7 @@ import { after } from "next/server";
 import { db, orders } from "@/db";
 import { sendOrderEmails } from "@/lib/mail";
 import { createFlittOrder, flittEnabled } from "@/lib/flitt";
+import { createCredoOrder, credoEnabled } from "@/lib/credo";
 import { bogEnabled, commitOrderStock, createBogOrder, ensurePaymentSchema } from "@/lib/bog";
 import { getCatalog } from "@/lib/catalog";
 import { CITIES, indexCatalog } from "@/lib/data";
@@ -52,8 +53,8 @@ export async function POST(request: Request) {
   const now = new Date();
   const number = `EM-${now.toISOString().slice(2, 10).replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-  const online = order.payment === "card" || order.payment === "flitt";
-  if ((order.payment === "card" && !(await bogEnabled())) || (order.payment === "flitt" && !(await flittEnabled())))
+  const online = order.payment === "card" || order.payment === "flitt" || order.payment === "credo";
+  if ((order.payment === "card" && !(await bogEnabled())) || (order.payment === "flitt" && !(await flittEnabled())) || (order.payment === "credo" && !(await credoEnabled())))
     return Response.json({ error: "ონლაინ გადახდა დროებით მიუწვდომელია. აირჩიეთ სხვა მეთოდი." }, { status: 422 });
 
   await ensurePaymentSchema();
@@ -83,7 +84,9 @@ export async function POST(request: Request) {
     try {
       const lang = body.lang === "en" ? "en" : "ka";
       const bog =
-        order.payment === "flitt"
+        order.payment === "credo"
+          ? await createCredoOrder({ number, lines: totals.lines, discount: totals.discount, shipping: totals.shipping })
+          : order.payment === "flitt"
           ? await createFlittOrder({ number, total: totals.total, origin, lang })
           : await createBogOrder({
         number,
