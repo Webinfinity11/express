@@ -17,6 +17,9 @@ export function ensureSchema() {
     await db.execute(sql`ALTER TABLE promo_codes ADD COLUMN IF NOT EXISTS max_discount numeric(10, 2)`);
     await db.execute(sql`ALTER TABLE product_variants ADD COLUMN IF NOT EXISTS specs jsonb NOT NULL DEFAULT '[]'::jsonb`);
     await db.execute(sql`ALTER TABLE product_variants ADD COLUMN IF NOT EXISTS images jsonb NOT NULL DEFAULT '[]'::jsonb`);
+    // მთავარი პროდუქტიც ვარიანტია (არსებულებზე გამორთული) და ვარიაციის საკუთარი აღწერა
+    await db.execute(sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS main_option boolean NOT NULL DEFAULT false`);
+    await db.execute(sql`ALTER TABLE product_variants ADD COLUMN IF NOT EXISTS description text NOT NULL DEFAULT ''`);
     // SEO: ველები ჩანაწერებზე და გადამისამართებების ცხრილი
     for (const table of ["categories", "products", "pages"])
       await db.execute(sql.raw(`ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS seo jsonb NOT NULL DEFAULT '{}'::jsonb`));

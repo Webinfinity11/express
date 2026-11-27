@@ -55,8 +55,12 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
           images: v.images?.length ? v.images : v.image ? [v.image] : [],
           inStock: v.stockQty == null ? v.inStock : v.stockQty > 0,
           specs: (v.specs ?? []).map((s) => [s.label, s.value] as [string, string]),
+          // ინგლისურზე: ვარიაციის ინგლისური, თორემ ვარიაციის ქართული; ცარიელი = პროდუქტის აღწერა
+          desc: pick(lang, v.description, v.en?.description),
         };
       });
+    const ownInStock = p.stockQty == null ? p.inStock : p.stockQty > 0;
+    const mainOption = p.mainOption && vs.length > 0;
     return {
       id: String(p.id),
       slug: p.slug,
@@ -81,7 +85,9 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
       keywords: lang === "en" ? [p.keywords, p.name].filter(Boolean).join(" ") : p.keywords,
       featured: p.featured,
       isNew: p.isNew,
-      inStock: vs.length ? vs.some((v) => v.inStock) : p.stockQty == null ? p.inStock : p.stockQty > 0,
+      inStock: vs.length ? vs.some((v) => v.inStock) || (mainOption && ownInStock) : ownInStock,
+      mainOption,
+      ownInStock,
       variants: vs,
       ship: (p.shippingClassId && classes.get(p.shippingClassId)) || categoryClass(p.categoryId),
     };

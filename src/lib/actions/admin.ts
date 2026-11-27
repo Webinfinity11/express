@@ -95,7 +95,8 @@ const variantSchema = z.object({
   inStock: z.boolean(),
   stockQty: optInt,
   specs: z.array(z.object({ label: z.string().trim().max(80), value: z.string().trim().max(200) })).max(40).optional(),
-  en: z.object({ name: z.string().trim().max(80) }).partial().optional(),
+  description: z.string().max(20000),
+  en: z.object({ name: z.string().trim().max(80), description: z.string().trim().max(20000) }).partial().optional(),
 });
 
 // ინგლისური ვერსია (ცარიელი ველი = საიტზე ქართული ჩანს)
@@ -136,6 +137,7 @@ const productSchema = z.object({
   keywords: z.string().max(1000),
   colorName: z.string().trim().max(80),
   colorHex: hex,
+  mainOption: z.boolean(),
   featured: z.boolean(),
   isNew: z.boolean(),
   published: z.boolean(),
@@ -174,6 +176,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
     keywords: d.keywords.trim(),
     colorName: d.colorName,
     colorHex: d.colorHex || null,
+    mainOption: d.mainOption,
     featured: d.featured,
     isNew: d.isNew,
     published: d.published,
@@ -204,6 +207,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
       inStock: v.inStock,
       stockQty: num(v.stockQty),
       specs: (v.specs ?? []).filter((s) => s.label && s.value),
+      description: v.description.trim(),
       ...(v.en && { en: cleanEn(v.en) }),
       sortOrder: i,
     };

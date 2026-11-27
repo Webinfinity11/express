@@ -24,6 +24,8 @@ type VariantDraft = {
   stockQty: string;
   nameEn: string;
   specs: Spec[];
+  description: string;
+  descriptionEn: string;
 };
 
 const str = (v: number | null | undefined) => (v == null ? "" : String(v));
@@ -40,6 +42,8 @@ const toDraft = (v: VariantRow): VariantDraft => ({
   stockQty: str(v.stockQty),
   nameEn: v.en?.name ?? "",
   specs: v.specs ?? [],
+  description: v.description ?? "",
+  descriptionEn: v.en?.description ?? "",
 });
 
 export function ProductForm({
@@ -123,10 +127,12 @@ export function ProductForm({
   const [stockQty, setStockQty] = useState(str(product?.stockQty));
   const [variants, setVariants] = useState<VariantDraft[]>(initialVariants.map(toDraft));
   const tracked = stockQty.trim() !== "";
+  // ახალ ვარიაციებზე ჩართულია; უკვე ვარიაციებიან პროდუქტზე — რაც შენახულია
+  const [mainOption, setMainOption] = useState(initialVariants.length ? (product?.mainOption ?? false) : true);
 
   const setVariant = (i: number, patch: Partial<VariantDraft>) => setVariants((vs) => vs.map((v, j) => (j === i ? { ...v, ...patch } : v)));
   const addVariant = () =>
-    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", images: [], inStock: true, stockQty: "", nameEn: "", specs: [] }]);
+    setVariants((vs) => [...vs, { id: null, name: "", colorHex: "#151515", sku: "", price: "", oldPrice: "", images: [], inStock: true, stockQty: "", nameEn: "", specs: [], description: "", descriptionEn: "" }]);
 
   const submit = () =>
     start(async () => {
@@ -150,6 +156,7 @@ export function ProductForm({
         keywords,
         colorName,
         colorHex: colorHex || null,
+        mainOption,
         featured,
         isNew,
         published,
@@ -166,7 +173,8 @@ export function ProductForm({
           inStock: v.inStock,
           stockQty: v.stockQty.trim() ? v.stockQty : null,
           specs: v.specs,
-          en: { name: v.nameEn },
+          description: v.description,
+          en: { name: v.nameEn, description: v.descriptionEn },
         })),
         en: { ...en, specs: specsEn },
       });
@@ -268,6 +276,52 @@ export function ProductForm({
             </p>
           ) : (
             <div className="grid gap-3">
+              <div className="rounded-lg border border-slate-200 p-3 grid gap-3">
+                <label className="flex items-center gap-2 text-sm font-semibold">
+                  <input type="checkbox" checked={mainOption} onChange={(e) => setMainOption(e.target.checked)} className="h-4 w-4 accent-[#ff5a00]" />
+                  მთავარი პროდუქტიც ასარჩევ ვარიანტად გამოჩნდეს
+                </label>
+                <p className="text-xs text-slate-500">
+                  გვერდი მთავარ პროდუქტზე იხსნება და ღილაკებით გადაირთვება ვარიაციებზე. გამორთეთ, თუ მთავარი ფოტო საერთო სურათია და ცალკე არ იყიდება.
+                </p>
+                {mainOption && (
+                  <div className="grid sm:grid-cols-[1fr_auto_150px_auto] gap-3 items-end">
+                    <Field label="მთავარის სახელი" hint="მაგ. შავი. ცარიელი = „ძირითადი“">
+                      <input
+                        value={colorName}
+                        onChange={(e) => {
+                          setColorName(e.target.value);
+                          const known = suggestions.colors.find((c) => c.name === e.target.value);
+                          if (known?.hex) setColorHex(known.hex);
+                        }}
+                        list="color-list"
+                        className={inputCls}
+                      />
+                    </Field>
+                    <div className="flex gap-2 items-center pb-1">
+                      <input
+                        type="color"
+                        value={colorHex || "#151515"}
+                        onChange={(e) => setColorHex(e.target.value)}
+                        disabled={!colorHex}
+                        className="h-10 w-12 rounded border border-slate-300 bg-white disabled:opacity-30"
+                        aria-label="მთავარის ფერი"
+                      />
+                      <label className="flex items-center gap-1 text-xs">
+                        <input type="checkbox" checked={!!colorHex} onChange={(e) => setColorHex(e.target.checked ? "#151515" : "")} className="accent-[#ff5a00]" />
+                        ფერი
+                      </label>
+                    </div>
+                    <Field label="მარაგი (ც.)">
+                      <input type="number" step="1" min="0" placeholder="არ ითვლება" value={stockQty} onChange={(e) => setStockQty(e.target.value)} className={inputCls} />
+                    </Field>
+                    <label className="flex items-center gap-2 text-sm pb-3">
+                      <input type="checkbox" checked={tracked ? Number(stockQty) > 0 : inStock} disabled={tracked} onChange={(e) => setInStock(e.target.checked)} className="h-4 w-4 accent-[#ff5a00]" />
+                      მარაგშია
+                    </label>
+                  </div>
+                )}
+              </div>
               {variants.map((v, i) => (
                 <div key={v.id ?? `new-${i}`} className="rounded-lg border border-slate-200 bg-slate-50 p-3 grid gap-3">
                   <div className="grid sm:grid-cols-[1fr_150px_1fr] gap-3">
@@ -336,6 +390,10 @@ export function ProductForm({
                       მარაგშია
                     </label>
                   </div>
+                  <Field label="აღწერა" hint="ცარიელი = მთავარი პროდუქტის აღწერა">
+                    <textarea value={v.description} onChange={(e) => setVariant(i, { description: e.target.value })} rows={4} className={inputCls} />
+                    <textarea value={v.descriptionEn} onChange={(e) => setVariant(i, { descriptionEn: e.target.value })} rows={3} placeholder="English" lang="en" className={`${inputCls} mt-1.5`} />
+                  </Field>
                   <div>
                     <span className="block text-sm font-semibold mb-1.5">მახასიათებლები</span>
                     <p className="text-xs text-slate-500 mb-2">მხოლოდ ეს ვარიაცია. ემატება პროდუქტის მახასიათებლებს; იგივე სახელის შემთხვევაში ვარიაციისა ჩანს (მაგ. მოცულობა: 7 კგ).</p>
@@ -646,7 +704,7 @@ export function ProductForm({
 
         <Card title="მარაგი">
           {variants.length > 0 ? (
-            <p className="text-sm text-slate-500">მარაგი ითვლება ვარიაციების მიხედვით.</p>
+            <p className="text-sm text-slate-500">მარაგი ითვლება ვარიაციების მიხედვით. მთავარი პროდუქტის მარაგი (თუ ის ვარიანტად ჩანს) „ვარიაციები“ ბლოკშია.</p>
           ) : (
             <div className="grid gap-3">
               <Field label="რაოდენობა" hint="ცარიელი = არ ითვლება. შეკვეთისას ავტომატურად აკლდება.">

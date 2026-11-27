@@ -38,7 +38,7 @@ export function ItemCard({ p }: { p: Product }) {
         </Link>
         <span className="inline-green">{t("მარაგშია")}</span>
         <p className="item-extra">
-          {[categoryName(p.category), p.variants.length > 1 ? t("{n} ფერი", { n: p.variants.length }) : p.color].filter(Boolean).join(" · ")}
+          {[categoryName(p.category), p.variants.length + (p.mainOption ? 1 : 0) > 1 ? t("{n} ფერი", { n: p.variants.length + (p.mainOption ? 1 : 0) }) : p.color].filter(Boolean).join(" · ")}
         </p>
         <div className="item-foot">
           <div className="item-prices">

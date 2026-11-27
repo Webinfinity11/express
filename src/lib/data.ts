@@ -12,6 +12,7 @@ export type Variant = {
   images: string[];
   inStock: boolean;
   specs: [string, string][];
+  desc: string; // ცარიელი = პროდუქტის აღწერა
 };
 
 export type Product = {
@@ -40,6 +41,9 @@ export type Product = {
   inStock: boolean;
   keywords: string;
   variants: Variant[];
+  // ვარიაციებთან ერთად მთავარი პროდუქტიც იყიდება; ownInStock = მისი საკუთარი მარაგი
+  mainOption: boolean;
+  ownInStock: boolean;
   // ლოჯისტიკური კლასი (პროდუქტის ან კატეგორიის); null = საერთო ტარიფი
   ship: ShipClass | null;
 };
@@ -129,25 +133,26 @@ export function indexCatalog(c: Catalog) {
     if (!p) return null;
     const v = vid ? p.variants.find((x) => x.id === vid) : undefined;
     if (vid && !v) return null;
-    if (!vid && p.variants.length) return null;
+    if (!vid && p.variants.length && !p.mainOption) return null;
+    const main = !v && p.mainOption;
     return {
       key,
       product: p,
       variant: v ?? null,
       name: p.name,
-      variantName: v?.name ?? null,
+      variantName: v?.name ?? (main ? p.color || "ძირითადი" : null),
       image: v?.image || p.image,
       price: v ? v.price : p.price,
       oldPrice: v ? v.oldPrice : p.oldPrice,
       sku: v?.sku || p.sku,
-      inStock: v ? v.inStock : p.inStock,
+      inStock: v ? v.inStock : p.ownInStock,
       href: productHref(p),
     };
   };
 
   /** ბარათიდან დამატებისას: ვარიაციებიანი პროდუქტი → პირველი მარაგში არსებული ვარიაცია */
   const defaultKey = (p: Product) => {
-    if (!p.variants.length) return p.id;
+    if (!p.variants.length || (p.mainOption && p.ownInStock)) return p.id;
     const v = p.variants.find((x) => x.inStock) ?? p.variants[0];
     return lineKey(p.id, v.id);
   };

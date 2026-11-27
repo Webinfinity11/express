@@ -28,10 +28,17 @@ export function ProductView({ p }: { p: Product }) {
   const { products, categoryName, content } = useCatalog();
   const ship = content.shipping;
   // ვარიაცია (ფერი): ფასი, SKU, მარაგი და მთავარი ფოტო მისგან მოდის
-  const [vid, setVid] = useState(p.variants.find((v) => v.inStock)?.id ?? p.variants[0]?.id ?? null);
+  const [vid, setVid] = useState(p.mainOption ? null : (p.variants.find((v) => v.inStock)?.id ?? p.variants[0]?.id ?? null));
   const variant = p.variants.find((v) => v.id === vid) ?? null;
   const cur = variant ?? p;
-  const inStock = variant ? variant.inStock : p.inStock;
+  const inStock = variant ? variant.inStock : p.mainOption ? p.ownInStock : p.inStock;
+  const desc = variant?.desc || p.desc;
+  const mainName = p.color || t("ძირითადი");
+  // ღილაკები: მთავარი პროდუქტი (თუ ჩართულია) პირველი, მერე ვარიაციები
+  const options = [
+    ...(p.mainOption ? [{ id: null, name: mainName, colorHex: p.color ? p.tone : null, price: p.price, inStock: p.ownInStock }] : []),
+    ...p.variants,
+  ];
   // პროდუქტის მახასიათებლები + არჩეული ვარიაციისა (იგივე სახელზე ვარიაციისა ჩანს)
   const specs: [string, string][] = (() => {
     const own = variant?.specs ?? [];
@@ -213,17 +220,17 @@ export function ProductView({ p }: { p: Product }) {
           {p.variants.length > 0 ? (
             <div className="p-variants">
               <span className="p-variants-label">
-                {t("ვარიაცია:")} <strong>{variant?.name}</strong>
+                {t("ვარიაცია:")} <strong>{variant?.name ?? mainName}</strong>
               </span>
               <div className="p-variant-list" role="radiogroup" aria-label={t("ვარიაციის არჩევა")}>
-                {p.variants.map((v) => {
+                {options.map((v) => {
                   const pick = () => {
                     setVid(v.id);
                     setIndex(0);
                   };
                   return v.colorHex ? (
                     <button
-                      key={v.id}
+                      key={v.id ?? "main"}
                       role="radio"
                       aria-checked={v.id === vid}
                       aria-label={v.name}
@@ -236,7 +243,7 @@ export function ProductView({ p }: { p: Product }) {
                     </button>
                   ) : (
                     <button
-                      key={v.id}
+                      key={v.id ?? "main"}
                       role="radio"
                       aria-checked={v.id === vid}
                       className={`variant-pill${v.id === vid ? " active" : ""}${v.inStock ? "" : " out"}`}
@@ -340,7 +347,7 @@ export function ProductView({ p }: { p: Product }) {
                     p.subtitle
                   )}
                 </h2>
-                <p style={{ whiteSpace: "pre-line" }}>{p.desc}</p>
+                <p style={{ whiteSpace: "pre-line" }}>{desc}</p>
               </div>
               <div className="p-story-image">
                 <img src={p.scene} alt={t("{name} — ინტერიერის ფოტო", { name: p.name })} loading="lazy" />

@@ -18,6 +18,7 @@ export const product: Record<string, string> = {
   "თქვენ ზოგავთ": "You save",
   "ვარიაცია:": "Variant:",
   "ვარიაციის არჩევა": "Choose a variant",
+  "ძირითადი": "Standard",
   "ფერი:": "Color:",
   "პროდუქტის რაოდენობა": "Product quantity",
   "კალათაში დამატება": "Add to cart",

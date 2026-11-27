@@ -5,7 +5,7 @@ export type Spec = { label: string; value: string };
 /** ინგლისური თარგმანი (ცარიელი ველი = ქართული ჩანს) */
 export type CategoryEn = { name?: string };
 export type ProductEn = { name?: string; label?: string; subtitle?: string; description?: string; specs?: Spec[]; colorName?: string };
-export type VariantEn = { name?: string };
+export type VariantEn = { name?: string; description?: string };
 export type PageEn = { title?: string; eyebrow?: string; subtitle?: string; body?: string; buttonText?: string; metaDescription?: string };
 /** SEO (Rank Math-ის მსგავსი): ცარიელი ველი = Titles & Meta შაბლონი */
 export type EntitySeo = {
@@ -91,6 +91,8 @@ export const products = pgTable(
     keywords: text("keywords").notNull().default(""),
     colorName: text("color_name").notNull().default(""),
     colorHex: text("color_hex"),
+    // ვარიაციებთან ერთად მთავარი პროდუქტიც არჩევადია (სახელი/ფერი = colorName/colorHex)
+    mainOption: boolean("main_option").notNull().default(false),
     en: en<ProductEn>(),
     seo: seo(),
     featured: boolean("featured").notNull().default(false),
@@ -126,6 +128,8 @@ export const productVariants = pgTable(
     stockQty: integer("stock_qty"),
     // ვარიაციის საკუთარი მახასიათებლები: ემატება/ანაცვლებს პროდუქტის მახასიათებლებს
     specs: jsonb("specs").$type<Spec[]>().notNull().default([]),
+    // ცარიელი = პროდუქტის აღწერა
+    description: text("description").notNull().default(""),
     en: en<VariantEn>(),
     sortOrder: integer("sort_order").notNull().default(0),
   },
