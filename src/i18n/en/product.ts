@@ -9,6 +9,8 @@ export const product: Record<string, string> = {
   "ფოტოს გადიდება": "Enlarge photo",
   "პროდუქტის ფოტო {n}": "Product photo {n}",
   "{name} — ფოტო {n}": "{name} — photo {n}",
+  "{name} — ვიდეო": "{name} — video",
+  "ვიდეოს ნახვა": "Watch video",
   "დააჭირეთ გასადიდებლად": "Click to enlarge",
   "მარაგშია": "In stock",
   "არ არის მარაგში": "Out of stock",

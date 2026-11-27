@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { preload } from "react-dom";
 import { AdminEdit } from "@/components/AdminEdit";
 import { CartDrawer } from "@/components/CartDrawer";
+import { ChatButtons } from "@/components/ChatButtons";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ImageWatermark } from "@/components/ImageWatermark";
@@ -64,6 +65,7 @@ export default async function StoreLayout({ children, params }: LayoutProps<"/[l
               <Navigation />
               {children}
               <Footer content={content} lang={lang} />
+              <ChatButtons messengerLabel={t("მოგვწერეთ Messenger-ში")} whatsappLabel={t("მოგვწერეთ WhatsApp-ზე")} />
               <CartDrawer />
               <ModalHost />
               <Toast />

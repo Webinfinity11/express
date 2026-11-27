@@ -83,6 +83,8 @@ export const products = pgTable(
     oldPrice: money("old_price"),
     images: jsonb("images").$type<string[]>().notNull().default([]),
     sceneImage: text("scene_image"),
+    // YouTube ბმული (გალერეაში ვიდეოდ)
+    videoUrl: text("video_url"),
     subtitle: text("subtitle").notNull().default(""),
     description: text("description").notNull().default(""),
     specs: jsonb("specs").$type<Spec[]>().notNull().default([]),
@@ -145,6 +147,8 @@ export const promoCodes = pgTable("promo_codes", {
   kind: text("kind").notNull().default("percent"),
   value: money("value").notNull(),
   minTotal: money("min_total").notNull().default(0),
+  // percent: ფასდაკლების ზედა ზღვარი ₾ (null = ზღვრის გარეშე)
+  maxDiscount: money("max_discount"),
   maxUses: integer("max_uses"),
   usedCount: integer("used_count").notNull().default(0),
   startsAt: timestamp("starts_at", { withTimezone: true }),

@@ -2,7 +2,7 @@ import "server-only";
 import { asc, eq } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { brands, categories, db, productVariants, products, shippingClasses } from "@/db";
-import { PLACEHOLDER_IMAGE, type Catalog, type Product, type ShipClass } from "@/lib/data";
+import { PLACEHOLDER_IMAGE, youtubeId, type Catalog, type Product, type ShipClass } from "@/lib/data";
 import { ensureSchema } from "@/db/ensure";
 import type { Lang } from "@/i18n";
 
@@ -70,6 +70,7 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
       oldPrice,
       image: gallery[0],
       gallery,
+      video: youtubeId(p.videoUrl),
       scene: p.sceneImage || gallery[gallery.length - 1],
       color: pick(lang, p.colorName, p.en?.colorName),
       tone: p.colorHex || "#151515",

@@ -17,6 +17,7 @@ export function PromoForm({ promo }: { promo: PromoRow | null }) {
   const [kind, setKind] = useState<"percent" | "fixed">(promo?.kind === "fixed" ? "fixed" : "percent");
   const [value, setValue] = useState(promo ? String(promo.value) : "10");
   const [minTotal, setMinTotal] = useState(promo ? String(promo.minTotal) : "0");
+  const [maxDiscount, setMaxDiscount] = useState(promo?.maxDiscount != null ? String(promo.maxDiscount) : "");
   const [maxUses, setMaxUses] = useState(promo?.maxUses != null ? String(promo.maxUses) : "");
   const [startsAt, setStartsAt] = useState(toDay(promo?.startsAt ?? null));
   const [endsAt, setEndsAt] = useState(toDay(promo?.endsAt ?? null));
@@ -25,7 +26,7 @@ export function PromoForm({ promo }: { promo: PromoRow | null }) {
   const save = () =>
     start(async () => {
       setMessage(null);
-      const res = await savePromo(promo?.id ?? null, { code, kind, value, minTotal: minTotal || 0, maxUses: maxUses || null, startsAt, endsAt, active });
+      const res = await savePromo(promo?.id ?? null, { code, kind, value, minTotal: minTotal || 0, maxDiscount: maxDiscount || null, maxUses: maxUses || null, startsAt, endsAt, active });
       if (!res.ok) return setMessage({ ok: false, text: res.error });
       setMessage({ ok: true, text: "შენახულია ✓" });
       if (!promo) router.replace(`/admin/promos/${res.id}`);
@@ -68,6 +69,11 @@ export function PromoForm({ promo }: { promo: PromoRow | null }) {
             <Field label={kind === "percent" ? "ფასდაკლება %" : "ფასდაკლება ₾"}>
               <input type="number" step="0.01" min="0" value={value} onChange={(e) => setValue(e.target.value)} required className={inputCls} />
             </Field>
+            {kind === "percent" && (
+              <Field label="ფასის ლიმიტი ₾" hint="ფასდაკლების მაქსიმუმი. ცარიელი = შეუზღუდავი">
+                <input type="number" step="0.01" min="0" value={maxDiscount} onChange={(e) => setMaxDiscount(e.target.value)} className={inputCls} />
+              </Field>
+            )}
             <Field label="მინიმალური შეკვეთა ₾" hint="0 = ნებისმიერი თანხა">
               <input type="number" step="0.01" min="0" value={minTotal} onChange={(e) => setMinTotal(e.target.value)} className={inputCls} />
             </Field>

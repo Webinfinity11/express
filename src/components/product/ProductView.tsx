@@ -57,7 +57,17 @@ export function ProductView({ p }: { p: Product }) {
   // ვარიაციის გალერეა (2+ ფოტო) მთლიანად ანაცვლებს პროდუქტისას; ერთი ფოტო ემატება წინ
   const own = variant?.images ?? [];
   const gallery = own.length > 1 ? own : own.length ? [own[0], ...p.gallery.filter((g) => g !== own[0])] : p.gallery;
-  const go = (n: number) => setIndex((n + gallery.length) % gallery.length);
+  // გალერეის ელემენტები: ფოტოები + YouTube ვიდეო ბოლოს
+  const count = gallery.length + (p.video ? 1 : 0);
+  const isVideo = (i: number) => !!p.video && i === gallery.length;
+  const videoThumb = p.video ? `https://i.ytimg.com/vi/${p.video}/hqdefault.jpg` : "";
+  const embed = (autoplay: boolean) => `https://www.youtube-nocookie.com/embed/${p.video}?rel=0&playsinline=1${autoplay ? "&autoplay=1" : ""}`;
+  const go = (n: number) => setIndex((n + count) % count);
+  // ვიდეოს thumbnail: სცენაზე ვიდეო + popup-ში ავტომატური დაკვრა
+  const pick = (i: number) => {
+    setIndex(i);
+    if (isVideo(i)) setZoom(true);
+  };
   const off = discountPercent(cur);
   const favorite = isFavorite(p.id);
   const [first, ...rest] = p.subtitle.split(". ");
@@ -67,12 +77,12 @@ export function ProductView({ p }: { p: Product }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
         e.preventDefault();
-        setIndex((i) => (i + (e.key === "ArrowRight" ? 1 : -1) + gallery.length) % gallery.length);
+        setIndex((i) => (i + (e.key === "ArrowRight" ? 1 : -1) + count) % count);
       }
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [zoom, gallery.length]);
+  }, [zoom, count]);
 
   const onTabKey = (e: React.KeyboardEvent, i: number) => {
     if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key)) return;
@@ -95,24 +105,37 @@ export function ProductView({ p }: { p: Product }) {
     <main id="main" className="wrap internal-main product-page">
       <section className="p-layout" aria-label={t("პროდუქტის დეტალები")}>
         <div className="p-gallery">
-          <div className="p-stage">
-            <button className={`p-stage-main${index > 0 ? " scene-stage" : ""}`} aria-label={t("ფოტოს გადიდება")} onClick={() => setZoom(true)}>
-              <img
-                src={gallery[index]}
-                alt={p.name}
-                data-product-kind={p.id}
-                className={index > 0 ? "scene" : undefined}
-                fetchPriority="high"
+          <div className={`p-stage${isVideo(index) ? " video-stage" : ""}`}>
+            {isVideo(index) ? (
+              <iframe
+                className="p-stage-video"
+                src={embed(false)}
+                title={t("{name} — ვიდეო", { name: p.name })}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
               />
-            </button>
-            {off > 0 && <span className="discount-badge">−{off}%</span>}
-            <button className="icon-button p-zoom" aria-label={t("ფოტოს გადიდება")} onClick={() => setZoom(true)}>
-              <Icon name="zoom" />
-            </button>
-            <span className="gallery-wordmark">{p.brand.toUpperCase()}</span>
-            <span className="gallery-count">
-              {pad(index + 1)} / {pad(gallery.length)}
-            </span>
+            ) : (
+              <>
+                <button className={`p-stage-main${index > 0 ? " scene-stage" : ""}`} aria-label={t("ფოტოს გადიდება")} onClick={() => setZoom(true)}>
+                  <img
+                    src={gallery[index]}
+                    alt={p.name}
+                    data-product-kind={p.id}
+                    className={index > 0 ? "scene" : undefined}
+                    fetchPriority="high"
+                  />
+                </button>
+                {off > 0 && <span className="discount-badge">−{off}%</span>}
+                <button className="icon-button p-zoom" aria-label={t("ფოტოს გადიდება")} onClick={() => setZoom(true)}>
+                  <Icon name="zoom" />
+                </button>
+                <span className="gallery-wordmark">{p.brand.toUpperCase()}</span>
+                <span className="gallery-count">
+                  {pad(index + 1)} / {pad(count)}
+                </span>
+              </>
+            )}
           </div>
           <div className="p-thumbnails">
             {gallery.map((g, i) => (
@@ -121,11 +144,22 @@ export function ProductView({ p }: { p: Product }) {
                 className={`p-thumb${i ? " scene-thumb" : ""}${i === index ? " active" : ""}`}
                 aria-pressed={i === index}
                 aria-label={t("პროდუქტის ფოტო {n}", { n: i + 1 })}
-                onClick={() => setIndex(i)}
+                onClick={() => pick(i)}
               >
                 <img src={g} alt={t("{name} — ფოტო {n}", { name: p.name, n: i + 1 })} />
               </button>
             ))}
+            {p.video && (
+              <button
+                className={`p-thumb video-thumb${isVideo(index) ? " active" : ""}`}
+                aria-pressed={isVideo(index)}
+                aria-label={t("ვიდეოს ნახვა")}
+                onClick={() => pick(gallery.length)}
+              >
+                <img src={videoThumb} alt="" />
+                <span className="play-badge" aria-hidden="true" />
+              </button>
+            )}
             <span className="gallery-hint">
               <Icon name="zoom" /> {t("დააჭირეთ გასადიდებლად")}
             </span>
@@ -400,21 +434,51 @@ export function ProductView({ p }: { p: Product }) {
         </button>
       </div>
 
-      <Dialog open={zoom} onClose={() => setZoom(false)} className="lightbox" label={t("პროდუქტის ფოტო")}>
+      <Dialog open={zoom} onClose={() => setZoom(false)} className={`lightbox${count > 1 ? " has-rail" : ""}`} label={t("პროდუქტის ფოტო")}>
         <button className="icon-button lightbox-close" aria-label={t("დახურვა")} onClick={() => setZoom(false)}>
           <Icon name="close" />
         </button>
-        {gallery.length > 1 && (
-          <button className="icon-button lightbox-prev" aria-label={t("წინა ფოტო")} onClick={() => go(index - 1)}>
-            <Icon name="chevron" />
-          </button>
+        {count > 1 && (
+          <div className="lightbox-rail">
+            {gallery.map((g, i) => (
+              <button key={g} className={i === index ? "active" : undefined} aria-pressed={i === index} aria-label={t("პროდუქტის ფოტო {n}", { n: i + 1 })} onClick={() => setIndex(i)}>
+                <img src={g} alt="" />
+              </button>
+            ))}
+            {p.video && (
+              <button className={`video-thumb${isVideo(index) ? " active" : ""}`} aria-pressed={isVideo(index)} aria-label={t("ვიდეოს ნახვა")} onClick={() => setIndex(gallery.length)}>
+                <img src={videoThumb} alt="" />
+                <span className="play-badge" aria-hidden="true" />
+              </button>
+            )}
+          </div>
         )}
-        <img src={gallery[index]} alt={t("{name} — ფოტო {n}", { name: p.name, n: index + 1 })} />
-        {gallery.length > 1 && (
-          <button className="icon-button lightbox-next" aria-label={t("შემდეგი ფოტო")} onClick={() => go(index + 1)}>
-            <Icon name="chevron" />
-          </button>
-        )}
+        <div className="lightbox-media">
+          {count > 1 && (
+            <button className="icon-button lightbox-prev" aria-label={t("წინა ფოტო")} onClick={() => go(index - 1)}>
+              <Icon name="chevron" />
+            </button>
+          )}
+          {/* iframe მხოლოდ ღია popup-ში: დახურვისას ან სხვა ფოტოზე გადასვლისას ვიდეო ჩერდება */}
+          {isVideo(index) ? (
+            zoom && (
+              <iframe
+                src={embed(true)}
+                title={t("{name} — ვიდეო", { name: p.name })}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            )
+          ) : (
+            <img src={gallery[index]} alt={t("{name} — ფოტო {n}", { name: p.name, n: index + 1 })} />
+          )}
+          {count > 1 && (
+            <button className="icon-button lightbox-next" aria-label={t("შემდეგი ფოტო")} onClick={() => go(index + 1)}>
+              <Icon name="chevron" />
+            </button>
+          )}
+        </div>
       </Dialog>
     </main>
   );

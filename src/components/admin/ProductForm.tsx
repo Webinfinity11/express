@@ -6,6 +6,7 @@ import type { ProductRow, ShippingClassRow, Spec, VariantRow } from "@/db/schema
 import { deleteProduct, saveProduct, setBrandLogo, uploadImage } from "@/lib/actions/admin";
 import { slugify } from "@/lib/admin-shared";
 import type { AttrSuggestions } from "@/lib/attribute-suggestions";
+import { youtubeId } from "@/lib/data";
 import { Button, Card, Field, inputCls } from "./ui";
 import { ImageUploader, shrink, SingleImage } from "./ImageUploader";
 import { inheritedClass, ShippingClassSelect } from "./ShippingClassSelect";
@@ -71,6 +72,7 @@ export function ProductForm({
   const [oldPrice, setOldPrice] = useState(str(product?.oldPrice));
   const [images, setImages] = useState<string[]>(product?.images ?? []);
   const [sceneImage, setSceneImage] = useState(product?.sceneImage ?? "");
+  const [videoUrl, setVideoUrl] = useState(product?.videoUrl ?? "");
   const [subtitle, setSubtitle] = useState(product?.subtitle ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [specs, setSpecs] = useState<Spec[]>(product?.specs ?? []);
@@ -141,6 +143,7 @@ export function ProductForm({
         oldPrice: oldPrice || null,
         images,
         sceneImage: sceneImage || null,
+        videoUrl: videoUrl.trim() || null,
         subtitle,
         description,
         specs,
@@ -242,6 +245,12 @@ export function ProductForm({
           <div className="mt-5">
             <span className="block text-sm font-semibold mb-1.5">ინტერიერის ფოტო („აღწერის“ ტაბში)</span>
             <SingleImage value={sceneImage} onChange={setSceneImage} />
+          </div>
+          <div className="mt-5">
+            <Field label="YouTube ვიდეო" hint="ჩასვით YouTube-ის ბმული — გალერეაში ბოლო ფოტოს შემდეგ გამოჩნდება. ცარიელი = ვიდეოს გარეშე">
+              <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://www.youtube.com/watch?v=…" className={inputCls} />
+            </Field>
+            {videoUrl.trim() && !youtubeId(videoUrl) && <p className="text-xs text-red-600 mt-1">ბმული YouTube-ის ვიდეოს არ ჰგავს.</p>}
           </div>
         </Card>
 

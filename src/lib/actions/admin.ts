@@ -16,6 +16,7 @@ import { CREDO_SETTINGS_KEY, syncPendingCredoOrders } from "@/lib/credo";
 import { enKey, sanitizeSection } from "@/lib/content";
 import { contentDefaults, type ContentKey } from "@/lib/content-schema";
 import { RESERVED_SLUGS } from "@/lib/site-links";
+import { youtubeId } from "@/lib/data";
 
 export type ActionResult = { ok: true; id?: number } | { ok: false; error: string };
 
@@ -128,6 +129,7 @@ const productSchema = z.object({
   oldPrice: optMoney,
   images: z.array(imageUrl).max(12),
   sceneImage: z.union([z.literal(""), z.null(), imageUrl]).optional(),
+  videoUrl: z.string().trim().max(300).nullable().optional(),
   subtitle: z.string().max(300),
   description: z.string().max(20000),
   specs: z.array(z.object({ label: z.string().trim().max(80), value: z.string().trim().max(200) })).max(40),
@@ -151,6 +153,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
   const d = parsed.data;
   const oldPrice = num(d.oldPrice);
   if (oldPrice !== null && oldPrice <= d.price) return fail("ძველი ფასი ახალ ფასზე მეტი უნდა იყოს (ან დატოვეთ ცარიელი)");
+  if (d.videoUrl && !youtubeId(d.videoUrl)) return fail("YouTube ბმული ვერ ამოვიცანით. მაგ. https://www.youtube.com/watch?v=...");
 
   const values = {
     name: d.name,
@@ -164,6 +167,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
     oldPrice,
     images: d.images,
     sceneImage: d.sceneImage || null,
+    ...(d.videoUrl !== undefined && { videoUrl: d.videoUrl || null }),
     subtitle: d.subtitle.trim(),
     description: d.description.trim(),
     specs: d.specs.filter((s) => s.label && s.value),
@@ -409,6 +413,7 @@ const promoSchema = z.object({
   kind: z.enum(["percent", "fixed"]),
   value: z.coerce.number().positive("მიუთითეთ ფასდაკლება").max(1_000_000),
   minTotal: money,
+  maxDiscount: optMoney,
   maxUses: optInt,
   startsAt: dateOrNull,
   endsAt: dateOrNull,
@@ -434,6 +439,7 @@ export async function savePromo(id: number | null, input: PromoInput): Promise<A
     kind: d.kind,
     value: d.value,
     minTotal: d.minTotal,
+    maxDiscount: d.kind === "percent" ? num(d.maxDiscount) || null : null,
     maxUses: num(d.maxUses),
     startsAt: d.startsAt ? new Date(`${d.startsAt}T00:00:00+04:00`) : null,
     endsAt: d.endsAt ? new Date(`${d.endsAt}T23:59:59+04:00`) : null,

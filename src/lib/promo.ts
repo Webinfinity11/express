@@ -13,5 +13,5 @@ export async function findPromo(raw: string): Promise<{ promo: Promo } | { error
   if (row.startsAt && row.startsAt > now) return { error: "პრომოკოდი ჯერ არ არის აქტიური." };
   if (row.endsAt && row.endsAt < now) return { error: "პრომოკოდის ვადა ამოიწურა." };
   if (row.maxUses != null && row.usedCount >= row.maxUses) return { error: "პრომოკოდის ლიმიტი ამოიწურა." };
-  return { promo: { code: row.code, kind: row.kind === "fixed" ? "fixed" : "percent", value: row.value, minTotal: row.minTotal } };
+  return { promo: { code: row.code, kind: row.kind === "fixed" ? "fixed" : "percent", value: row.value, minTotal: row.minTotal, maxDiscount: row.maxDiscount } };
 }

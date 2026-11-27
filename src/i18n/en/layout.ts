@@ -9,6 +9,8 @@ export const layout: Record<string, string> = {
   "კალათა: {n} პროდუქტი": "Cart ({n})",
   "კალათა": "Cart",
   "ენის არჩევა": "Choose language",
+  "მოგვწერეთ WhatsApp-ზე": "Chat with us on WhatsApp",
+  "მოგვწერეთ Messenger-ში": "Message us on Messenger",
   // Navigation
   "მთავარი ნავიგაცია": "Main navigation",
   "კატეგორიები": "Categories",

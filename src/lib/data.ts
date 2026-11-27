@@ -27,6 +27,8 @@ export type Product = {
   oldPrice: number; // ფასდაკლების გარეშე = price
   image: string;
   gallery: string[];
+  // YouTube ვიდეოს ID (გალერეის ბოლოს)
+  video: string | null;
   scene: string;
   color: string;
   tone: string;
@@ -42,6 +44,14 @@ export type Product = {
   ship: ShipClass | null;
 };
 
+/** YouTube ბმულიდან ვიდეოს ID (watch?v=, youtu.be/, shorts/, embed/, live/) ან null */
+export function youtubeId(url: string | null | undefined): string | null {
+  const s = (url ?? "").trim();
+  if (/^[\w-]{11}$/.test(s)) return s;
+  const m = s.match(/^(?:https?:\/\/)?(?:www\.|m\.|music\.)?(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/|v\/)|youtu\.be\/)([\w-]{11})(?:[?&#/]|$)/i);
+  return m ? m[1] : null;
+}
+
 export type ShipClass = { code: string; tbilisi: number; regions: number };
 
 export type Category = { id: string; name: string; image: string; parent: string | null; showOnHome: boolean; showInMenu: boolean; filters: string[] | null };
@@ -52,7 +62,7 @@ export type MenuLink = { name: string; href: string };
 export type MenuGroup = { title: string; href: string; items?: MenuLink[] };
 export type MenuSection = { id: string; name: string; image: string; href: string; groups: MenuGroup[] };
 
-export type Promo = { code: string; kind: "percent" | "fixed"; value: number; minTotal: number };
+export type Promo = { code: string; kind: "percent" | "fixed"; value: number; minTotal: number; maxDiscount?: number | null };
 
 export const PLACEHOLDER_IMAGE = "/images/logo.webp";
 
@@ -89,7 +99,8 @@ export function shippingCost(city: City, items: { ship: ShipClass | null; qty: n
 export function promoDiscount(promo: Promo | null, sub: number) {
   if (!promo || sub < Math.round(promo.minTotal * 100)) return 0;
   const off = promo.kind === "percent" ? Math.round((sub * Math.min(100, promo.value)) / 100) : Math.round(promo.value * 100);
-  return Math.min(sub, off);
+  const cap = promo.kind === "percent" && promo.maxDiscount ? Math.round(promo.maxDiscount * 100) : Infinity;
+  return Math.min(sub, off, cap);
 }
 
 /** კატალოგის ძიების ცხრილები და კალათის ხაზის ამოხსნა */
