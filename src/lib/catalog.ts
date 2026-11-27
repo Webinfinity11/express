@@ -78,6 +78,7 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
       scene: p.sceneImage || gallery[gallery.length - 1],
       color: pick(lang, p.colorName, p.en?.colorName),
       tone: p.colorHex || "#151515",
+      hasTone: !!p.colorHex,
       subtitle: pick(lang, p.subtitle, p.en?.subtitle),
       desc: pick(lang, p.description, p.en?.description),
       specs: (lang === "en" && p.en?.specs?.length ? p.en.specs : p.specs).map((s) => [s.label, s.value] as [string, string]),

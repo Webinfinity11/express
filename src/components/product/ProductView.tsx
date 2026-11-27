@@ -36,7 +36,7 @@ export function ProductView({ p }: { p: Product }) {
   const mainName = p.color || t("ძირითადი");
   // ღილაკები: მთავარი პროდუქტი (თუ ჩართულია) პირველი, მერე ვარიაციები
   const options = [
-    ...(p.mainOption ? [{ id: null, name: mainName, colorHex: p.color ? p.tone : null, price: p.price, inStock: p.ownInStock }] : []),
+    ...(p.mainOption ? [{ id: null, name: mainName, colorHex: p.color && p.hasTone ? p.tone : null, price: p.price, inStock: p.ownInStock }] : []),
     ...p.variants,
   ];
   // პროდუქტის მახასიათებლები + არჩეული ვარიაციისა (იგივე სახელზე ვარიაციისა ჩანს)
@@ -260,9 +260,11 @@ export function ProductView({ p }: { p: Product }) {
             p.color && (
               <div className="p-color">
                 <span>{t("ფერი:")}</span>
-                <span className="color-swatch" style={{ "--product-color": p.tone } as React.CSSProperties}>
-                  <Icon name="check" />
-                </span>
+                {p.hasTone && (
+                  <span className="color-swatch" style={{ "--product-color": p.tone } as React.CSSProperties}>
+                    <Icon name="check" />
+                  </span>
+                )}
                 <strong>{p.color}</strong>
               </div>
             )

@@ -33,6 +33,7 @@ export type Product = {
   scene: string;
   color: string;
   tone: string;
+  hasTone: boolean; // ფერი რეალურად არის არჩეული (tone-ს ნაგულისხმევი შავი აქვს)
   subtitle: string;
   desc: string;
   specs: [string, string][];
