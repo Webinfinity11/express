@@ -220,7 +220,7 @@ export function ProductView({ p }: { p: Product }) {
           {p.variants.length > 0 ? (
             <div className="p-variants">
               <span className="p-variants-label">
-                {t("ვარიაცია:")} <strong>{variant?.name ?? mainName}</strong>
+                {p.optionLabel || t("დასახელება")}: <strong>{variant?.name ?? mainName}</strong>
               </span>
               <div className="p-variant-list" role="radiogroup" aria-label={t("ვარიაციის არჩევა")}>
                 {options.map((v) => {
@@ -363,7 +363,7 @@ export function ProductView({ p }: { p: Product }) {
                   [t("პროდუქტის კოდი"), variant?.sku || p.sku],
                   [t("კატეგორია"), categoryName(p.category)],
                   ...specs,
-                  [t("ფერი"), variant?.name || p.color],
+                  [(p.variants.length && p.optionLabel) || t("ფერი"), variant?.name || p.color],
                 ] as [string, string][]
               )
                 .filter(([, v]) => v)

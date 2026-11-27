@@ -87,6 +87,7 @@ export async function getCatalog(lang: Lang = "ka"): Promise<Catalog> {
       isNew: p.isNew,
       inStock: vs.length ? vs.some((v) => v.inStock) || (mainOption && ownInStock) : ownInStock,
       mainOption,
+      optionLabel: pick(lang, p.optionLabel, p.en?.optionLabel),
       ownInStock,
       variants: vs,
       ship: (p.shippingClassId && classes.get(p.shippingClassId)) || categoryClass(p.categoryId),

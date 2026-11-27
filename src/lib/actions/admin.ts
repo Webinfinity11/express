@@ -117,7 +117,7 @@ function cleanEn<T extends Record<string, unknown>>(en: T | undefined): Partial<
 
 const productSchema = z.object({
   en: z
-    .object({ name: enText(200), label: enText(120), subtitle: enText(300), description: enText(20000), specs: enSpecs, colorName: enText(80) })
+    .object({ name: enText(200), label: enText(120), subtitle: enText(300), description: enText(20000), specs: enSpecs, colorName: enText(80), optionLabel: enText(60) })
     .optional(),
   name: z.string().trim().min(2, "მიუთითეთ დასახელება").max(200),
   slug: z.string().trim().max(100).optional(),
@@ -138,6 +138,7 @@ const productSchema = z.object({
   colorName: z.string().trim().max(80),
   colorHex: hex,
   mainOption: z.boolean(),
+  optionLabel: z.string().trim().max(60),
   featured: z.boolean(),
   isNew: z.boolean(),
   published: z.boolean(),
@@ -177,6 +178,7 @@ export async function saveProduct(id: number | null, input: ProductInput): Promi
     colorName: d.colorName,
     colorHex: d.colorHex || null,
     mainOption: d.mainOption,
+    optionLabel: d.optionLabel,
     featured: d.featured,
     isNew: d.isNew,
     published: d.published,

@@ -114,6 +114,7 @@ export function ProductForm({
     subtitle: product?.en?.subtitle ?? "",
     description: product?.en?.description ?? "",
     colorName: product?.en?.colorName ?? "",
+    optionLabel: product?.en?.optionLabel ?? "",
   });
   const setE = (k: keyof typeof en, val: string) => setEn((cur) => ({ ...cur, [k]: val }));
   const [specsEn, setSpecsEn] = useState<Spec[]>(product?.en?.specs ?? []);
@@ -127,6 +128,7 @@ export function ProductForm({
   const [stockQty, setStockQty] = useState(str(product?.stockQty));
   const [variants, setVariants] = useState<VariantDraft[]>(initialVariants.map(toDraft));
   const tracked = stockQty.trim() !== "";
+  const [optionLabel, setOptionLabel] = useState(product?.optionLabel ?? "");
   // ახალ ვარიაციებზე ჩართულია; უკვე ვარიაციებიან პროდუქტზე — რაც შენახულია
   const [mainOption, setMainOption] = useState(initialVariants.length ? (product?.mainOption ?? false) : true);
 
@@ -157,6 +159,7 @@ export function ProductForm({
         colorName,
         colorHex: colorHex || null,
         mainOption,
+        optionLabel,
         featured,
         isNew,
         published,
@@ -277,6 +280,15 @@ export function ProductForm({
           ) : (
             <div className="grid gap-3">
               <div className="rounded-lg border border-slate-200 p-3 grid gap-3">
+                <Field label="არჩევანის დასახელება" hint="საიტზე ღილაკების წინ: მაგ. ფერი, ზომა, მოცულობა. ცარიელი = „დასახელება“">
+                  <input value={optionLabel} onChange={(e) => setOptionLabel(e.target.value)} maxLength={60} list="option-labels" className={inputCls} />
+                  <input value={en.optionLabel} onChange={(e) => setE("optionLabel", e.target.value)} maxLength={60} placeholder="English (Color, Size…)" lang="en" className={`${inputCls} mt-1.5`} />
+                  <datalist id="option-labels">
+                    <option value="ფერი" />
+                    <option value="ზომა" />
+                    <option value="მოცულობა" />
+                  </datalist>
+                </Field>
                 <label className="flex items-center gap-2 text-sm font-semibold">
                   <input type="checkbox" checked={mainOption} onChange={(e) => setMainOption(e.target.checked)} className="h-4 w-4 accent-[#ff5a00]" />
                   მთავარი პროდუქტიც ასარჩევ ვარიანტად გამოჩნდეს

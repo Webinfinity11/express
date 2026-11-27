@@ -4,7 +4,7 @@ export type Spec = { label: string; value: string };
 
 /** ინგლისური თარგმანი (ცარიელი ველი = ქართული ჩანს) */
 export type CategoryEn = { name?: string };
-export type ProductEn = { name?: string; label?: string; subtitle?: string; description?: string; specs?: Spec[]; colorName?: string };
+export type ProductEn = { name?: string; label?: string; subtitle?: string; description?: string; specs?: Spec[]; colorName?: string; optionLabel?: string };
 export type VariantEn = { name?: string; description?: string };
 export type PageEn = { title?: string; eyebrow?: string; subtitle?: string; body?: string; buttonText?: string; metaDescription?: string };
 /** SEO (Rank Math-ის მსგავსი): ცარიელი ველი = Titles & Meta შაბლონი */
@@ -93,6 +93,8 @@ export const products = pgTable(
     colorHex: text("color_hex"),
     // ვარიაციებთან ერთად მთავარი პროდუქტიც არჩევადია (სახელი/ფერი = colorName/colorHex)
     mainOption: boolean("main_option").notNull().default(false),
+    // ვარიაციების ღილაკების წინ წარწერა; ცარიელი = „დასახელება“
+    optionLabel: text("option_label").notNull().default(""),
     en: en<ProductEn>(),
     seo: seo(),
     featured: boolean("featured").notNull().default(false),

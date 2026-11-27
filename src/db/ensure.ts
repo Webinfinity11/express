@@ -20,6 +20,8 @@ export function ensureSchema() {
     // მთავარი პროდუქტიც ვარიანტია (არსებულებზე გამორთული) და ვარიაციის საკუთარი აღწერა
     await db.execute(sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS main_option boolean NOT NULL DEFAULT false`);
     await db.execute(sql`ALTER TABLE product_variants ADD COLUMN IF NOT EXISTS description text NOT NULL DEFAULT ''`);
+    // ვარიაციების არჩევანის დასახელება (ფერი, ზომა, მოცულობა…)
+    await db.execute(sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS option_label text NOT NULL DEFAULT ''`);
     // SEO: ველები ჩანაწერებზე და გადამისამართებების ცხრილი
     for (const table of ["categories", "products", "pages"])
       await db.execute(sql.raw(`ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS seo jsonb NOT NULL DEFAULT '{}'::jsonb`));

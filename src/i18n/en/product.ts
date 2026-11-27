@@ -16,7 +16,6 @@ export const product: Record<string, string> = {
   "არ არის მარაგში": "Out of stock",
   "სპეციალური ფასი": "Special price",
   "თქვენ ზოგავთ": "You save",
-  "ვარიაცია:": "Variant:",
   "ვარიაციის არჩევა": "Choose a variant",
   "ძირითადი": "Standard",
   "ფერი:": "Color:",

@@ -43,6 +43,7 @@ export type Product = {
   variants: Variant[];
   // ვარიაციებთან ერთად მთავარი პროდუქტიც იყიდება; ownInStock = მისი საკუთარი მარაგი
   mainOption: boolean;
+  optionLabel: string; // ცარიელი = „დასახელება“
   ownInStock: boolean;
   // ლოჯისტიკური კლასი (პროდუქტის ან კატეგორიის); null = საერთო ტარიფი
   ship: ShipClass | null;
